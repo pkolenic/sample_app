@@ -14,6 +14,23 @@ class User < ActiveRecord::Base
 
   validates :password, length: { minimum: 6 }
   
+  # User Status Checks
+  def pending_approval?
+    self.status == 0
+  end
+  
+  def active_member?
+    self.status > 0
+  end
+  
+  def clan_leadership?
+    self.status == 1
+  end
+  
+  def system_admin?
+    self.status == 2
+  end
+  
   # Session Token Creation
   def User.new_remember_token
     SecureRandom.urlsafe_base64

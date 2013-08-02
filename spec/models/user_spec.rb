@@ -23,7 +23,7 @@ describe User do
     before { @user.save }
     its(:remember_token) { should_not be_blank }
     its(:status) { should_not be_blank }
-    its(:status) { should eq(0) }
+    it{ should be_pending_approval }
   end
 
   describe "when name is not present" do
