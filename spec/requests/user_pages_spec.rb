@@ -11,8 +11,8 @@ describe "User pages" do
 
   describe "profile page" do
     let(:user) { FactoryGirl.create(:user) }
-    let(:heading)    { user.name }
-    let(:page_title) { user.name }
+    let(:heading)    { user.wot_name }
+    let(:page_title) { user.wot_name }
     before { visit user_path(user) }
 
     it_should_behave_like "all user pages"
@@ -57,7 +57,7 @@ describe "User pages" do
         let(:user) { User.find_by(email: 'user@example.com') }
 
         it { should have_link('Sign out') }
-        it { should have_title(user.name) }
+        it { should have_title(user.wot_name) }
         it { should have_success_message('Welcome') }
       end
     end
