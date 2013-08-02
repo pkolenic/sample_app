@@ -15,3 +15,17 @@ label span.note {
   font-size: 12px;
   font-style: italic;
 }
+
+.gravatar {
+  float: left;
+  margin-right: 10px;
+  text-align: center;
+  a.gravatar_link {
+    font-size: 12px;
+    font-style: italic;
+    text-decoration: none;
+    &:hover {
+      text-decoration: none;
+    } 
+  }
+}

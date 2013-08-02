@@ -3,7 +3,11 @@
   <aside class="span4">
     <section>
       <h1>
-        <%= gravatar_for @user, size: 80 %>
+      	<div class="gravatar">
+        	<%= gravatar_for @user, size: 80 %>
+        	</br>
+        	<%= link_to 'powered by gravatar', 'http://gravatar.com', target: "_blank", class: "gravatar_link"%>
+        </div>
         <%= @user.wot_name %>
       </h1>
     </section>
