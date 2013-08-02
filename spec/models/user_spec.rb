@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe User do
   before do
-    @user = User.new(name: "Example User", email: "user@example.com", password: "foobar", password_confirmation: "foobar")
+    @user = User.new(name: "Example User", wot_name: "Tanker", email: "user@example.com", password: "foobar", password_confirmation: "foobar")
   end
 
   subject { @user }
@@ -14,16 +14,25 @@ describe User do
   it { should respond_to(:password_confirmation) }
   it { should respond_to(:remember_token) }
   it { should respond_to(:authenticate) }
+  it { should respond_to(:wot_name) }
+  it { should respond_to(:status) }
 
   it { should be_valid }
 
   describe "remember token" do
     before { @user.save }
     its(:remember_token) { should_not be_blank }
+    its(:status) { should_not be_blank }
+    its(:status) { should eq(0) }
   end
 
   describe "when name is not present" do
     before { @user.name = " " }
+    it { should_not be_valid }
+  end
+  
+  describe "when wot_name is not present" do
+    before { @user.wot_name = " " }
     it { should_not be_valid }
   end
 
@@ -34,6 +43,11 @@ describe User do
 
   describe "when name is too long" do
     before { @user.name = "a" * 51 }
+    it { should_not be_valid }
+  end
+  
+  describe "when wot_name is too long" do
+    before { @user.wot_name = "a" * 51 }
     it { should_not be_valid }
   end
 
