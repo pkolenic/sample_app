@@ -11,8 +11,8 @@ describe "User pages" do
 
   describe "index" do
     
-    let(:heading) { 'All users' }
-    let(:page_title) { 'All users' }
+    let(:heading) { 'Battle Roster' }
+    let(:page_title) { 'Battle Roster' }
     let(:user) { FactoryGirl.create(:user) }
     before(:each) do
       sign_in user

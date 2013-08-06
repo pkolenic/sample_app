@@ -1,5 +1,7 @@
 <li>
-  <%= gravatar_for user, size: 52 %>
+  <div class="gravatar">
+  	<%= gravatar_for user, size: 52 %>
+  </div>
   <%= image_tag("http://wotlabs.net/sig/na/#{user.wot_name}/signature.png", alt: 'win7 data') %>
   <%= link_to user.wot_name, user %> 
   
