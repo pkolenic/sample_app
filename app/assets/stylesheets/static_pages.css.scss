@@ -8,3 +8,20 @@
     text-decoration: none;
   }
 }
+
+#help {
+  h2 {
+    text-align: left;
+  }
+  height: 300px;
+  div {
+    width: 50%;
+    float: left;
+    .field {
+      font-weight: bold;
+    }
+    .value {
+      
+    }
+  }
+}
