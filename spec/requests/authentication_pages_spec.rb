@@ -26,10 +26,21 @@ describe "Authentication" do
         before { click_link "Home" }
         it { should_not have_selector('div.alert.alert-error') }
       end
+      
+      it { should_not have_link('Users',       href: users_path) }
+      it { should_not have_link('Profile') }
+      it { should_not have_link('Settings') }
+      it { should_not have_link('Sign out',    href: signout_path) }
+      it { should have_link('Sign in', href: signin_path) }
     end
 
     describe "with valid information" do
       let(:user) { FactoryGirl.create(:user) }
+      let(:params) do
+          { user: { name: user.name, email: 'new_user@example.com',
+                  password: user.password, password_confirmation: user.password } }
+      end
+      
       before { sign_in user }
 
       it { should have_title(user.name) }
@@ -38,7 +49,12 @@ describe "Authentication" do
       it { should have_link('Settings',    href: edit_user_path(user)) }
       it { should have_link('Sign out',    href: signout_path) }
       it { should_not have_link('Sign in', href: signin_path) }
-
+      
+      describe "don't display `sign up` button" do
+        before { click_link "Home" }
+        specify { expect(page).not_to have_link("Sign up now!", href: signup_path)}
+      end
+      
       describe "followed by signout" do
         before { click_link "Sign out" }
         it { should have_link('Sign in') }
@@ -47,6 +63,29 @@ describe "Authentication" do
   end
   
   describe "authorization" do
+
+    describe "for signed-in users" do
+      let(:user) { FactoryGirl.create(:user) }
+      let(:params) do
+          { user: { name: user.name, email: 'new_user@example.com',
+                  password: user.password, password_confirmation: user.password } }
+      end
+      
+      before { sign_in user }
+
+      describe "in the Users controller" do
+        describe "visiting the new page" do
+          before { visit new_user_path }
+          it { should have_content('This is the home page') }
+        end
+
+        # Redirect should happen, but its not and is still creating the user
+        # describe "submitting to the create action" do
+          # before { post users_path(user) }
+          # specify { expect(response).to redirect_to(root_path) }
+        # end
+      end      
+    end
 
     describe "for non-signed-in users" do
       let(:user) { FactoryGirl.create(:user) }
@@ -80,6 +119,32 @@ describe "Authentication" do
         describe "visiting the user index" do
           before { visit users_path }
           it { should have_title('Sign in') }
+        end
+      end
+      
+      describe "when attempting to visit a protected page" do
+        before do
+          visit edit_user_path(user)
+          valid_signin(user)
+        end
+
+        describe "after signing in" do
+
+          it "should render the desired protected page" do
+            expect(page).to have_title('Edit user')
+          end
+
+          describe "when signing in again" do
+            before do
+              delete signout_path
+              visit signin_path
+              valid_signin(user)
+            end
+
+            it "should render the default (profile) page" do
+              expect(page).to have_title(user.name)
+            end
+          end
         end
       end
     end
