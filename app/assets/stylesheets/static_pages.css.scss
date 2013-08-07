@@ -25,6 +25,7 @@ h3 {
 #videos {
   width: 1000px;
   height: 300px;
+  overflow: auto;
   .video_thumbnail_row {
     clear:both;
     .video_link {
