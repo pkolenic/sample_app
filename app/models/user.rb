@@ -24,11 +24,11 @@ class User < ActiveRecord::Base
   end
   
   def clan_leadership?
-    self.status == 1
+    self.status > 1
   end
   
-  def system_admin?
-    self.status == 2
+  def clan_senior_leadership?
+    self.status > 2
   end
   
   # Session Token Creation
