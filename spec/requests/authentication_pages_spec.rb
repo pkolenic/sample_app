@@ -131,6 +131,14 @@ describe "Authentication" do
         end
       end
       
+      describe "in the Static controller" do
+        
+        describe "visiting RiisingSun Videos" do
+          before { visit riisingsun_path }
+          it { should have_title('Sign in') }
+        end
+      end
+      
       describe "when attempting to visit a protected page" do
         before do
           visit edit_user_path(user)
