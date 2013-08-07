@@ -1,0 +1,73 @@
+<% provide(:title, 'RiisingSun') %> 
+<h1>RiisingSun YouTube Videos</h1>
+
+    <!-- 1. The <iframe> (and video player) will replace this <div> tag. -->
+    <div id="player_wrapper">
+    	<div id="player"></div>
+    	
+	    <script>
+	      // 2. This code loads the IFrame Player API code asynchronously.
+	      var tag = document.createElement('script');
+	
+	      tag.src = "https://www.youtube.com/iframe_api";
+	      var firstScriptTag = document.getElementsByTagName('script')[0];
+	      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+	
+	      // 3. This function creates an <iframe> (and YouTube player)
+	      //    after the API code downloads.
+	      var player;
+	      function onYouTubeIframeAPIReady() {
+	        player = new YT.Player('player', {
+	          height: '390',
+	          width: '640',
+	          videoId: 'p56GopMx9g8',
+	          events: {
+	            'onReady': onPlayerReady
+	          }
+	        });
+	      }
+	
+	      // 4. The API will call this function when the video player is ready.
+	      function onPlayerReady(event) {
+	        event.target.playVideo();
+	      }
+	      
+	      function playVideo(video_link) {
+	      	video = $( video_link );
+	      	player.loadVideoById(video.attr('video-id'), 0, "large")
+	      }
+	      
+		  $.getJSON('https://gdata.youtube.com/feeds/api/videos?author=TheRiisingSun&orderby=published&max-results=32&alt=json&v=2', function(data) {
+		  	videos = data.feed.entry;
+		  	var items = [];
+		  	var video_count = 1;
+		  	var total_videos = videos.length;
+		  	$.each(videos, function(key, video) {
+		  		html = "";
+		  		if (video_count %4 == 1) {
+		  			html = '<div class="video_thumbnail_row">'
+		  		}
+		  		html += '<div class="video_link" video-id="' + video.media$group.yt$videoid.$t + '">';
+		  		html += '<img src="' + video.media$group.media$thumbnail[0].url + '" alt="' + video.title.$t + '"/>';
+		  		html += '<br/><span class="video_title">' + video.title.$t + "</span></div>";
+		  		
+		  		if (video_count %4 == 0 || video_count == total_videos) {
+		  			html += '</div>'
+		  		}
+	    		items.push(html);
+	    		video_count++;
+	  		});
+	  		
+	  		$('<div/>', {
+	    		'class': 'video-list',
+	    		html: items.join('')
+	  		}).appendTo('#videos');
+	  		
+	  		$(".video_link").click(function() {
+	  			playVideo(this);
+		  	});
+		  });
+	    </script>
+	</div>
+	<div id="videos">
+	</div>

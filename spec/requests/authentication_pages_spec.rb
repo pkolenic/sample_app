@@ -27,7 +27,8 @@ describe "Authentication" do
         it { should_not have_selector('div.alert.alert-error') }
       end
       
-      it { should_not have_link('Users',       href: users_path) }
+      it { should_not have_link('Battle Roster',       href: users_path) }
+      it { should_not have_link('RiisingSun Videos', href: riisingsun_path) }
       it { should_not have_link('Profile') }
       it { should_not have_link('Settings') }
       it { should_not have_link('Sign out',    href: signout_path) }
@@ -44,7 +45,8 @@ describe "Authentication" do
       before { sign_in user }
 
       it { should have_title(user.wot_name) }
-      it { should have_link('Users',       href: users_path) }
+      it { should have_link('Battle Roster',       href: users_path) }
+      it { should have_link('RiisingSun Videos',   href: riisingsun_path) }
       it { should have_link('Profile',     href: user_path(user)) }
       it { should have_link('Settings',    href: edit_user_path(user)) }
       it { should have_link('Sign out',    href: signout_path) }
@@ -72,6 +74,13 @@ describe "Authentication" do
       # end
       
       before { sign_in user }
+
+      describe "RiisingSun page" do
+        before { visit riisingsun_path }
+
+        it { should have_selector('h1', text: 'RiisingSun YouTube Videos') }
+        it { should have_title('RiisingSun') }
+      end
 
       describe "in the Users controller" do
         describe "visiting the new page" do

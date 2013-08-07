@@ -21,3 +21,22 @@ h3 {
 .value {
       
 }
+
+#videos {
+  width: 1000px;
+  height: 300px;
+  .video_thumbnail_row {
+    clear:both;
+    .video_link {
+      float:left;
+      width:240px;
+      height: 150px;
+      text-align:center;
+    }
+  }
+}
+
+#player_wrapper {
+  width: 1000px;
+  padding: 0 160px 30px;
+}
