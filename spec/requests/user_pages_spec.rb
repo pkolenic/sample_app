@@ -93,8 +93,7 @@ describe "User pages" do
     end
 
     describe "with valid information" do
-      before { valid_signup }
-      
+      before { fill_in_user_form }
       it "should create a user" do
         expect { click_button submit }.to change(User, :count).by(1)
       end
@@ -147,7 +146,17 @@ describe "User pages" do
       it { should have_selector('div.alert.alert-success') }
       it { should have_link('Sign out', href: signout_path) }
       specify { expect(user.reload.name).to  eq new_name }
+      specify { expect(user.reload.email).to eq new_email }
       it { should have_success_message('Profile updated') }
+    end
+    
+    describe "forbidden attributes" do
+      let(:params) do
+        { user: { admin: true, password: user.password,
+                  password_confirmation: user.password } }
+      end
+      before { patch user_path(user), params }
+      specify { expect(user.reload).not_to be_admin }
     end
   end
 end

@@ -8,24 +8,7 @@
 <div class="row">
   <div class="span6 offset3">
     <%= form_for(@user) do |f| %>
-    
-	  <%= render 'shared/error_messages' %>
-      
-      <%= f.label :name %>
-      <%= f.text_field :name, placeholder: "First Last" %>
-      
-      <%= f.label :wot_name, "World of Tank Name<span class='note'> *(used to verify clan membership) </span>".html_safe %>
-      <%= f.text_field :wot_name, placeholder: "World of Tank Name" %>
-
-      <%= f.label :email %>
-      <%= f.text_field :email, placeholder: "name@example.com" %>
-
-      <%= f.label :password %>
-      <%= f.password_field :password %>
-
-      <%= f.label :password_confirmation, "Confirmation" %>
-      <%= f.password_field :password_confirmation %>
-
+	  <%= render 'fields', f: f %>
       <%= f.submit "Create my account", class: "btn btn-large btn-primary" %>
     <% end %>
   </div>

@@ -3,6 +3,7 @@
 	Fear The Fallen </h1>
 
 	<h2> Don't Fear Death As It is Only The Beginning </h2>
-
-	<%= link_to "Sign up now!", signup_path, class: "btn btn-large btn-primary" %>
+  	<% unless signed_in? %>
+		<%= link_to "Sign up now!", signup_path, class: "btn btn-large btn-primary" %>
+	<% end %>
 </div>

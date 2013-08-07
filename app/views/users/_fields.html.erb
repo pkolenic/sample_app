@@ -1,0 +1,16 @@
+<%= render 'shared/error_messages' %>
+
+<%= f.label :name %>
+<%= f.text_field :name %>
+
+<%= f.label :wot_name, "World of Tank Name<span class='note'> *(used to verify clan membership) </span>".html_safe %>
+<%= f.text_field :wot_name, placeholder: "World of Tank Name" %>
+
+<%= f.label :email %>
+<%= f.text_field :email %>
+
+<%= f.label :password %>
+<%= f.password_field :password %>
+
+<%= f.label :password_confirmation, "Confirm Password" %>
+<%= f.password_field :password_confirmation %>
