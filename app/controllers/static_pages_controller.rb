@@ -1,4 +1,5 @@
 class StaticPagesController < ApplicationController
+  force_ssl :except => :contact
   before_action :signed_in_user, only: [:riisingsun]
   
   def home
