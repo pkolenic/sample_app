@@ -3,8 +3,10 @@
 <%= f.label :name %>
 <%= f.text_field :name %>
 
+<% unless signed_in? %>
 <%= f.label :wot_name, "World of Tank Name<span class='note'> *(used to verify clan membership) </span>".html_safe %>
 <%= f.text_field :wot_name, placeholder: "World of Tank Name" %>
+<% end %>
 
 <%= f.label :email %>
 <%= f.text_field :email %>
