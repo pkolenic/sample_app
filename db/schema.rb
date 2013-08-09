@@ -26,7 +26,7 @@ ActiveRecord::Schema.define(version: 20130808230002) do
     t.boolean  "admin",           default: false
     t.string   "wot_name"
     t.integer  "status"
-    t.boolean  "clan_war_team"
+    t.boolean  "clan_war_team",   default: false
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
