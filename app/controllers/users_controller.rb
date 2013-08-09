@@ -9,11 +9,11 @@ class UsersController < ApplicationController
       type = params[:type]
       case type
         when 'pending'
-          filter = "status = ?" 
-          value = 0
+          filter = "role = ?" 
+          value = UserPending
         when 'leadership'
-          filter = "status > ?"
-          value = 1
+          filter = "role > ?"
+          value = UserTreasurer
          when 'clan_war'
            filter = "clan_war_team = ?"
            value = true
@@ -67,7 +67,7 @@ class UsersController < ApplicationController
   
   def approve
     @user = User.find(params[:id]);
-    if @user.update_attribute(:status, 1)
+    if @user.update_attribute(:role, UserRecruit)
       UserMailer.approved(@user).deliver
       flash[:success] = "User approved."
       redirect_to request.referer

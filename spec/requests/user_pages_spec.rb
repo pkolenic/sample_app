@@ -63,7 +63,7 @@ describe "User pages" do
       describe "as clan leadership" do
         let(:leadership) { FactoryGirl.create(:leadership) }
         before do
-          leadership.update_attribute(:status, 2)
+          leadership.update_attribute(:role, UserRecruiter)
           sign_in leadership
           visit "#{users_path}?type=pending"
         end

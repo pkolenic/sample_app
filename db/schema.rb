@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130808230002) do
+ActiveRecord::Schema.define(version: 20130809234528) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,7 +25,7 @@ ActiveRecord::Schema.define(version: 20130808230002) do
     t.string   "remember_token"
     t.boolean  "admin",           default: false
     t.string   "wot_name"
-    t.integer  "status"
+    t.integer  "role"
     t.boolean  "clan_war_team",   default: false
   end
 

@@ -14,21 +14,21 @@ class User < ActiveRecord::Base
 
   validates :password, length: { minimum: 6 }
   
-  # User Status Checks
+  # User Role Checks
   def pending_approval?
-    self.status == 0
+    self.role == UserPending
   end
   
   def active_member?
-    self.status > 0
+    self.role > UserPending
   end
   
   def clan_leadership?
-    self.status > 1
+    self.role >= UserTreasurer
   end
   
-  def clan_senior_leadership?
-    self.status > 2
+  def can_approve?
+    self.role >= UserRecruiter
   end
   
   # Session Token Creation
@@ -45,6 +45,6 @@ class User < ActiveRecord::Base
       self.remember_token = User.encrypt(User.new_remember_token)
     end
     def set_pending_status
-      self.status = 0
+      self.role = UserPending
     end
 end

@@ -11,7 +11,7 @@ FactoryGirl.define do
     end
     
     factory :leadership do
-      status 2
+      role UserTreasurer
     end
   end
 end

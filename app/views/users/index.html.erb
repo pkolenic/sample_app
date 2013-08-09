@@ -5,7 +5,7 @@
 
 <div class="filter_bar">
 	<%= link_to "All Tankers", "#{users_path}", class: "btn btn-small btn-primary" %>
-<% if current_user.clan_leadership? %>
+<% if current_user.can_approve? %>
 	<%= link_to "Pending", "#{users_path}/?type=pending", class: "btn btn-small btn-primary" %>
 <% end %>
 	<%= link_to "Clan War Team", "#{users_path}/?type=clan_war", class: "btn btn-small btn-primary" %>

@@ -15,7 +15,7 @@ describe User do
   it { should respond_to(:remember_token) }
   it { should respond_to(:authenticate) }
   it { should respond_to(:wot_name) }
-  it { should respond_to(:status) }
+  it { should respond_to(:role) }
   it { should respond_to(:clan_war_team) }
   it { should respond_to(:admin) }
   
@@ -44,7 +44,7 @@ describe User do
   describe "remember token" do
     before { @user.save }
     its(:remember_token) { should_not be_blank }
-    its(:status) { should_not be_blank }
+    its(:role) { should_not be_blank }
     it{ should be_pending_approval }
   end
 
