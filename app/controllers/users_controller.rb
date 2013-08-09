@@ -5,7 +5,26 @@ class UsersController < ApplicationController
   before_action :no_user,        only: [:new, :create]
   
   def index
-    @users = User.paginate(page: params[:page], :per_page => 10).order(:id)
+    if params[:type]
+      type = params[:type]
+      case type
+        when 'pending'
+          filter = "status = ?" 
+          value = 0
+        when 'leadership'
+          filter = "status > ?"
+          value = 1
+         when 'clan_war'
+           filter = "clan_war_team = ?"
+           value = true
+      end
+    end
+    
+    if filter
+      @users = User.where(filter, value).paginate(page: params[:page], :per_page => 10).order(:id)
+    else  
+      @users = User.paginate(page: params[:page], :per_page => 10).order(:id)
+    end
   end
   
   def show
@@ -44,6 +63,17 @@ class UsersController < ApplicationController
     User.find(params[:id]).destroy
     flash[:success] = "User destroyed."
     redirect_to users_url
+  end
+  
+  def approve
+    @user = User.find(params[:id]);
+    if @user.update_attribute(:status, 1)
+      flash[:success] = "User approved."
+      redirect_to request.referer
+     else
+       flash[:error] = "Unable to approve user."
+       redirect_to request.referer
+     end
   end
   
   private

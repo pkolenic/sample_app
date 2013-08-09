@@ -13,6 +13,7 @@ gem 'pg', '0.15.1'
 group :development, :test do
   gem 'rspec-rails', '2.13.1'
   gem 'guard-rspec', '2.5.0'
+  gem 'mailcatcher'
 end
 
 group :test do

@@ -55,7 +55,29 @@ describe "User pages" do
         
         it { should_not have_link('delete', href: user_path(admin)) }
       end
-    end    
+    end   
+    
+    describe "approve links" do
+      it { should_not have_link('approve') }
+      
+      describe "as clan leadership" do
+        let(:leadership) { FactoryGirl.create(:leadership) }
+        before do
+          leadership.update_attribute(:status, 2)
+          sign_in leadership
+          visit "#{users_path}?type=pending"
+        end
+        
+        it { should have_link('approve', href: approve_path(User.first)) }
+        it { should_not have_link('approve', href: user_path(leadership)) }
+        
+        describe "should be able to approve another user" do
+          before { click_link('approve', match: :first) }
+          specify { expect(User.first).to be_active_member }
+        end
+      end
+    end
+     
   end
 
   describe "profile page" do

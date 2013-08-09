@@ -16,10 +16,12 @@ describe User do
   it { should respond_to(:authenticate) }
   it { should respond_to(:wot_name) }
   it { should respond_to(:status) }
+  it { should respond_to(:clan_war_team) }
   it { should respond_to(:admin) }
   
   it { should be_valid }
   it { should_not be_admin }
+  it { should_not be_clan_war_team }
   
   describe "with admin attribute set to 'true'" do
     before do
@@ -28,6 +30,15 @@ describe User do
     end
 
     it { should be_admin }
+  end
+  
+  describe "with clan war team set to 'true" do
+    before do
+      @user.save!
+      @user.toggle!(:clan_war_team)
+    end
+    
+    it { should be_clan_war_team}
   end
   
   describe "remember token" do
