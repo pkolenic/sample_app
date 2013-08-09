@@ -156,4 +156,9 @@ describe User do
     before { @user.password = @user.password_confirmation = "a" * 5 }
     it { should be_invalid }
   end
+  
+  it "sends a e-mail" do
+    UserMailer.approved(@user).deliver
+    ActionMailer::Base.deliveries.last.to.should == [@user.email]
+  end
 end

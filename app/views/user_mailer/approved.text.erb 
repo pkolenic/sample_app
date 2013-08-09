@@ -1,0 +1,9 @@
+Welcome to Fear The Fallen, <%= @user.name %>
+===============================================
+ 
+You account on fearthefallen.herokuapp.com has been approved, 
+you now have an active status and all the privileges that entitles.
+ 
+To login to the site, just follow this link: <%= @url %>.
+ 
+Thanks for joining and have a great day!

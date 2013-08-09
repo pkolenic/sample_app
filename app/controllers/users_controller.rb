@@ -68,6 +68,7 @@ class UsersController < ApplicationController
   def approve
     @user = User.find(params[:id]);
     if @user.update_attribute(:status, 1)
+      UserMailer.approved(@user).deliver
       flash[:success] = "User approved."
       redirect_to request.referer
      else

@@ -74,6 +74,7 @@ describe "User pages" do
         describe "should be able to approve another user" do
           before { click_link('approve', match: :first) }
           specify { expect(User.first).to be_active_member }
+          specify { expect(ActionMailer::Base.deliveries.last.to).to eq [User.first.email] }
         end
       end
     end
