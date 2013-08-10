@@ -3,6 +3,7 @@ class UsersController < ApplicationController
   before_action :correct_user,   only: [:edit, :update]
   before_action :admin_user,     only: :destroy
   before_action :no_user,        only: [:new, :create]
+  before_action :approval_user,  only: :approve
   
   def index
     if params[:type]
@@ -101,6 +102,10 @@ class UsersController < ApplicationController
     end
     
     def no_user
-      redirect_to root_path if signed_in?
+      redirect_to(root_url) if signed_in?
+    end
+    
+    def approval_user
+      redirect_to(root_url) unless current_user.role >= UserRecruiter
     end
 end

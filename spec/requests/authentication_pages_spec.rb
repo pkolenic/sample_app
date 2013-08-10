@@ -90,8 +90,8 @@ describe "Authentication" do
 
         # Redirect should happen, but its not and is still creating the user
         # describe "submitting to the create action" do
-          # before { post users_path(user) }
-          # specify { expect(response).to redirect_to(root_path) }
+          # before { post users_path(params) }
+          # specify { expect(response).to redirect_to(root_url) }
         # end
       end      
     end
@@ -192,6 +192,18 @@ describe "Authentication" do
         before { delete user_path(user) }
         specify { expect(response).to redirect_to(root_url) }
       end
-    end    
+    end 
+    
+    describe "as non-leadership user" do
+      let(:user) { FactoryGirl.create(:user) }
+      let(:non_leader) { FactoryGirl.create(:user) }
+      
+      before { sign_in non_leader, no_capybara: true }
+      
+      describe "submitting an Approve to the Users#approve action" do
+        before { patch approve_path(user) }
+        specify { expect(response).to redirect_to(root_url) }
+      end
+    end   
   end
 end
