@@ -91,10 +91,10 @@ class User < ActiveRecord::Base
       end
     when UserSuper
       case user.role
-      when UserCommander
-        true
-      else
+      when UserPending
         false
+      else
+        true
       end
     else
       false

@@ -7,7 +7,7 @@
     <h1><%= @user.wot_name %>, you have been demoted to <%= @role %>.</h1>
     <p>
    		reason: <br/>
-      <%= @reason %>
+      <%= @reason.html_safe %>
     </p>
   </body>
 </html>

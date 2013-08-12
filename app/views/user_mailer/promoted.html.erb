@@ -10,7 +10,7 @@
     </p>
     <% if @reason %>
     <p>
-    	<%= @reason %>
+    	<%= @reason.html_safe %>
    	</p>
     <% end %>
   </body>

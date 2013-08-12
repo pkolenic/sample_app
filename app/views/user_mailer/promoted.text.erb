@@ -1,0 +1,8 @@
+<%= @user.wot_name %>, you have been promoted to <%= @role %>.
+===============================================
+
+Congrats on your new role within the Clan!
+
+<% if @reason %>
+<%= @reason.html_safe %>
+<% end %>

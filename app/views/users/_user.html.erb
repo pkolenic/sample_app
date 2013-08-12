@@ -13,7 +13,7 @@
   	<%= link_to "approve", approve_path(user), method: :patch, class: 'btn btn-warning' %>
   <% end %>
   
-  <% if current_user.can_promote?(user) %>
+  <% if current_user.can_promote?(user) && !current_user?(user)%>
   	<%= link_to "promote/demote", edit_promotion_path(user), class: 'btn btn-warning' %>
   <% end %>
   
