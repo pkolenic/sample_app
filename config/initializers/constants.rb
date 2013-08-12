@@ -8,3 +8,4 @@ UserCompanyCommander  = 25
 UserFieldCommander    = 30
 UserDeputyCommander   = 40
 UserCommander         = 50
+UserSuper             = 100

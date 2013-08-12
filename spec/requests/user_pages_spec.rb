@@ -8,6 +8,171 @@ describe "User pages" do
     it { should have_selector('h1', text: heading) }
     it { should have_title(full_title(page_title)) }
   end
+  
+  shared_examples_for "should promote recruit" do
+    before do        
+      tanker.update_attribute(:role, UserRecruit)
+      tanker.reload.role
+      visit users_path
+    end
+
+    it { should have_link('promote/demote', href: edit_promotion_path(tanker)) }    
+  end
+  
+  shared_examples_for "should promote soldier" do
+    before do        
+      tanker.update_attribute(:role, UserSoldier)
+      tanker.reload.role
+      visit users_path
+    end
+
+    it { should have_link('promote/demote', href: edit_promotion_path(tanker)) }            
+  end
+  
+  shared_examples_for "should promote treasurer" do
+    before do        
+      tanker.update_attribute(:role, UserTreasurer)
+      tanker.reload.role
+      visit users_path
+    end
+
+    it { should have_link('promote/demote', href: edit_promotion_path(tanker)) }      
+  end
+  
+  shared_examples_for "should promote recruiter" do
+    before do        
+      tanker.update_attribute(:role, UserRecruiter)
+      tanker.reload.role
+      visit users_path
+    end
+
+    it { should have_link('promote/demote', href: edit_promotion_path(tanker)) }      
+  end
+
+  shared_examples_for "should promote diplomat" do
+    before do        
+      tanker.update_attribute(:role, UserDiplomat)
+      tanker.reload.role
+      visit users_path
+    end
+
+    it { should have_link('promote/demote', href: edit_promotion_path(tanker)) }      
+  end
+    
+  shared_examples_for "should promote company commander" do
+    before do        
+      tanker.update_attribute(:role, UserCompanyCommander)
+      tanker.reload.role
+      visit users_path
+    end
+
+    it { should have_link('promote/demote', href: edit_promotion_path(tanker)) }      
+  end
+  
+  shared_examples_for "should promote field commander" do
+    before do        
+      tanker.update_attribute(:role, UserFieldCommander)
+      tanker.reload.role
+      visit users_path
+    end
+
+    it { should have_link('promote/demote', href: edit_promotion_path(tanker)) }      
+  end
+  
+  shared_examples_for "should promote deputy commander" do
+    before do        
+      tanker.update_attribute(:role, UserDeputyCommander)
+      tanker.reload.role
+      visit users_path
+    end
+
+    it { should have_link('promote/demote', href: edit_promotion_path(tanker)) }      
+  end
+  
+  shared_examples_for "should not promote pending" do
+    before { visit users_path }
+    it { should_not have_link('promote/demote', href: edit_promotion_path(tanker)) }
+  end
+  
+  shared_examples_for "should not promote soldier" do
+    before do        
+      tanker.update_attribute(:role, UserSoldier)
+      tanker.reload.role
+      visit users_path
+    end
+
+    it { should_not have_link('promote/demote', href: edit_promotion_path(tanker)) }     
+  end
+  
+  shared_examples_for "should not promote treasurer" do
+    before do        
+      tanker.update_attribute(:role, UserTreasurer)
+      tanker.reload.role
+      visit users_path
+    end
+
+    it { should_not have_link('promote/demote', href: edit_promotion_path(tanker)) }      
+  end
+
+  shared_examples_for "should not promote recruiter" do
+    before do        
+      tanker.update_attribute(:role, UserRecruiter)
+      tanker.reload.role
+      visit users_path
+    end
+
+    it { should_not have_link('promote/demote', href: edit_promotion_path(tanker)) }      
+  end
+    
+  shared_examples_for "should not promote diplomat" do
+    before do        
+      tanker.update_attribute(:role, UserDiplomat)
+      tanker.reload.role
+      visit users_path
+    end
+
+    it { should_not have_link('promote/demote', href: edit_promotion_path(tanker)) }      
+  end
+  
+  shared_examples_for "should not promote company commander" do
+    before do        
+      tanker.update_attribute(:role, UserCompanyCommander)
+      tanker.reload.role
+      visit users_path
+    end
+
+    it { should_not have_link('promote/demote', href: edit_promotion_path(tanker)) }      
+  end
+  
+  shared_examples_for "should not promote field commander" do
+    before do        
+      tanker.update_attribute(:role, UserFieldCommander)
+      tanker.reload.role
+      visit users_path
+    end
+
+    it { should_not have_link('promote/demote', href: edit_promotion_path(tanker)) }      
+  end
+  
+  shared_examples_for "should not promote deputy commander" do
+    before do        
+      tanker.update_attribute(:role, UserDeputyCommander)
+      tanker.reload.role
+      visit users_path
+    end
+
+    it { should_not have_link('promote/demote', href: edit_promotion_path(tanker)) }      
+  end
+  
+  shared_examples_for "should not promote commander" do
+    before do        
+      tanker.update_attribute(:role, UserCommander)
+      tanker.reload.role
+      visit users_path
+    end
+
+    it { should_not have_link('promote/demote', href: edit_promotion_path(tanker)) }      
+  end
 
   describe "index" do
     
@@ -23,13 +188,13 @@ describe "User pages" do
     
     describe "pagination" do
 
-      before(:all) { 30.times { FactoryGirl.create(:user) } }
+      before(:all) { 15.times { FactoryGirl.create(:user) } }
       after(:all)  { User.delete_all }
 
       it { should have_selector('div.pagination') }
 
       it "should list each user" do
-        User.paginate(page: 1, :per_page => 10).each do |user|
+        User.paginate(page: 1, :per_page => 10).order(:id).each do |user|
           expect(page).to have_selector('li', text: user.wot_name)
         end
       end
@@ -69,7 +234,7 @@ describe "User pages" do
         end
         
         it { should have_link('approve', href: approve_path(User.first)) }
-        it { should_not have_link('approve', href: user_path(leadership)) }
+        it { should_not have_link('approve', href: approve_path(leadership)) }
         
         describe "should be able to approve another user" do
           before { click_link('approve', match: :first) }
@@ -78,8 +243,92 @@ describe "User pages" do
         end
       end
     end
-     
   end
+  
+ describe "promote links" do
+    let(:tanker ) { FactoryGirl.create(:user) }   
+    let(:leadership) { FactoryGirl.create(:user) }
+    
+    describe "as Company Commander" do
+      before do
+        leadership.update_attribute(:role, UserCompanyCommander)
+        leadership.reload.role
+        sign_in leadership
+      end
+
+      it { should_not have_link('promote', href: edit_promotion_path(leadership)) }
+      it_should_behave_like "should not promote pending"
+      it_should_behave_like "should promote recruit"
+      it_should_behave_like "should promote soldier"
+      it_should_behave_like "should not promote treasurer"
+      it_should_behave_like "should not promote recruiter"
+      it_should_behave_like "should not promote diplomat"
+      it_should_behave_like "should not promote company commander"
+      it_should_behave_like "should not promote field commander"
+      it_should_behave_like "should not promote deputy commander"
+      it_should_behave_like "should not promote commander"
+    end
+    
+    describe "as Field Commander" do
+      before do
+        leadership.update_attribute(:role, UserFieldCommander)
+        leadership.reload.role
+        sign_in leadership
+      end
+      
+      it { should_not have_link('promote', href: edit_promotion_path(leadership)) }
+      it_should_behave_like "should not promote pending"
+      it_should_behave_like "should promote recruit"
+      it_should_behave_like "should promote soldier"
+      it_should_behave_like "should not promote treasurer"
+      it_should_behave_like "should not promote recruiter"
+      it_should_behave_like "should not promote diplomat"
+      it_should_behave_like "should promote company commander"
+      it_should_behave_like "should not promote field commander"
+      it_should_behave_like "should not promote deputy commander"
+      it_should_behave_like "should not promote commander"
+    end
+    
+    describe "as Deputy Commander" do
+      before do
+        leadership.update_attribute(:role, UserDeputyCommander)
+        leadership.reload.role
+        sign_in leadership
+      end
+      
+      it { should_not have_link('promote', href: edit_promotion_path(leadership)) }
+      it_should_behave_like "should not promote pending"
+      it_should_behave_like "should promote recruit"
+      it_should_behave_like "should promote soldier"
+      it_should_behave_like "should promote treasurer"
+      it_should_behave_like "should promote recruiter"
+      it_should_behave_like "should promote diplomat"
+      it_should_behave_like "should promote company commander"
+      it_should_behave_like "should promote field commander"
+      it_should_behave_like "should not promote deputy commander"
+      it_should_behave_like "should not promote commander"       
+    end
+    
+    describe "as Commander" do
+      before do
+        leadership.update_attribute(:role, UserCommander)
+        leadership.reload.role
+        sign_in leadership
+      end
+      
+      it { should_not have_link('promote', href: edit_promotion_path(leadership)) }
+      it_should_behave_like "should not promote pending"
+      it_should_behave_like "should promote recruit"
+      it_should_behave_like "should promote soldier"
+      it_should_behave_like "should promote treasurer"
+      it_should_behave_like "should promote recruiter"
+      it_should_behave_like "should promote diplomat"
+      it_should_behave_like "should promote company commander"
+      it_should_behave_like "should promote field commander"
+      it_should_behave_like "should promote deputy commander"
+      it_should_behave_like "should not promote commander"      
+    end
+  end 
 
   describe "profile page" do
     let(:user) { FactoryGirl.create(:user) }
@@ -164,7 +413,6 @@ describe "User pages" do
         click_button "Save changes"
       end
 
-      # it { should have_title(new_name) }   # Not Changing the Title
       it { should have_title(user.wot_name) }
       it { should have_selector('div.alert.alert-success') }
       it { should have_link('Sign out', href: signout_path) }

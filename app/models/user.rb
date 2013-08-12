@@ -22,13 +22,83 @@ class User < ActiveRecord::Base
   def active_member?
     self.role > UserPending
   end
-  
-  def clan_leadership?
-    self.role >= UserTreasurer
-  end
-  
+
   def can_approve?
     self.role >= UserRecruiter
+  end
+  
+ def can_promote?(user)
+    case self.role
+    when UserCompanyCommander
+      case user.role
+      when UserRecruit
+        true
+      when UserSoldier
+        true
+      else
+        false
+      end
+    when UserFieldCommander
+      case user.role
+      when UserRecruit
+        true
+      when UserSoldier
+        true
+      when UserCompanyCommander
+        true
+      else
+        false
+      end
+    when UserDeputyCommander
+      case user.role
+      when UserRecruit
+        true
+      when UserSoldier
+        true
+      when UserTreasurer
+        true
+      when UserRecruiter
+        true
+      when UserDiplomat
+        true
+      when UserCompanyCommander
+        true
+      when UserFieldCommander
+        true
+      else
+        false
+      end
+    when UserCommander
+      case user.role
+      when UserRecruit
+        true
+      when UserSoldier
+        true
+      when UserTreasurer
+        true
+      when UserRecruiter
+        true
+      when UserDiplomat
+        true
+      when UserCompanyCommander
+        true
+      when UserFieldCommander
+        true
+      when UserDeputyCommander
+        true
+      else
+        false
+      end
+    when UserSuper
+      case user.role
+      when UserCommander
+        true
+      else
+        false
+      end
+    else
+      false
+    end
   end
   
   # Session Token Creation

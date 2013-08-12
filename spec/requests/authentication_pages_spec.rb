@@ -197,12 +197,27 @@ describe "Authentication" do
     describe "as non-leadership user" do
       let(:user) { FactoryGirl.create(:user) }
       let(:non_leader) { FactoryGirl.create(:user) }
+      let(:params) do
+          { id: 1,
+            promotion: { role_id: UserSoldier, reason: "Tanker has proven himself in combat." } 
+          }
+      end
       
       before { sign_in non_leader, no_capybara: true }
       
       describe "submitting an Approve to the Users#approve action" do
         before { patch approve_path(user) }
         specify { expect(response).to redirect_to(root_url) }
+      end
+      
+      describe "visting Promotion Page" do
+        before { get edit_promotion_path(user) }
+        specify { expect(response).to redirect_to(users_url) }
+      end
+      
+      describe "submitting an Promition to the promotions#update action" do
+        before { patch promotion_path(params) }
+        specify { expect(response).to redirect_to(users_url) }
       end
     end   
   end

@@ -15,9 +15,9 @@ class UsersController < ApplicationController
         when 'leadership'
           filter = "role > ?"
           value = UserTreasurer
-         when 'clan_war'
-           filter = "clan_war_team = ?"
-           value = true
+        when 'clan_war'
+          filter = "clan_war_team = ?"
+          value = true
       end
     end
     
