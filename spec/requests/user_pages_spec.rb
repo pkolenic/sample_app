@@ -69,16 +69,6 @@ describe "User pages" do
     it { should have_link('promote/demote', href: edit_promotion_path(tanker)) }      
   end
   
-  shared_examples_for "should promote field commander" do
-    before do        
-      tanker.update_attribute(:role, UserFieldCommander)
-      tanker.reload.role
-      visit users_path
-    end
-
-    it { should have_link('promote/demote', href: edit_promotion_path(tanker)) }      
-  end
-  
   shared_examples_for "should promote deputy commander" do
     before do        
       tanker.update_attribute(:role, UserDeputyCommander)
@@ -137,16 +127,6 @@ describe "User pages" do
   shared_examples_for "should not promote company commander" do
     before do        
       tanker.update_attribute(:role, UserCompanyCommander)
-      tanker.reload.role
-      visit users_path
-    end
-
-    it { should_not have_link('promote/demote', href: edit_promotion_path(tanker)) }      
-  end
-  
-  shared_examples_for "should not promote field commander" do
-    before do        
-      tanker.update_attribute(:role, UserFieldCommander)
       tanker.reload.role
       visit users_path
     end
@@ -264,27 +244,6 @@ describe "User pages" do
       it_should_behave_like "should not promote recruiter"
       it_should_behave_like "should not promote diplomat"
       it_should_behave_like "should not promote company commander"
-      it_should_behave_like "should not promote field commander"
-      it_should_behave_like "should not promote deputy commander"
-      it_should_behave_like "should not promote commander"
-    end
-    
-    describe "as Field Commander" do
-      before do
-        leadership.update_attribute(:role, UserFieldCommander)
-        leadership.reload.role
-        sign_in leadership
-      end
-      
-      it { should_not have_link('promote', href: edit_promotion_path(leadership)) }
-      it_should_behave_like "should not promote pending"
-      it_should_behave_like "should promote recruit"
-      it_should_behave_like "should promote soldier"
-      it_should_behave_like "should not promote treasurer"
-      it_should_behave_like "should not promote recruiter"
-      it_should_behave_like "should not promote diplomat"
-      it_should_behave_like "should promote company commander"
-      it_should_behave_like "should not promote field commander"
       it_should_behave_like "should not promote deputy commander"
       it_should_behave_like "should not promote commander"
     end
@@ -304,7 +263,6 @@ describe "User pages" do
       it_should_behave_like "should promote recruiter"
       it_should_behave_like "should promote diplomat"
       it_should_behave_like "should promote company commander"
-      it_should_behave_like "should promote field commander"
       it_should_behave_like "should not promote deputy commander"
       it_should_behave_like "should not promote commander"       
     end
@@ -324,7 +282,6 @@ describe "User pages" do
       it_should_behave_like "should promote recruiter"
       it_should_behave_like "should promote diplomat"
       it_should_behave_like "should promote company commander"
-      it_should_behave_like "should promote field commander"
       it_should_behave_like "should promote deputy commander"
       it_should_behave_like "should not promote commander"      
     end

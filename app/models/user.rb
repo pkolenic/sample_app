@@ -38,17 +38,6 @@ class User < ActiveRecord::Base
       else
         false
       end
-    when UserFieldCommander
-      case user.role
-      when UserRecruit
-        true
-      when UserSoldier
-        true
-      when UserCompanyCommander
-        true
-      else
-        false
-      end
     when UserDeputyCommander
       case user.role
       when UserRecruit
@@ -62,8 +51,6 @@ class User < ActiveRecord::Base
       when UserDiplomat
         true
       when UserCompanyCommander
-        true
-      when UserFieldCommander
         true
       else
         false
@@ -81,8 +68,6 @@ class User < ActiveRecord::Base
       when UserDiplomat
         true
       when UserCompanyCommander
-        true
-      when UserFieldCommander
         true
       when UserDeputyCommander
         true

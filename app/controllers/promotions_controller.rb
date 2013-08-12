@@ -48,8 +48,6 @@ class PromotionsController < ApplicationController
         role = 'Diplomat'
       when UserCompanyCommander
         role = 'Company Commander'
-      when UserFieldCommander
-        role = 'Field Commander'
       when UserDeputyCommander
         role = 'Deputy Commander'
       when UserCommander

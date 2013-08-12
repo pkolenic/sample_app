@@ -5,7 +5,6 @@ UserTreasurer         = 10
 UserRecruiter         = 15
 UserDiplomat          = 20
 UserCompanyCommander  = 25
-UserFieldCommander    = 30
 UserDeputyCommander   = 40
 UserCommander         = 50
 UserSuper             = 100
