@@ -4,6 +4,7 @@ class UsersController < ApplicationController
   before_action :admin_user,     only: :destroy
   before_action :no_user,        only: [:new, :create]
   before_action :approval_user,  only: :approve
+  before_action :appointment_user, only: [:add_clanwar, :remove_clanwar]
   
   def index
     if params[:type]
@@ -78,6 +79,30 @@ class UsersController < ApplicationController
      end
   end
   
+  def add_clanwar
+    @user = User.find(params[:id]);
+    if @user.toggle!(:clan_war_team)
+      UserMailer.clanwar_added(@user).deliver
+      flash[:success] = "User added to clanwar team."
+      redirect_to request.referer
+    else
+      flash[:error] = "Unable to add user to clanwar team."
+      redirect_to request.referer
+    end
+  end
+  
+  def remove_clanwar
+    @user = User.find(params[:id]);
+    if @user.toggle!(:clan_war_team)
+      UserMailer.clanwar_removed(@user).deliver
+      flash[:success] = "User removed from clanwar team."
+      redirect_to request.referer
+    else
+      flash[:error] = "Unable to add user to clanwar team."
+      redirect_to request.referer
+    end    
+  end
+  
   private
     def user_params
       params.require(:user).permit(:name, :wot_name, :email, :password,
@@ -107,5 +132,9 @@ class UsersController < ApplicationController
     
     def approval_user
       redirect_to(root_url) unless current_user.role >= UserRecruiter
+    end
+    
+    def appointment_user
+      redirect_to(root_url) unless current_user.role >= UserDeputyCommander
     end
 end
