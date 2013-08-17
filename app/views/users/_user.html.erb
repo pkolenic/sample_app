@@ -1,20 +1,28 @@
 <li>
+  <% if current_user.can_approve? && user.pending_approval? %>
+  	<% if !user.wot_id %>
+  		(<%=user.wot_name%> is not a valid World of Tanks user)
+  	<% end %>
+  	<br>
+  <% end %>
+  
   <div class="gravatar">
   	<%= gravatar_for user, size: 52 %>
   </div>
   <%= image_tag("http://wotlabs.net/sig/na/#{user.wot_name}/signature.png", alt: 'win7 data') %>
   <%= link_to user.wot_name, user %> 
-  
-  <% if current_user.admin? && !current_user?(user) %>
-    <%= link_to "delete", user, method: :delete,
-                            data: { confirm: "You sure?" }, class: 'btn btn-danger' %>
-  <% end %>
-  <% if current_user.can_approve? && user.pending_approval? %>
-  	<%= link_to "approve", approve_path(user), method: :patch, class: 'btn btn-warning' %>
-  <% end %>
-  
-  <% if current_user.can_promote?(user) && !current_user?(user)%>
-  	<%= link_to "promote/demote", edit_promotion_path(user), class: 'btn btn-warning' %>
-  <% end %>
-  
+
+  <div class="action_buttons">
+	  <% if current_user.admin? && !current_user?(user) %>
+	    <%= link_to "delete", user, method: :delete,
+	                            data: { confirm: "You sure?" }, class: 'btn btn-danger' %>
+	  <% end %>
+	  <% if current_user.can_approve? && user.pending_approval? %>
+	  	<%= link_to "approve", approve_path(user), method: :patch, class: 'btn btn-warning' %>
+	  <% end %>
+	  
+	  <% if current_user.can_promote?(user) && !current_user?(user)%>
+	  	<%= link_to "promote/demote", edit_promotion_path(user), class: 'btn btn-warning' %>
+	  <% end %>  
+  </div>
 </li>

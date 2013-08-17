@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130809234528) do
+ActiveRecord::Schema.define(version: 20130816222537) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,13 +23,27 @@ ActiveRecord::Schema.define(version: 20130809234528) do
     t.datetime "updated_at"
     t.string   "password_digest"
     t.string   "remember_token"
-    t.boolean  "admin",           default: false
+    t.boolean  "admin",                     default: false
     t.string   "wot_name"
     t.integer  "role"
-    t.boolean  "clan_war_team",   default: false
+    t.boolean  "clan_war_team",             default: false
+    t.string   "wot_id"
+    t.integer  "wins",            limit: 8
+    t.integer  "losses",          limit: 8
+    t.integer  "battles_count",   limit: 8
+    t.integer  "spotted",         limit: 8
+    t.integer  "frags",           limit: 8
+    t.integer  "survived",        limit: 8
+    t.integer  "experiance",      limit: 8
+    t.integer  "max_experiance",  limit: 8
+    t.integer  "capture_points",  limit: 8
+    t.integer  "defense_points",  limit: 8
+    t.integer  "damage_dealt",    limit: 8
+    t.integer  "hit_percentage",  limit: 8
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["remember_token"], name: "index_users_on_remember_token", using: :btree
+  add_index "users", ["wot_id"], name: "index_users_on_wot_id", using: :btree
 
 end

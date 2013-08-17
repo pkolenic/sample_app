@@ -1,8 +1,11 @@
 class User < ActiveRecord::Base
+  include HTTParty
+  
   has_secure_password
   before_save { email.downcase! }
   before_create :create_remember_token
   before_create :set_pending_status
+  after_create :lookup_wot_id
 
   # Validations
   validates :name, presence: true, length: { maximum: 50 }
@@ -99,7 +102,19 @@ class User < ActiveRecord::Base
     def create_remember_token
       self.remember_token = User.encrypt(User.new_remember_token)
     end
+    
     def set_pending_status
       self.role = UserPending
+    end
+    
+    def lookup_wot_id
+      response = self.class.get "http://api.worldoftanks.com/uc/accounts/api/1.1/?source_token=WG-WoT_Assistant-1.3.2&search=#{self.wot_name}&offset=0&limit=1"
+      json_response = JSON.parse response.parsed_response      
+      if json_response["status"] == 'ok'
+        data = json_response["data"]
+        if !data["items"].empty?
+          self.update_attribute(:wot_id, data["items"][0]["id"])
+        end
+      end
     end
 end

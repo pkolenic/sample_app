@@ -207,14 +207,23 @@ describe "User pages" do
       
       describe "as clan leadership" do
         let(:leadership) { FactoryGirl.create(:leadership) }
+        let(:valid_tanker) { FactoryGirl.create(:user, wot_name: "valid") } 
+        let(:invalid_tanker) { FactoryGirl.create(:user, wot_name: "a") }
         before do
+          User.delete_all
+          valid_tanker = FactoryGirl.create(:user, wot_name: "valid") 
+          invalid_tanker = FactoryGirl.create(:user, wot_name: "a")
+          leadership = FactoryGirl.create(:leadership)
           leadership.update_attribute(:role, UserRecruiter)
           sign_in leadership
           visit "#{users_path}?type=pending"
         end
+        after{ 15.times { FactoryGirl.create(:user) } }
         
         it { should have_link('approve', href: approve_path(User.first)) }
         it { should_not have_link('approve', href: approve_path(leadership)) }
+        it { should have_content("#{invalid_tanker.wot_name} is not a valid World of Tanks user") }
+        it { should_not have_content("#{valid_tanker.wot_name} is not a valid World of Tanks user") }
         
         describe "should be able to approve another user" do
           before { click_link('approve', match: :first) }

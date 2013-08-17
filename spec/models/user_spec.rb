@@ -18,6 +18,19 @@ describe User do
   it { should respond_to(:role) }
   it { should respond_to(:clan_war_team) }
   it { should respond_to(:admin) }
+  it { should respond_to(:wot_id) }
+  it { should respond_to(:wins) }
+  it { should respond_to(:losses) }
+  it { should respond_to(:battles_count) }
+  it { should respond_to(:spotted) }
+  it { should respond_to(:frags) }
+  it { should respond_to(:survived) }
+  it { should respond_to(:experiance) }
+  it { should respond_to(:max_experiance) }
+  it { should respond_to(:capture_points) }
+  it { should respond_to(:defense_points) }
+  it { should respond_to(:damage_dealt) }
+  it { should respond_to(:hit_percentage) }
   
   it { should be_valid }
   it { should_not be_admin }
