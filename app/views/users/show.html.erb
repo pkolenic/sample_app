@@ -2,12 +2,12 @@
 <div class="row">
 	<aside class="span4">
 		<section>
-			<h1>
+			<h1><%= @user.wot_name %> </h1>
 			<div class="gravatar">
-				<%= gravatar_for @user, size: 80 %>
+				<%= gravatar_for @user, size: 160 %>
 				</br>
 				<%= link_to 'powered by gravatar', 'http://gravatar.com', target: "_blank", class: "gravatar_link"%>
-			</div> <%= @user.wot_name %> </h1>
+			</div> 
 		</section>
 	</aside>
 	<table id="user_stats">
