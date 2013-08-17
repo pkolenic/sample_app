@@ -24,5 +24,13 @@
 	  <% if current_user.can_promote?(user) && !current_user?(user)%>
 	  	<%= link_to "promote/demote", edit_promotion_path(user), class: 'btn btn-warning' %>
 	  <% end %>  
+	  
+	  <% if current_user.can_appoint_clanwar?(user) %>
+	  	<% if user.clanwar_member? %>
+	  		<%= link_to "remove from clanwar team", remove_clanwar_path(user), method: :patch, class: 'btn btn-warning' %>
+	  	<% else %>
+	  		<%= link_to "add to clanwar team", add_clanwar_path(user), method: :patch, class: 'btn btn-warning' %>
+	  	<% end %>
+	  <% end %>
   </div>
 </li>

@@ -7,6 +7,8 @@ SampleApp::Application.routes.draw do
   match '/signin',  to: 'sessions#new',         via: 'get'
   match '/signout', to: 'sessions#destroy',     via: 'delete'
   match '/users/:id/approve', to: 'users#approve', as: 'approve', via: 'patch'
+  match '/users/:id/add_clanwar', to: 'users#add_clanwar', as:'add_clanwar', via: 'patch'
+  match '/users/:id/remove_clanwar', to: 'users#remove_clanwar', as:'remove_clanwar', via: 'patch'
   
   root  'static_pages#home'
   match '/signup',  to: 'users#new',            via: 'get'

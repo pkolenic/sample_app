@@ -210,6 +210,16 @@ describe "Authentication" do
         specify { expect(response).to redirect_to(root_url) }
       end
       
+      describe "submitting a Clan War Appointment to the Users#add_clanwar action" do
+        before { patch add_clanwar_path(user) }
+        specify { expect(response).to redirect_to(root_url) }
+      end
+      
+      describe "submitting a Clan War removal to the User#remove_clanwar action" do
+        before { patch remove_clanwar_path(user) }
+        specify { expect(response).to redirect_to(root_url) }
+      end
+      
       describe "visting Promotion Page" do
         before { get edit_promotion_path(user) }
         specify { expect(response).to redirect_to(users_url) }

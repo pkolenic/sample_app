@@ -20,4 +20,14 @@ class UserMailer < ActionMailer::Base
     @role = role
     mail to: user.email, subject: 'You have been demoted'
   end
+  
+  def clanwar_added(user)
+    @user = user
+    mail to: user.email, subject: 'You have been added to the clan war team'
+  end
+  
+  def clanwar_removed(user)
+    @user = user
+    mail to: user.email, subject: 'You have been removed from the clan war team'
+  end
 end

@@ -18,6 +18,10 @@ class User < ActiveRecord::Base
   validates :password, length: { minimum: 6 }
   
   # User Role Checks
+  def clanwar_member?
+    self.clan_war_team
+  end
+  
   def pending_approval?
     self.role == UserPending
   end
@@ -28,6 +32,18 @@ class User < ActiveRecord::Base
 
   def can_approve?
     self.role >= UserRecruiter
+  end
+  
+  def can_appoint_clanwar?(user)
+    if self.role >= UserDeputyCommander
+      if user.role >= UserSoldier
+        true
+      else 
+        false
+      end
+      else
+        false
+    end
   end
   
  def can_promote?(user)
@@ -108,13 +124,16 @@ class User < ActiveRecord::Base
     end
     
     def lookup_wot_id
-      response = self.class.get "http://api.worldoftanks.com/uc/accounts/api/1.1/?source_token=WG-WoT_Assistant-1.3.2&search=#{self.wot_name}&offset=0&limit=1"
-      json_response = JSON.parse response.parsed_response      
-      if json_response["status"] == 'ok'
-        data = json_response["data"]
-        if !data["items"].empty?
-          self.update_attribute(:wot_id, data["items"][0]["id"])
+      # Thread.new do
+        response = self.class.get "http://api.worldoftanks.com/uc/accounts/api/1.1/?source_token=WG-WoT_Assistant-1.3.2&search=#{self.wot_name}&offset=0&limit=1"
+        json_response = JSON.parse response.parsed_response      
+        if json_response["status"] == 'ok'
+          data = json_response["data"]
+          if !data["items"].empty?
+            self.update_attribute(:wot_id, data["items"][0]["id"])
+          end
         end
-      end
+        # ActiveRecord::Base.connection.close
+      # end
     end
 end

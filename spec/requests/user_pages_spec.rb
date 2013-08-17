@@ -234,6 +234,79 @@ describe "User pages" do
     end
   end
   
+  describe "clanwar links" do
+    describe "appoint clanwar team member" do
+      describe "as non clan leadership" do
+        let(:user) {FactoryGirl.create(:user) }
+        before do
+          sign_in user
+          visit users_path
+        end  
+        
+        it { should_not have_link('add to clanwar team') }  
+      end
+      
+      describe "as clan leadership" do
+        let(:leadership) { FactoryGirl.create(:leadership) }
+        let(:pending) { FactoryGirl.create(:user) }
+        before do
+          User.delete_all
+          leadership = FactoryGirl.create(:leadership)
+          leadership.update_attribute(:role, UserDeputyCommander)
+          pending = FactoryGirl.create(:user)
+          sign_in leadership
+          visit users_path
+        end
+        after{ 15.times { FactoryGirl.create(:user) } }
+        
+        
+        it { should have_link('add to clanwar team', href: add_clanwar_path(User.first)) }
+        it { should_not have_link('add to clanwar team', href: add_clanwar_path(pending)) }
+        
+        describe "should be able to add clanwar team member" do
+          before { click_link('add to clanwar team', match: :first) }
+          specify { expect(User.first).to be_clanwar_member }
+          specify { expect(ActionMailer::Base.deliveries.last.to).to eq [User.first.email] }
+        end
+      end
+    end
+    
+    describe "remove cleanwar team member" do
+      describe "as non clan leadership" do
+        let(:user) {FactoryGirl.create(:user) }
+        before do
+          sign_in user
+          visit users_path
+        end  
+        
+        it { should_not have_link('remove from clanwar team') }  
+      end
+      
+      describe "as clan leader" do
+        let(:leadership) { FactoryGirl.create(:leadership) }
+        let(:pending) { FactoryGirl.create(:user) }
+        before do
+          User.delete_all
+          leadership = FactoryGirl.create(:leadership)
+          leadership.update_attributes(role: UserDeputyCommander, clan_war_team: true)
+          pending = FactoryGirl.create(:user)
+          sign_in leadership
+          visit users_path
+        end
+        after{ 15.times { FactoryGirl.create(:user) } }
+        
+        it { should have_link('remove from clanwar team', href: remove_clanwar_path(User.first)) }
+        it { should_not have_link('remove from clanwar team', href: remove_clanwar_path(pending)) }
+        
+        describe "should be able to remove clanwar team member" do
+          before { click_link('remove from clanwar team', match: :first) }
+          specify { expect(User.first).not_to be_clanwar_member }
+          specify { expect(ActionMailer::Base.deliveries.last.to).to eq [User.first.email] }
+        end
+      end
+    end
+  end
+  
  describe "promote links" do
     let(:tanker ) { FactoryGirl.create(:user) }   
     let(:leadership) { FactoryGirl.create(:user) }

@@ -35,7 +35,7 @@ describe UserMailer do
       mail.subject.should == 'You have been promoted'
     end
     
-    #ensure that the receive is correct
+    #ensure that the receiver is correct
     it 'renders the receiver email' do
       mail.to.should == [user.email]
     end
@@ -65,7 +65,7 @@ describe UserMailer do
       mail.subject.should == 'You have been demoted'
     end
     
-    #ensure that the receive is correct
+    #ensure that the receiver is correct
     it 'renders the receiver email' do
       mail.to.should == [user.email]
     end
@@ -88,5 +88,55 @@ describe UserMailer do
     it 'assigns @role' do
       mail.body.encoded.should match('Recruit')
     end
+  end
+  
+  describe 'add clanwar' do
+    let(:user) { mock_model(User, :wot_name => 'Lucas', :email => 'lucas@email.com') }
+    let(:mail) { UserMailer.clanwar_added(user) }
+    
+    #ensure that the subject is correct
+    it 'renders the subject' do
+      mail.subject.should == 'You have been added to the clan war team'
+    end
+    
+    #ensure that the receiver is correct
+    it 'renders the receiver email' do
+      mail.to.should == [user.email]
+    end
+    
+    #ensure that the sender is correct
+    it 'renders the sender email' do
+      mail.from.should == ['noreply@fearthefallen.net']
+    end
+    
+    #ensure that the @name variable appears in the email body
+    it 'assigns @name' do
+      mail.body.encoded.should match(user.wot_name)
+    end
+  end
+  
+  describe 'remove clanwar' do
+    let(:user) { mock_model(User, :wot_name => 'Lucas', :email => 'lucas@email.com') }
+    let(:mail) { UserMailer.clanwar_removed(user) }
+    
+    #ensure that the subject is correct
+    it 'renders the subject' do
+      mail.subject.should == 'You have been removed from the clan war team'
+    end
+    
+    #ensure that the receiver is correct
+    it 'renders the receiver email' do
+      mail.to.should == [user.email]
+    end
+    
+    #ensure that the sender is correct
+    it 'renders the sender email' do
+      mail.from.should == ['noreply@fearthefallen.net']
+    end
+    
+    #ensure that the @name variable appears in the email body
+    it 'assigns @name' do
+      mail.body.encoded.should match(user.wot_name)
+    end    
   end
 end
