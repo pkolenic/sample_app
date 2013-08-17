@@ -114,6 +114,34 @@ class User < ActiveRecord::Base
     Digest::SHA1.hexdigest(token.to_s)
   end
 
+ def update_stats
+    if self.wot_id
+      url = "http://api.worldoftanks.com/uc/accounts/#{self.wot_id}/api/1.9/?source_token=WG-WoT_Assistant-1.3.2"
+      response = self.class.get url
+      json_response = JSON.parse response.parsed_response
+      if json_response["status"] == 'ok'
+        data = json_response["data"]
+        if !data["summary"].empty?
+          self.battles_count = data["summary"]["battles_count"]
+          self.wins = data["summary"]["wins"]
+          self.losses = data["summary"]["losses"] 
+          self.survived = data["summary"]["survived_battles"]
+          self.experiance = data["experience"]["xp"]
+          self.max_experiance = data["experience"]["max_xp"]
+          self.spotted = data["battles"]["spotted"]
+          self.frags = data["battles"]["frags"]
+          self.damage_dealt = data["battles"]["damage_dealt"]
+          self.hit_percentage = data["battles"]["hits_percents"]
+          self.capture_points = data["battles"]["capture_points"]
+          self.defense_points = data["battles"]["dropped_capture_points"]
+          
+          self.save validate: false
+          self.touch
+        end
+      end
+    end
+  end
+
   private
     def create_remember_token
       self.remember_token = User.encrypt(User.new_remember_token)
@@ -124,16 +152,22 @@ class User < ActiveRecord::Base
     end
     
     def lookup_wot_id
-      # Thread.new do
-        response = self.class.get "http://api.worldoftanks.com/uc/accounts/api/1.1/?source_token=WG-WoT_Assistant-1.3.2&search=#{self.wot_name}&offset=0&limit=1"
-        json_response = JSON.parse response.parsed_response      
-        if json_response["status"] == 'ok'
-          data = json_response["data"]
-          if !data["items"].empty?
-            self.update_attribute(:wot_id, data["items"][0]["id"])
-          end
+      if Rails.env.test?
+        if self.wot_name == 'valid'
+          self.update_attribute(:wot_id, '1001261893')
         end
-        # ActiveRecord::Base.connection.close
-      # end
+      else
+        Thread.new do
+          response = self.class.get "http://api.worldoftanks.com/uc/accounts/api/1.1/?source_token=WG-WoT_Assistant-1.3.2&search=#{self.wot_name}&offset=0&limit=1"
+          json_response = JSON.parse response.parsed_response      
+          if json_response["status"] == 'ok'
+            data = json_response["data"]
+            if !data["items"].empty?
+              self.update_attribute(:wot_id, data["items"][0]["id"])
+            end
+          end
+          ActiveRecord::Base.connection.close
+        end
+      end
     end
 end

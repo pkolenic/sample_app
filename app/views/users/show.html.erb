@@ -1,15 +1,72 @@
 <% provide(:title, @user.wot_name) %>
 <div class="row">
-  <aside class="span4">
-    <section>
-      <h1>
-      	<div class="gravatar">
-        	<%= gravatar_for @user, size: 80 %>
-        	</br>
-        	<%= link_to 'powered by gravatar', 'http://gravatar.com', target: "_blank", class: "gravatar_link"%>
-        </div>
-        <%= @user.wot_name %>
-      </h1>
-    </section>
-  </aside>
+	<aside class="span4">
+		<section>
+			<h1>
+			<div class="gravatar">
+				<%= gravatar_for @user, size: 80 %>
+				</br>
+				<%= link_to 'powered by gravatar', 'http://gravatar.com', target: "_blank", class: "gravatar_link"%>
+			</div> <%= @user.wot_name %> </h1>
+		</section>
+	</aside>
+	<table id="user_stats">
+		<tr>
+			<td class="category">Battles</td>
+			<td><%= number_with_delimiter(@user.battles_count) %></td>
+		</tr>
+		<tr>
+			<td class="category">Wins</td>
+			<td><%= number_with_delimiter(@user.wins) %> (<%= @wins %>)</td>
+		</tr>
+		<tr>
+			<td class="category">Losses</td>
+			<td><%= number_with_delimiter(@user.losses) %> (<%= @losses %>)</td>
+		</tr>
+		<tr>
+			<td class="category">Survived</td>
+			<td><%= number_with_delimiter(@survived) %></td>
+		</tr>
+		<tr>
+			<td class="category">Total Experiance</td>
+			<td><%= number_with_delimiter(@user.experiance) %></td>
+		</tr>
+		<tr>
+			<td class="category">Average Experiance</td>
+			<td><%= number_with_delimiter(@average_xp) %></td>
+		</tr>
+		<tr>
+			<td class="category">Max Experiance</td>
+			<td><%= number_with_delimiter(@user.max_experiance) %></td>
+		</tr>
+		<tr>
+			<td class="category">Tanks Spotted</td>
+			<td><%= number_with_delimiter(@user.spotted) %></td>
+		</tr>
+		<tr>
+			<td class="category">Tanks Destroyed</td>
+			<td><%= number_with_delimiter(@user.frags) %></td>
+		</tr>
+		<tr>
+			<td class="category">Total Damage Dealt</td>
+			<td><%= number_with_delimiter(@user.damage_dealt) %></td>
+		</tr>
+		<tr>
+			<td class="category">Average Damage Dealt</td>
+			<td><%= number_with_delimiter(@average_damage) %></td>
+		</tr>
+		<tr>
+			<td class="category">Hit Percentage</td>
+			<td><%= @user.hit_percentage %>%</td>
+		</tr>
+		<tr>
+			<td class="category">Capture Points</td>
+			<td><%= number_with_delimiter(@user.capture_points) %></td>
+		</tr>
+		<tr>
+			<td class="category">Defense Points</td>
+			<td><%= number_with_delimiter(@user.defense_points) %></td>
+		</tr>
+	</table>
+	<s>
 </div>

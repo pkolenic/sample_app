@@ -7,6 +7,7 @@ class UsersController < ApplicationController
   before_action :appointment_user, only: [:add_clanwar, :remove_clanwar]
   
   def index
+    fetch_user_stats
     if params[:type]
       type = params[:type]
       case type
@@ -31,6 +32,21 @@ class UsersController < ApplicationController
   
   def show
     @user = User.find(params[:id])
+    if (@user.wins) 
+      @wins = "#{(@user.wins.to_f / @user.battles_count * 100).round(2)}%"
+    end
+    if (@user.losses)
+      @losses = "#{(@user.losses.to_f / @user.battles_count * 100).round(2)}%"
+    end
+    if (@user.survived)
+      @survived = "#{(@user.survived.to_f / @user.battles_count * 100).round(2)}%"
+    end 
+    if (@user.experiance)
+      @average_xp = "#{(@user.experiance.to_f / @user.battles_count).round(2)}"
+    end
+    if (@user.damage_dealt)
+      @average_damage = "#{(@user.damage_dealt.to_f / @user.battles_count).round(2)}"
+    end
   end
   
   def new
@@ -107,6 +123,19 @@ class UsersController < ApplicationController
     def user_params
       params.require(:user).permit(:name, :wot_name, :email, :password,
                                    :password_confirmation)
+    end
+    
+    def fetch_user_stats
+      last_update = User.first.updated_at
+      if DateTime.now.to_i - last_update.to_i > 3600 && !Rails.env.test?
+        # Thread.new do
+          message = 'Response = ';
+          User.all.each do |user|
+            user.update_stats
+          end
+          ActiveRecord::Base.connection.close
+        # end
+      end
     end
     
     # Before filters

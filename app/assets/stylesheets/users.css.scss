@@ -34,3 +34,12 @@ li .gravatar {
   width: 64px;
   text-align: center;
 }
+
+#user_stats {
+  text-align: left;
+  vertical-align: middle;
+  .category {
+    font-weight: bold;
+    padding: 0 5px 0 10px;
+  }
+}
