@@ -1,43 +1,12 @@
-<% provide(:title, 'RiisingSun') %> <h1>RiisingSun YouTube Videos</h1>
+<% provide(:title, @title) %> <h1><%= @header %></h1>
 
 <!-- 1. The <iframe> (and video player) will replace this <div> tag. -->
 <div id="player_wrapper">
 	<div id="player"></div>
 
 	<script>
-		// 2. This code loads the IFrame Player API code asynchronously.
-		var tag = document.createElement('script');
-
-		tag.src = "https://www.youtube.com/iframe_api";
-		var firstScriptTag = document.getElementsByTagName('script')[0];
-		firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
-		// 3. This function creates an <iframe> (and YouTube player)
-		//    after the API code downloads.
-		var player;
-		function onYouTubeIframeAPIReady() {
-			player = new YT.Player('player', {
-				height : '390',
-				width : '640',
-				videoId : 'p56GopMx9g8',
-				events : {
-					'onReady' : onPlayerReady
-				}
-			});
-		}
-
-		// 4. The API will call this function when the video player is ready.
-		function onPlayerReady(event) {
-			event.target.playVideo();
-		}
-
-		function playVideo(video_link) {
-			video = $(video_link);
-			player.loadVideoById(video.attr('video-id'), 0, "large")
-		}
-
-
-		$.getJSON('https://gdata.youtube.com/feeds/api/videos?author=TheRiisingSun&orderby=published&max-results=32&alt=json&v=2', function(data) {
+		var first_id = '';
+		$.getJSON('https://gdata.youtube.com/feeds/api/videos?author=<%= @youtube %>&orderby=published&max-results=32&alt=json&v=2', function(data) {
 			videos = data.feed.entry;
 			var items = [];
 			var video_count = 1;
@@ -66,7 +35,41 @@
 			$(".video_link").click(function() {
 				playVideo(this);
 			});
+
+			first_video = videos[0];
+			first_id = first_video.media$group.yt$videoid.$t;
+
+			// 2. This code loads the IFrame Player API code asynchronously.
+			var tag = document.createElement('script');
+
+			tag.src = "https://www.youtube.com/iframe_api";
+			var firstScriptTag = document.getElementsByTagName('script')[0];
+			firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 		});
+
+		// 3. This function creates an <iframe> (and YouTube player)
+		//    after the API code downloads.
+		var player;
+		function onYouTubeIframeAPIReady() {
+			player = new YT.Player('player', {
+				height : '390',
+				width : '640',
+				videoId : first_id,
+				events : {
+					'onReady' : onPlayerReady
+				}
+			});
+		}
+
+		// 4. The API will call this function when the video player is ready.
+		function onPlayerReady(event) {
+			event.target.playVideo();
+		}
+
+		function playVideo(video_link) {
+			video = $(video_link);
+			player.loadVideoById(video.attr('video-id'), 0, "large")
+		}
 	</script>
 </div>
 <div id="videos"></div>
@@ -76,7 +79,7 @@
 <script type="text/javascript">
 	/* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
 	var disqus_shortname = 'fearthefallen';
-	var disqus_identifier = 'riisingsun';
+	var disqus_identifier = '<%= @disqus %>';
 	var disqus_per_page = 5;
 	// required: replace example with your forum shortname
 

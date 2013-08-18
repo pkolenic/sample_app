@@ -1,5 +1,5 @@
 class StaticPagesController < ApplicationController
-  before_action :signed_in_user, only: [:riisingsun]
+  before_action :signed_in_user, only: [:riisingsun, :wotvideos]
   
   def home
   end
@@ -14,6 +14,27 @@ class StaticPagesController < ApplicationController
   end
   
   def riisingsun
+    @title = "RiisingSun"
+    @youtube = "TheRiisingSun"
+    @disqus = "riisingsun"
+    @header = "RiisingSun YouTube Videos"
+    render 'videos'
+  end
+  
+  def wotvideos
+    @title = "World of Tank Videos"
+    @youtube = "WorldOfTanksCom"
+    @disqus = "wotvideos"
+    @header = "World of Tank Videos"
+    render 'videos'
+  end
+  
+  def wgnavideos
+    @title = "War Gaming NA Videos"
+    @youtube = "WargamingNA"
+    @disqus = "wgnavideos"
+    @header = "War Gaming North America Videos"
+    render 'videos'    
   end
   
   private
