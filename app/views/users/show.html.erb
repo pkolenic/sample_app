@@ -4,9 +4,17 @@
 		<section>
 			<h1><%= @user.wot_name %> </h1>
 			<div class="gravatar">
-				<%= gravatar_for @user, size: 160 %>
+				<% if @user == current_user %>
+					<%= link_to gravatar_for(@user, size: 160), 'http://gravatar.com', target: "_blank", title: "Change your avatar at Gravatar." %>
+					</br>
+					<%= link_to 'powered by gravatar', 'http://gravatar.com', target: "_blank", class: "gravatar_link" %>
+				<% else %>
+					<%= gravatar_for @user, size: 160 %>
+				<% end %>
 				</br>
-				<%= link_to 'powered by gravatar', 'http://gravatar.com', target: "_blank", class: "gravatar_link"%>
+				<% if !@user.wot_id.blank? %>
+					<%= link_to 'Official World of Tanks Profile', "http://worldoftanks.com/community/accounts/#{@user.wot_id}-#{@user.wot_name}/", target: "_blank" %>
+				<% end %>
 			</div> 
 		</section>
 	</aside>
