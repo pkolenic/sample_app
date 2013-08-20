@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130816222537) do
+ActiveRecord::Schema.define(version: 20130820053917) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -40,6 +40,10 @@ ActiveRecord::Schema.define(version: 20130816222537) do
     t.integer  "defense_points",  limit: 8
     t.integer  "damage_dealt",    limit: 8
     t.integer  "hit_percentage",  limit: 8
+    t.string   "clan_id"
+    t.string   "clan_name"
+    t.string   "clan_abbr"
+    t.string   "clan_logo"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree

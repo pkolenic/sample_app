@@ -2,7 +2,8 @@
 <div class="row">
 	<aside class="span4">
 		<section>
-			<h1><%= @user.wot_name %> </h1>
+			<h1><%= @user.wot_name %></h1>
+			<span class="role"><%= role_for(@user) %></span>
 			<div class="gravatar">
 				<% if @user == current_user %>
 					<%= link_to gravatar_for(@user, size: 160), 'http://gravatar.com', target: "_blank", title: "Change your avatar at Gravatar." %>

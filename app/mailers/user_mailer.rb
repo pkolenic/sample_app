@@ -30,4 +30,10 @@ class UserMailer < ActionMailer::Base
     @user = user
     mail to: user.email, subject: 'You have been removed from the clan war team'
   end
+  
+  def made_ambassador(user)
+    @user = user
+    @clan = 'Fear The Fallen'
+    mail to: user.email, subject: "You have been appointed as an ambassador to Fear the Fallen for #{user.clan_name}"
+  end
 end

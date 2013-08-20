@@ -19,6 +19,14 @@ describe User do
   it { should respond_to(:clan_war_team) }
   it { should respond_to(:admin) }
   it { should respond_to(:wot_id) }
+  
+  # Clan Details
+  it { should respond_to(:clan_id) }
+  it { should respond_to(:clan_name) }
+  it { should respond_to(:clan_abbr) }
+  it { should respond_to(:clan_logo) }
+  
+  # Overall Stats
   it { should respond_to(:wins) }
   it { should respond_to(:losses) }
   it { should respond_to(:battles_count) }
@@ -31,6 +39,15 @@ describe User do
   it { should respond_to(:defense_points) }
   it { should respond_to(:damage_dealt) }
   it { should respond_to(:hit_percentage) }
+  
+  # 24hr Stats
+  
+  # 7 day Stats
+  
+  # 30 day Stats
+  
+  # 60 day Stats
+  
   
   it { should be_valid }
   it { should_not be_admin }

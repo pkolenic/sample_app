@@ -1,5 +1,6 @@
 UserPending           = 0
 UserRecruit           = 1
+UserAmbassador        = 4
 UserSoldier           = 5
 UserTreasurer         = 10
 UserRecruiter         = 15
