@@ -5,7 +5,7 @@ class UsersController < ApplicationController
   before_action :no_user,        only: [:new, :create]
   before_action :approval_user,  only: :approve
   before_action :appointment_user, only: [:add_clanwar, :remove_clanwar]
-  # before_action :fetch_user_stats, only: [:index, :show]
+  before_action :fetch_user_stats, only: [:index, :show]
   def index
     if params[:type]
       type = params[:type]
@@ -34,7 +34,7 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
-    @user.update_stats
+    # @user.update_stats
     @user.reload
     if (@user.wins)
       @wins = "#{(@user.wins.to_f / @user.battles_count * 100).round(2)}%"
