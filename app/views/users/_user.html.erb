@@ -1,6 +1,6 @@
 <li>
   <% if current_user.can_approve? && user.pending_approval? %>
-  	<% if !user.wot_id %>
+  	<% if user.wot_id.blank? %>
   		(<%=user.wot_name%> is not a valid World of Tanks user)
   	<% end %>
   	<br>

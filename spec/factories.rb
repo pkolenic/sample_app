@@ -3,6 +3,8 @@ FactoryGirl.define do
     sequence(:name)     { |n| "Person #{n}" }
     sequence(:email)    { |n| "person_#{n}@example.com"}
     sequence(:wot_name) { |n| "tanker_#{n}"}
+    role  UserPending
+    clan_war_team false
     password "foobar"
     password_confirmation "foobar"
 
@@ -11,7 +13,7 @@ FactoryGirl.define do
     end
     
     factory :leadership do
-      role UserTreasurer
+      role  UserCompanyCommander
     end
   end
 end
