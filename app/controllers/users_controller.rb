@@ -34,7 +34,7 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
-    # @user.update_stats
+    @user.update_stats
     @user.reload
     if (@user.wins)
       @wins = "#{(@user.wins.to_f / @user.battles_count * 100).round(2)}%"

@@ -39,16 +39,65 @@ describe User do
   it { should respond_to(:defense_points) }
   it { should respond_to(:damage_dealt) }
   it { should respond_to(:hit_percentage) }
+  it { should respond_to(:avg_tier) }
   
   # 24hr Stats
-  
+  it { should respond_to(:wins_24hr) }
+  it { should respond_to(:losses_24hr) }
+  it { should respond_to(:battles_count_24hr) }
+  it { should respond_to(:spotted_24hr) }
+  it { should respond_to(:frags_24hr) }
+  it { should respond_to(:survived_24hr) }
+  it { should respond_to(:experiance_24hr) }
+  it { should respond_to(:capture_points_24hr) }
+  it { should respond_to(:defense_points_24hr) }
+  it { should respond_to(:damage_dealt_24hr) }
+  it { should respond_to(:hit_percentage_24hr) }
+  it { should respond_to(:avg_tier_24hr) }
+    
   # 7 day Stats
-  
+  it { should respond_to(:wins_7day) }
+  it { should respond_to(:losses_7day) }
+  it { should respond_to(:battles_count_7day) }
+  it { should respond_to(:spotted_7day) }
+  it { should respond_to(:frags_7day) }
+  it { should respond_to(:survived_7day) }
+  it { should respond_to(:experiance_7day) }
+  it { should respond_to(:capture_points_7day) }
+  it { should respond_to(:defense_points_7day) }
+  it { should respond_to(:damage_dealt_7day) }
+  it { should respond_to(:hit_percentage_7day) }
+  it { should respond_to(:avg_tier_7day) }
+    
   # 30 day Stats
-  
+  it { should respond_to(:wins_30day) }
+  it { should respond_to(:losses_30day) }
+  it { should respond_to(:battles_count_30day) }
+  it { should respond_to(:spotted_30day) }
+  it { should respond_to(:frags_30day) }
+  it { should respond_to(:survived_30day) }
+  it { should respond_to(:experiance_30day) }
+  it { should respond_to(:capture_points_30day) }
+  it { should respond_to(:defense_points_30day) }
+  it { should respond_to(:damage_dealt_30day) }
+  it { should respond_to(:hit_percentage_30day) }
+  it { should respond_to(:avg_tier_30day) }
+    
   # 60 day Stats
+  it { should respond_to(:wins_60day) }
+  it { should respond_to(:losses_60day) }
+  it { should respond_to(:battles_count_60day) }
+  it { should respond_to(:spotted_60day) }
+  it { should respond_to(:frags_60day) }
+  it { should respond_to(:survived_60day) }
+  it { should respond_to(:experiance_60day) }
+  it { should respond_to(:capture_points_60day) }
+  it { should respond_to(:defense_points_60day) }
+  it { should respond_to(:damage_dealt_60day) }
+  it { should respond_to(:hit_percentage_60day) } 
+  it { should respond_to(:avg_tier_60day) } 
   
-  
+  # Meta
   it { should be_valid }
   it { should_not be_admin }
   it { should_not be_clan_war_team }

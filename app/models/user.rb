@@ -164,7 +164,7 @@ class User < ActiveRecord::Base
       if json_response["status"] == 'ok'
         data = json_response["stats"]
          if !data.empty? 
-          total = data[0]["stats"];
+          total = data[0]["stats"]
           
           # Clan Details
           self.clan_id = total["clan"]["clan"]["id"]
@@ -172,15 +172,17 @@ class User < ActiveRecord::Base
           self.clan_abbr = total["clan"]["clan"]["abbreviation"]
           self.clan_logo = total["clan"]["clan"]["emblems_urls"]["large"]
           
-          previous_role = self.role
-          self.role = convert_role(total["clan"]["member"]["role"], total["clan"]["clan"]["name"])
-          if previous_role != self.role 
-            if self.role == UserAmbassador
-              UserMailer.made_ambassador(self).deliver
-            elsif self.role > previous_role
-              UserMailer.promoted(self, user_role(self.role), '').deliver
-            else 
-              UserMailer.demoted(self, user_role(self.role), 'Auto Sent based on action taken on the Official World of Tank Clan page.').deliver
+          if self.role > UserPending
+            previous_role = self.role
+            self.role = convert_role(total["clan"]["member"]["role"], total["clan"]["clan"]["name"])
+            if previous_role != self.role 
+              if self.role == UserAmbassador
+                UserMailer.made_ambassador(self).deliver
+              elsif self.role > previous_role
+                UserMailer.promoted(self, user_role(self.role), '').deliver
+              else 
+                UserMailer.demoted(self, user_role(self.role), 'Auto Sent based on action taken on the Official World of Tank Clan page.').deliver
+              end
             end
           end
           
@@ -197,8 +199,69 @@ class User < ActiveRecord::Base
           self.hit_percentage = total["battles"]["hits_percents"]
           self.capture_points = total["battles"]["capture_points"]
           self.defense_points = total["battles"]["dropped_capture_points"]
+          self.avg_tier = calculate_avg_tier(total["vehicles"])
           
-          
+          if !Rails.env.test?
+            # 24 hrs
+            stats = data[1]["stats"]
+            self.battles_count_24hr = self.battles_count - stats["summary"]["battles_count"]
+            self.wins_24hr = self.wins - stats["summary"]["wins"]
+            self.losses_24hr = self.losses - stats["summary"]["losses"] 
+            self.survived_24hr = self.survived - stats["summary"]["survived_battles"]
+            self.experiance_24hr = self.experiance - stats["experience"]["xp"]
+            self.spotted_24hr = self.spotted - stats["battles"]["spotted"]
+            self.frags_24hr = self.frags - stats["battles"]["frags"]
+            self.damage_dealt_24hr = self.damage_dealt - stats["battles"]["damage_dealt"]
+            self.hit_percentage_24hr = self.hit_percentage - stats["battles"]["hits_percents"]
+            self.capture_points_24hr = self.capture_points - stats["battles"]["capture_points"]
+            self.defense_points_24hr = self.defense_points - stats["battles"]["dropped_capture_points"]
+            self.avg_tier_24hr = calculate_avg_tier(stats["vehicles"])
+            
+            # 7 days
+            stats = data[2]["stats"]
+            self.battles_count_7day = self.battles_count - stats["summary"]["battles_count"]
+            self.wins_7day = self.wins - stats["summary"]["wins"]
+            self.losses_7day = self.losses - stats["summary"]["losses"] 
+            self.survived_7day = self.survived - stats["summary"]["survived_battles"]
+            self.experiance_7day = self.experiance - stats["experience"]["xp"]
+            self.spotted_7day = self.spotted - stats["battles"]["spotted"]
+            self.frags_7day = self.frags - stats["battles"]["frags"]
+            self.damage_dealt_7day = self.damage_dealt - stats["battles"]["damage_dealt"]
+            self.hit_percentage_7day = self.hit_percentage - stats["battles"]["hits_percents"]
+            self.capture_points_7day = self.capture_points - stats["battles"]["capture_points"]
+            self.defense_points_7day = self.defense_points - stats["battles"]["dropped_capture_points"]
+            self.avg_tier_7day = calculate_avg_tier(stats["vehicles"])
+            
+            # 30 days
+            stats = data[3]["stats"]
+            self.battles_count_30day = self.battles_count - stats["summary"]["battles_count"]
+            self.wins_30day = self.wins - stats["summary"]["wins"]
+            self.losses_30day = self.losses - stats["summary"]["losses"] 
+            self.survived_30day = self.survived - stats["summary"]["survived_battles"]
+            self.experiance_30day = self.experiance - stats["experience"]["xp"]
+            self.spotted_30day = self.spotted - stats["battles"]["spotted"]
+            self.frags_30day = self.frags - stats["battles"]["frags"]
+            self.damage_dealt_30day = self.damage_dealt - stats["battles"]["damage_dealt"]
+            self.hit_percentage_30day = self.hit_percentage - stats["battles"]["hits_percents"]
+            self.capture_points_30day = self.capture_points - stats["battles"]["capture_points"]
+            self.defense_points_30day = self.defense_points - stats["battles"]["dropped_capture_points"]
+            self.avg_tier_30day = calculate_avg_tier(stats["vehicles"])
+            
+            # 60 days
+            stats = data[4]["stats"]
+            self.battles_count_60day = self.battles_count - stats["summary"]["battles_count"]
+            self.wins_60day = self.wins - stats["summary"]["wins"]
+            self.losses_60day = self.losses - stats["summary"]["losses"] 
+            self.survived_60day = self.survived - stats["summary"]["survived_battles"]
+            self.experiance_60day = self.experiance - stats["experience"]["xp"]
+            self.spotted_60day = self.spotted - stats["battles"]["spotted"]
+            self.frags_60day = self.frags - stats["battles"]["frags"]
+            self.damage_dealt_60day = self.damage_dealt - stats["battles"]["damage_dealt"]
+            self.hit_percentage_60day = self.hit_percentage - stats["battles"]["hits_percents"]
+            self.capture_points_60day = self.capture_points - stats["battles"]["capture_points"]
+            self.defense_points_60day = self.defense_points - stats["battles"]["dropped_capture_points"]
+            self.avg_tier_60day = calculate_avg_tier(stats["vehicles"])
+          end
           
           self.save validate: false
           self.touch
@@ -208,6 +271,25 @@ class User < ActiveRecord::Base
   end
 
   private
+    def calculate_avg_tier(tanks)
+      total_tiers = 0
+      battle_count = 0
+      tanks.each do |tank|
+        total_tiers += (tank['level'] * tank['battle_count'])
+        battle_count += tank['battle_count']
+      end
+      avg_tier = (total_tiers.to_f / battle_count) 
+    end
+  
+    def calculate_win7(avg_tier, frags, avg_damage, avg_spot, avg_def, win_rate, games_played)
+      win7 = ((1240-1040/([tier,6].min)**0.164)*frags)
+      win7 += (avg_damage*530/(184*Math::E^(0.24*avg_tier)+130))
+      win7 += (avg_spot*125*[avg_tier, 3].min/3)
+      win7 += ([avg_def, 2.2].min * 100)
+      win7 += (((185/(0.17+Math::E^((win_rate-35)*-0.134)))-500)*0.45)
+      win7 -= ((5 - [avg_tier, 5].min * 125) / (1 + Math::E**(( avg_tier - (games_played/220)**(3/avg_tier) )*1.5)))       
+    end
+  
     def convert_role(role, clan)
       if clan == 'Fear the Fallen'
         case role
