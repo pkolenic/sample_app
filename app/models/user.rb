@@ -4,7 +4,6 @@ class User < ActiveRecord::Base
   has_secure_password
   before_save { email.downcase! }
   before_create :create_remember_token
-  before_create :set_pending_status
   after_create :lookup_wot_id
 
   # Validations
@@ -276,10 +275,6 @@ class User < ActiveRecord::Base
   
     def create_remember_token
       self.remember_token = User.encrypt(User.new_remember_token)
-    end
-    
-    def set_pending_status
-      self.role = UserPending
     end
     
     def lookup_wot_id
