@@ -1,0 +1,18 @@
+<div class="row">
+	<aside class="span4">
+		<section>
+			<%= render 'shared/user_info' %>
+		</section>
+		<section>
+			<%= render 'shared/micropost_form' %>
+			<div id="characters_remaining" style="display:none;">
+				<span>characters remaining: </span>
+				<span id="remaining_count">140</span>
+			</div>
+		</section>
+	</aside>
+	<div class="span8">
+		<h3>Micropost Feed</h3>
+		<%= render 'shared/feed' %>
+	</div>
+</div>
