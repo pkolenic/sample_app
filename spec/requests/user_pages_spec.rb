@@ -375,7 +375,10 @@ describe "User pages" do
     
     describe "when role recruit" do
       let(:user) { FactoryGirl.create(:user, wot_name: "valid", role: UserSoldier, clan_name: "Fear the Fallen") } 
-      before { visit user_path(user) }
+      before do
+          user.update_attribute(:role, UserRecruit)
+          visit user_path(user) 
+      end
       
       specify { expect(ActionMailer::Base.deliveries.last.to).to eq [User.first.email] }
       specify { expect(ActionMailer::Base.deliveries.last.subject).to eq 'You have been promoted' }
@@ -394,7 +397,10 @@ describe "User pages" do
     
     describe "when different clan" do
       let(:user) { FactoryGirl.create(:user, wot_name: "valid", role: UserCompanyCommander, clan_name: "Something Else") } 
-      before { visit user_path(user) }
+      before do
+          user.update_attribute(:role, UserRecruit)
+          visit user_path(user)
+      end
       
       specify { expect(ActionMailer::Base.deliveries.last.to).to eq [User.first.email] }
       specify { expect(ActionMailer::Base.deliveries.last.subject).to eq 'You have been appointed as an ambassador to Fear the Fallen for Something Else' }      

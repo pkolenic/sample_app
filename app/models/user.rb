@@ -117,9 +117,7 @@ class User < ActiveRecord::Base
  def update_stats
     if self.wot_id
       if Rails.env.test?
-        stats = []
-        total = { "stats" => 
-                  { 
+        total =  { 
                     "achievements" => {}, 
                     "ratings" => {}, 
                     "name" => 'articblast', 
@@ -148,11 +146,10 @@ class User < ActiveRecord::Base
                         "id" => "1000007730", 
                         "name" => self.clan_name, 
                         "abbreviation" => "FTF",
-                        "emblems_urls" => { "large" => "http://cw.worldoftanks.com/media/clans/emblems/clans_1/1000007730/emblem_64x64.png" }}}}}
-        stats[0] = total
-        json_response = { "status" => 'ok', "stats" => stats }
+                        "emblems_urls" => { "large" => "http://cw.worldoftanks.com/media/clans/emblems/clans_1/1000007730/emblem_64x64.png" }}}}
+        json_response = { "status" => 'ok', "data" => total }
       else 
-        url = "http://dvstats.wargaming.net/userstats/2/stats/slice/?platform=android&server=us&account_id=#{self.wot_id}&hours_ago=0&hours_ago=24&hours_ago=168&hours_ago=720&hours_ago=1440"
+        url = "http://api.worldoftanks.com/uc/accounts/#{self.wot_id}/api/1.9/?source_token=WG-WoT_Assistant-1.3.2"
         response = self.class.get url
         if response.parsed_response.class == Hash
           json_response = response.parsed_response
@@ -162,9 +159,8 @@ class User < ActiveRecord::Base
       end
  
       if json_response["status"] == 'ok'
-        data = json_response["stats"]
-         if !data.empty? 
-          total = data[0]["stats"]
+          total = json_response["data"]
+          if !total.blank? 
           
           # Clan Details
           self.clan_id = total["clan"]["clan"]["id"]
@@ -200,69 +196,7 @@ class User < ActiveRecord::Base
           self.capture_points = total["battles"]["capture_points"]
           self.defense_points = total["battles"]["dropped_capture_points"]
           self.avg_tier = calculate_avg_tier(total["vehicles"])
-          
-          if !Rails.env.test?
-            # 24 hrs
-            stats = data[1]["stats"]
-            self.battles_count_24hr = self.battles_count - stats["summary"]["battles_count"]
-            self.wins_24hr = self.wins - stats["summary"]["wins"]
-            self.losses_24hr = self.losses - stats["summary"]["losses"] 
-            self.survived_24hr = self.survived - stats["summary"]["survived_battles"]
-            self.experiance_24hr = self.experiance - stats["experience"]["xp"]
-            self.spotted_24hr = self.spotted - stats["battles"]["spotted"]
-            self.frags_24hr = self.frags - stats["battles"]["frags"]
-            self.damage_dealt_24hr = self.damage_dealt - stats["battles"]["damage_dealt"]
-            self.hit_percentage_24hr = self.hit_percentage - stats["battles"]["hits_percents"]
-            self.capture_points_24hr = self.capture_points - stats["battles"]["capture_points"]
-            self.defense_points_24hr = self.defense_points - stats["battles"]["dropped_capture_points"]
-            self.avg_tier_24hr = calculate_avg_tier(stats["vehicles"])
-            
-            # 7 days
-            stats = data[2]["stats"]
-            self.battles_count_7day = self.battles_count - stats["summary"]["battles_count"]
-            self.wins_7day = self.wins - stats["summary"]["wins"]
-            self.losses_7day = self.losses - stats["summary"]["losses"] 
-            self.survived_7day = self.survived - stats["summary"]["survived_battles"]
-            self.experiance_7day = self.experiance - stats["experience"]["xp"]
-            self.spotted_7day = self.spotted - stats["battles"]["spotted"]
-            self.frags_7day = self.frags - stats["battles"]["frags"]
-            self.damage_dealt_7day = self.damage_dealt - stats["battles"]["damage_dealt"]
-            self.hit_percentage_7day = self.hit_percentage - stats["battles"]["hits_percents"]
-            self.capture_points_7day = self.capture_points - stats["battles"]["capture_points"]
-            self.defense_points_7day = self.defense_points - stats["battles"]["dropped_capture_points"]
-            self.avg_tier_7day = calculate_avg_tier(stats["vehicles"])
-            
-            # 30 days
-            stats = data[3]["stats"]
-            self.battles_count_30day = self.battles_count - stats["summary"]["battles_count"]
-            self.wins_30day = self.wins - stats["summary"]["wins"]
-            self.losses_30day = self.losses - stats["summary"]["losses"] 
-            self.survived_30day = self.survived - stats["summary"]["survived_battles"]
-            self.experiance_30day = self.experiance - stats["experience"]["xp"]
-            self.spotted_30day = self.spotted - stats["battles"]["spotted"]
-            self.frags_30day = self.frags - stats["battles"]["frags"]
-            self.damage_dealt_30day = self.damage_dealt - stats["battles"]["damage_dealt"]
-            self.hit_percentage_30day = self.hit_percentage - stats["battles"]["hits_percents"]
-            self.capture_points_30day = self.capture_points - stats["battles"]["capture_points"]
-            self.defense_points_30day = self.defense_points - stats["battles"]["dropped_capture_points"]
-            self.avg_tier_30day = calculate_avg_tier(stats["vehicles"])
-            
-            # 60 days
-            stats = data[4]["stats"]
-            self.battles_count_60day = self.battles_count - stats["summary"]["battles_count"]
-            self.wins_60day = self.wins - stats["summary"]["wins"]
-            self.losses_60day = self.losses - stats["summary"]["losses"] 
-            self.survived_60day = self.survived - stats["summary"]["survived_battles"]
-            self.experiance_60day = self.experiance - stats["experience"]["xp"]
-            self.spotted_60day = self.spotted - stats["battles"]["spotted"]
-            self.frags_60day = self.frags - stats["battles"]["frags"]
-            self.damage_dealt_60day = self.damage_dealt - stats["battles"]["damage_dealt"]
-            self.hit_percentage_60day = self.hit_percentage - stats["battles"]["hits_percents"]
-            self.capture_points_60day = self.capture_points - stats["battles"]["capture_points"]
-            self.defense_points_60day = self.defense_points - stats["battles"]["dropped_capture_points"]
-            self.avg_tier_60day = calculate_avg_tier(stats["vehicles"])
-          end
-          
+                    
           self.save validate: false
           self.touch
         end
