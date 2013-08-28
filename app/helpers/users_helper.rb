@@ -3,7 +3,7 @@ module UsersHelper
   def gravatar_for(user, options = { size: 50 })
     gravatar_id = Digest::MD5::hexdigest(user.email.downcase)
     size = options[:size]
-    if user.clan_name == 'Fear the Fallen'
+    if user.clan_name == 'Fear the Fallen' || user.clan_name.blank?
       gravatar_url = "https://secure.gravatar.com/avatar/#{gravatar_id}?s=#{size}&d=#{request.protocol}#{request.host_with_port}#{image_path('logo.png')}"
     else
       gravatar_url = "https://secure.gravatar.com/avatar/#{gravatar_id}?s=#{size}&d=#{user.clan_logo}"

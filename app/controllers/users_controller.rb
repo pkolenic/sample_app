@@ -131,12 +131,12 @@ class UsersController < ApplicationController
   def fetch_user_stats
     last_update = User.first.updated_at
     if DateTime.now.to_i - last_update.to_i > 3600 && !Rails.env.test?
-      # Thread.new do
+      Thread.new do
         User.all.each do |user|
           user.update_stats
         end
-        # ActiveRecord::Base.connection.close
-      # end
+        ActiveRecord::Base.connection.close
+      end
     elsif Rails.env.test?
       User.all.each do |user|
         user.update_stats
