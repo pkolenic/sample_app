@@ -139,6 +139,51 @@ describe "Authentication" do
         end
       end
       
+      describe "in the Tournaments controller" do
+        let!(:tournament) {user.tournaments.build(name: "Example Tournament",
+                                         status: TournamentForming,
+                                         wot_tournament_link: "www.somewhere.com",
+                                         wot_team_link: "www.somewhere.com/teamlink",
+                                         team_name: "Teamname",
+                                         description: "This is a Tournament",
+                                         password: "pancakes",
+                                         minimum_team_size: 3,
+                                         maximum_team_size: 5,
+                                         heavy_tier_limit: 3,
+                                         medium_tier_limit: 3,
+                                         td_tier_limit: 3,
+                                         light_tier_limit: 3,
+                                         spg_tier_limit: 3,
+                                         team_maximum_tier_points: 9,
+                                         victory_conditions: "Kill some tanks and stuff",
+                                         schedule: "When everyone can't make it",
+                                         prizes: "Gold and stuff",
+                                         maps: "Only the one noone likes",
+                                         team: "2,3,4,5",
+                                         start_date: "2099-08-20 18:30:00".to_datetime,
+                                         end_date: "2099-08-26 18:30:00".to_datetime)}
+         
+        describe "submitting to the create action" do
+          before { post tournaments_path }
+          specify { expect(response).to redirect_to(signin_path) }
+        end
+
+        describe "submitting to the destroy action" do
+          before { delete tournament_path(FactoryGirl.create(:tournament)) }
+          specify { expect(response).to redirect_to(signin_path) }
+        end
+        
+        describe "visiting the edit page" do
+          before { visit edit_tournament_path(tournament) }
+          it { should have_title('Sign in') }
+        end
+
+        describe "submitting to the update action" do
+          before { patch tournament_path(FactoryGirl.create(:tournament)) }
+          specify { expect(response).to redirect_to(signin_path) }
+        end
+      end
+      
       describe "when attempting to visit a protected page" do
         before do
           visit edit_user_path(user)

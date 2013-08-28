@@ -1,0 +1,48 @@
+.tournament_page {
+  background: url('http://worldoftanks.com/dcont/gskins_installed/87_update/img/ui-bg-tile.jpg') repeat-y 50% 0;
+  padding: 10px;
+  color: lightgray;
+  
+  h1 {
+    text-align: left;
+    font-size: 36px;
+    color: white;
+    margin-bottom: 10px;
+  }
+  
+  h2 {
+    color: white;
+    font-weight: normal;
+    border-top: 1px solid antiquewhite;
+    padding-top: 5px;
+    margin-top: 0px;
+    text-align: left;
+    font-size: 28px;
+    margin-bottom: 10px;
+  }
+  
+  .text {
+
+  }
+  
+  .dates {
+    margin-bottom: 5px;
+    .title {
+      color: #ffcc99;
+    }
+    .value {
+      color: white;
+    }
+  }
+  
+  .external {
+    color: orangered;
+  }
+  
+  .box {
+    border-bottom: 1px solid black;
+    padding-bottom: 20px
+  }
+}
+
+

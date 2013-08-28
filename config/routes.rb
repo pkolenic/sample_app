@@ -4,6 +4,8 @@ SampleApp::Application.routes.draw do
   
   resources :sessions, only: [:new, :create, :destroy]
   resources :promotions, only: [:edit, :update]
+  resources :tournaments, except: :index
+  
   match '/signin',  to: 'sessions#new',         via: 'get'
   match '/signout', to: 'sessions#destroy',     via: 'delete'
   match '/users/:id/approve', to: 'users#approve', as: 'approve', via: 'patch'

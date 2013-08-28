@@ -9,3 +9,6 @@ UserCompanyCommander  = 25
 UserDeputyCommander   = 40
 UserCommander         = 50
 UserSuper             = 100
+
+TournamentForming     = 0
+TournamentFormed      = 10

@@ -26,6 +26,10 @@ def fill_in_user_form
   fill_in "Confirm Password", with: "foobar"
 end
 
+def fill_in_tournament_form
+  
+end
+
 RSpec::Matchers.define :have_error_message do |message|
   match do |page|
     expect(page).to have_selector('div.alert.alert-error', text: message)

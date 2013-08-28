@@ -6,6 +6,9 @@ class User < ActiveRecord::Base
   before_create :create_remember_token
   after_create :lookup_wot_id
 
+  # Associations
+  has_many :tournaments, dependent: :destroy
+
   # Validations
   validates :name, presence: true, length: { maximum: 50 }
   validates :wot_name, presence: true, length: { maximum: 50 }

@@ -1,0 +1,64 @@
+<% provide(:title, @tournament.name) %>
+<div class="tournament_page">
+	<h1> <%= @tournament.name %> </h2>
+	
+	<div class="text">
+		<%= @tournament.description %>
+	</div>
+	
+	<div class="dates">
+		<span class="title">Registration Begins</span> <span class="value">: <%= @tournament.start_date %><br/>
+		<span class="title">Registration Ends</span> <span class="value">: <%= @tournament.end_date %><br/>
+	</div>
+	
+	<div class="links box">
+		<%= link_to 'Official Tournament Page', @tournament.wot_tournament_link, target: '_blank', class: 'external' %><br/>
+		<%= link_to 'World of Tanks Tournament FAQ Page', "http://forum.worldoftanks.com/index.php?forum-0/annoucement-81-tournaments-faq/", target: '_blank', class: 'external' %>
+	</div>
+	
+	<h2> Tier & Point Limits </h2>
+	<div class="tier_points box">
+		<p>Teams may deploy no more than <%= @tournament.minimum_team_size %> memebers in each match 
+			( a maximum of <%= @tournament.maximum_team_size %> players total on the team). A team must field a selection of tanks based on the below tier limits</p>
+			
+		<ul>
+			<li>Heavy: <%= @tournament.heavy_tier_limit %></li>
+			<li>Medium: <%= @tournament.medium_tier_limit %></li>
+			<li>TD: <%= @tournament.td_tier_limit %></li>
+			<li>Light: <%= @tournament.light_tier_limit %></li>
+			<li>SPG: <%= @tournament.spg_tier_limit %></li>
+			<li><%= @tournament.team_maximum_tier_points %> points maximum</li>	
+		</ul>
+			
+		<p> Please note: Regardless of the maximum team size, teams may only bring <%= @tournament.minimum_team_size %> team members into battle.	
+	</div>
+	
+	<h2> Victory Conditions </h2>
+	<div class="text box">
+		<%= @tournament.victory_conditions %>
+	</div>
+	
+	<h2> Schedule </h2>
+	<div class="text box">
+		<%= @tournament.schedule %>
+	</div>
+	
+	<h2> Prizes </h2>
+	<div class="text box">
+		<%= @tournament.prizes %>
+	</div>
+	
+	<h2> Maps </h2>
+	<div class="text box">
+		<%= @tournament.maps %>
+	</div>
+	
+	<h2> Registration </h2>
+	<div class="registration">
+		<% if @team.count < @tournament.maximum_team_size %>
+			<%= render 'tournaments/join_team' %>
+		<% else %>
+			<%= render 'tournaments/full_team' %>			
+		<% end %>
+	</div>
+</div>
