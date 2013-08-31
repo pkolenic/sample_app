@@ -1,4 +1,7 @@
 class Tournament < ActiveRecord::Base
+  before_create :add_owner_to_team
+  before_save :fix_urls
+  
   # Validation Classes
   class EndDateValidator < ActiveModel::EachValidator
     def validate_each(record, attribute, value)
@@ -73,4 +76,18 @@ class Tournament < ActiveRecord::Base
       errors.add(:team, 'team is too large')
     end
   end
+  
+  private
+    def fix_urls
+      if !%w( http https ).include?(self.wot_tournament_link)
+        self.wot_tournament_link = "http://#{self.wot_tournament_link}"
+      end
+      if !%w( http https ).include?(self.wot_team_link)
+        self.wot_team_link = "http://#{self.wot_team_link}"
+      end
+    end
+    
+    def add_owner_to_team
+      self.team = "#{self.user_id}"
+    end
 end

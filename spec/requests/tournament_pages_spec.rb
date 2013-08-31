@@ -37,7 +37,7 @@ describe "Tournament pages" do
     it_should_behave_like "all tournament pages"
     
     describe "with invalid information" do
-      it "should not create a user" do
+      it "should not create a tournament" do
         expect { click_button submit }.not_to change(Tournament, :count)
       end
 
@@ -55,9 +55,8 @@ describe "Tournament pages" do
         expect { click_button submit }.to change(Tournament, :count).by(1)
       end
 
-      describe "after saving the user" do
+      describe "after saving the tournament" do
         before { click_button submit }
-        let(:user) { User.find_by(email: 'user@example.com') }
 
         it { should have_selector('h1', text: 'Fear The Fallen') }
         it { should have_success_message('Tournament Created') }

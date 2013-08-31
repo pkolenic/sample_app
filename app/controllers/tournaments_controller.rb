@@ -3,7 +3,8 @@ class TournamentsController < ApplicationController
 
   def show
     @tournament = Tournament.find(params[:id])
-    @team = User.find_all_by_id(@tournament.team.split(','))
+    # @team = User.find_all_by_id(@tournament.team.split(','))
+    @team = User.where("id in (#{@tournament.team})").to_a
   end
 
   def new

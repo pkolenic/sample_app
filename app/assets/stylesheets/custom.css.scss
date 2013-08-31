@@ -3,6 +3,7 @@
 /* mixins, variables, etc. */
 
 $grayMediumLight: #eaeaea;
+$shadowGray: #969696;
 
 @mixin box_sizing {
   -moz-box-sizing: border-box;
@@ -18,6 +19,9 @@ html {
 
 body {
   padding-top: 85px;
+  background-image: url(/assets/t-34-85-1280x720.jpg);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 }
 
 section {
@@ -30,8 +34,10 @@ textarea {
 
 .center {
   text-align: center;
+  background: transparent;
   h1 {
     margin-bottom: 10px;
+    color: black;
   }
 }
 
@@ -46,6 +52,7 @@ h1 {
   letter-spacing: -2px;
   margin-bottom: 30px;
   text-align: center;
+  text-shadow: 1px 1px 2px rgba(255, 255, 255, 1);
 }
 
 h2 {
@@ -55,11 +62,25 @@ h2 {
   text-align: center;
   font-weight: normal;
   color: $grayLight;
+  text-shadow: 2px 2px 2px rgba(0, 0, 0, 1);
+}
+
+h3 {
+  text-shadow: 1px 1px 2px white;
+}
+
+a {
+  text-shadow: 1px 1px 1px $shadowGray;
 }
 
 p {
   font-size: 1.1em;
   line-height: 1.7em;
+}
+
+.span6 {
+  background: white;
+  padding: 10px;
 }
 
 /* header */
@@ -89,6 +110,12 @@ p {
 }
 
 .navbar-inverse .navbar-inner {
+  background: transparent;
+  border: none;
+}
+
+.navbar .container {
+  width: 1000px;
   background-color: #1b1b1b;
   background-image: -moz-linear-gradient(top, #2f2f2f, #4f4f4f);
   background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#2f2f2f), to(#4f4f4f));
@@ -112,7 +139,8 @@ footer {
   border-top: 1px solid $grayMediumLight;
   color: $grayLight;
   a {
-    color: $gray;
+    color: black;
+    text-shadow: 1px 1px 1px $shadowGray;    
     &:hover {
       color: $grayDarker;
     }
@@ -123,6 +151,8 @@ footer {
   ul {
     float: right;
     list-style: none;
+    background: rgba(255,255,255,0.25);
+    padding-right: 10px;
     li {
       float: left;
       margin-left: 10px;
@@ -167,15 +197,21 @@ aside {
       line-height: 1;
     }
     h1 {
-      font-size: 1.4em;
+      font-size: 1.8em;
       text-align: left;
-      letter-spacing: -1px;
+      letter-spacing: 2px;
       margin-bottom: 3px;
       margin-top: 0px;
+      text-shadow: 1px 1px 25px white;
+      font-weight: normal;
+      color: black;
     }
     .role {
-      line-height: 26px;
-      font-size: 14px;
+      line-height: 32px;
+      text-shadow: 1px 0px 25px white;
+      letter-spacing: 1.5px;
+      color: black;
+      font-size: 16px;
     }
   }
 }
@@ -221,6 +257,8 @@ input {
 .users {
   list-style: none;
   margin: 0;
+  background: white;
+  padding: 5px 10px;
   li {
     overflow: auto;
     padding: 10px 0;
@@ -229,6 +267,16 @@ input {
       border-bottom: 1px solid $grayLighter;
     }
   }
+}
+
+.pagination ul > .disabled > a {
+  background-color: white;
+}
+
+/* Disqus Chat */
+#disqus_thread {
+  background-color: white;
+  padding: 10px;
 }
 
 /* Filter Bar */
