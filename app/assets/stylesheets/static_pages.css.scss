@@ -15,24 +15,27 @@ h3 {
   margin-top: 20px;
 }
 
-.field {
-  font-weight: bold;
-}
+.field,
 .value {
-      
+  text-shadow: 1px 0px 10px white;
+  font-weight: bold;
 }
 
 #videos {
-  width: 1000px;
+  width: 940px;
   height: 300px;
   overflow: auto;
+  background: white;
+  margin: 0 auto 25px;
+  padding: 10px 0;
   .video_thumbnail_row {
     clear:both;
     .video_link {
-      float:left;
-      width:240px;
+      float: left;
+      width: 225px;
       height: 150px;
-      text-align:center;
+      text-align: center;
+      padding: 10px 5px;
     }
   }
 }
@@ -40,4 +43,14 @@ h3 {
 #player_wrapper {
   width: 1000px;
   padding: 0 160px 30px;
+}
+
+.about_text {
+  text-shadow: 1px 1px 2px white;
+  font-size: 16px;
+  color: black;
+  background: rgba(255,255,255,0.20);
+  padding: 5px 10px;
+  width: 636px;
+  margin: auto;
 }

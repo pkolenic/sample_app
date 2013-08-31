@@ -19,13 +19,13 @@ describe User do
   it { should respond_to(:clan_war_team) }
   it { should respond_to(:admin) }
   it { should respond_to(:wot_id) }
-  
+
   # Clan Details
   it { should respond_to(:clan_id) }
   it { should respond_to(:clan_name) }
   it { should respond_to(:clan_abbr) }
   it { should respond_to(:clan_logo) }
-  
+
   # Overall Stats
   it { should respond_to(:wins) }
   it { should respond_to(:losses) }
@@ -40,7 +40,7 @@ describe User do
   it { should respond_to(:damage_dealt) }
   it { should respond_to(:hit_percentage) }
   it { should respond_to(:avg_tier) }
-  
+
   # 24hr Stats
   it { should respond_to(:wins_24hr) }
   it { should respond_to(:losses_24hr) }
@@ -54,7 +54,7 @@ describe User do
   it { should respond_to(:damage_dealt_24hr) }
   it { should respond_to(:hit_percentage_24hr) }
   it { should respond_to(:avg_tier_24hr) }
-    
+
   # 7 day Stats
   it { should respond_to(:wins_7day) }
   it { should respond_to(:losses_7day) }
@@ -68,7 +68,7 @@ describe User do
   it { should respond_to(:damage_dealt_7day) }
   it { should respond_to(:hit_percentage_7day) }
   it { should respond_to(:avg_tier_7day) }
-    
+
   # 30 day Stats
   it { should respond_to(:wins_30day) }
   it { should respond_to(:losses_30day) }
@@ -82,7 +82,7 @@ describe User do
   it { should respond_to(:damage_dealt_30day) }
   it { should respond_to(:hit_percentage_30day) }
   it { should respond_to(:avg_tier_30day) }
-    
+
   # 60 day Stats
   it { should respond_to(:wins_60day) }
   it { should respond_to(:losses_60day) }
@@ -94,14 +94,15 @@ describe User do
   it { should respond_to(:capture_points_60day) }
   it { should respond_to(:defense_points_60day) }
   it { should respond_to(:damage_dealt_60day) }
-  it { should respond_to(:hit_percentage_60day) } 
-  it { should respond_to(:avg_tier_60day) } 
-  
+  it { should respond_to(:hit_percentage_60day) }
+  it { should respond_to(:avg_tier_60day) }
+
   # Meta
+  it { should respond_to(:tournaments) }
   it { should be_valid }
   it { should_not be_admin }
   it { should_not be_clan_war_team }
-  
+
   describe "with admin attribute set to 'true'" do
     before do
       @user.save!
@@ -110,16 +111,16 @@ describe User do
 
     it { should be_admin }
   end
-  
+
   describe "with clan war team set to 'true" do
     before do
       @user.save!
       @user.toggle!(:clan_war_team)
     end
-    
+
     it { should be_clan_war_team}
   end
-  
+
   describe "remember token" do
     before { @user.save }
     its(:remember_token) { should_not be_blank }
@@ -131,7 +132,7 @@ describe User do
     before { @user.name = " " }
     it { should_not be_valid }
   end
-  
+
   describe "when wot_name is not present" do
     before { @user.wot_name = " " }
     it { should_not be_valid }
@@ -146,7 +147,7 @@ describe User do
     before { @user.name = "a" * 51 }
     it { should_not be_valid }
   end
-  
+
   describe "when wot_name is too long" do
     before { @user.wot_name = "a" * 51 }
     it { should_not be_valid }
@@ -235,9 +236,33 @@ describe User do
     before { @user.password = @user.password_confirmation = "a" * 5 }
     it { should be_invalid }
   end
-  
+
   it "sends a e-mail" do
     UserMailer.approved(@user).deliver
     ActionMailer::Base.deliveries.last.to.should == [@user.email]
+  end
+
+  describe "tournament associations" do
+
+    before { @user.save }
+    let!(:later_start_tournament) do
+      FactoryGirl.create(:tournament, user: @user, start_date: "2099-08-28 18:30:00".to_datetime)
+    end
+    let!(:earlier_start_tournament) do
+      FactoryGirl.create(:tournament, user: @user, start_date: "2099-08-20 18:30:00".to_datetime)
+    end
+
+    it "should have the right tournaments in the right order" do
+      expect(@user.tournaments.to_a).to eq [earlier_start_tournament, later_start_tournament]
+    end
+
+    it "should destroy associated tournaments" do
+      tournaments = @user.tournaments.to_a
+      @user.destroy
+      expect(tournaments).not_to be_empty
+      tournaments.each do |tournament|
+        expect(Tournament.where(id: tournament.id)).to be_empty
+      end
+    end
   end
 end

@@ -59,4 +59,30 @@ describe "Static pages" do
     click_link "Sign in"
     expect(page).to have_title(full_title('Sign in'))
   end
+  
+  describe "tournament links show" do
+    let(:user) { FactoryGirl.create(:user, role: UserSoldier) }
+    let!(:t1) { FactoryGirl.create(:tournament, user: user, name: "Foo") }
+    let!(:t2) { FactoryGirl.create(:tournament, user: user, name: "Bar") }
+        
+    before { sign_in user }
+    
+    it { should have_link('Tournaments') }
+    it { should have_link('<Create New Tournament>')}
+    it { should have_link('Foo') }
+    it { should have_link('Bar') }
+  end
+  
+  describe "tournament links do not show" do
+    let(:user) { FactoryGirl.create(:user, role: UserRecruit) }
+    let!(:t1) { FactoryGirl.create(:tournament, user: user, name: "Foo") }
+    let!(:t2) { FactoryGirl.create(:tournament, user: user, name: "Bar") }
+    
+    before { sign_in user }
+    
+    it { should_not have_link('Tournaments') }
+    it { should_not have_link('<Create New Tournament>')}
+    it { should_not have_link('Foo') }
+    it { should_not have_link('Bar') } 
+  end
 end

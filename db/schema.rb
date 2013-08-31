@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130824030437) do
+ActiveRecord::Schema.define(version: 20130824050902) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,6 +24,36 @@ ActiveRecord::Schema.define(version: 20130824030437) do
   end
 
   add_index "microposts", ["user_id", "created_at"], name: "index_microposts_on_user_id_and_created_at", using: :btree
+
+  create_table "tournaments", force: true do |t|
+    t.string   "name"
+    t.integer  "user_id"
+    t.integer  "status",                   default: 0
+    t.string   "wot_tournament_link"
+    t.string   "wot_team_link"
+    t.string   "team_name"
+    t.text     "description"
+    t.string   "password"
+    t.integer  "minimum_team_size"
+    t.integer  "maximum_team_size"
+    t.integer  "heavy_tier_limit"
+    t.integer  "medium_tier_limit"
+    t.integer  "td_tier_limit"
+    t.integer  "light_tier_limit"
+    t.string   "spg_tier_limit"
+    t.integer  "team_maximum_tier_points"
+    t.text     "victory_conditions"
+    t.text     "schedule"
+    t.text     "prizes"
+    t.text     "maps"
+    t.string   "team"
+    t.datetime "start_date"
+    t.datetime "end_date"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "tournaments", ["end_date"], name: "index_tournaments_on_end_date", using: :btree
 
   create_table "users", force: true do |t|
     t.string   "name"

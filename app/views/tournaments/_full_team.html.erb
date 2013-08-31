@@ -1,0 +1,17 @@
+<p>
+	The team is full, please visit <%= link_to @tournament.team_name, @tournament.wot_team_link, target: '_blank', class: 'external' %>
+	on the Official World of Tanks Team page to verify.
+	<% if !@tournament.password.blank? %>
+	Registration password is: <%= @tournament.password %>
+	<% end %>.
+</p>
+<p>
+	The Team is
+</p>
+<ul>
+	<% @team.each do |user| %>
+	<li>
+		<%= link_to user.wot_name, user%>
+	</li>
+	<% end %>
+</ul>

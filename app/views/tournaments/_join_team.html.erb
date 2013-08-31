@@ -1,0 +1,21 @@
+<p>
+	First register with team: <%= link_to @tournament.team_name, @tournament.wot_team_link, target: '_blank', class: 'external' %>
+	on the Official World of Tanks Team page
+	<% if !@tournament.password.blank? %>
+	using the password: <%= @tournament.password %>
+	<% end %>.
+</p>
+<p>
+	Then return here and click the join button
+</p>
+<p>
+	Current Team
+</p>
+<ul>
+	<% @team.each do |user| %>
+	<li>
+		<%= link_to user.wot_name, user%>
+	</li>
+	<% end %>
+</ul>
+<%= link_to "JOIN TEAM", "#", class: "btn btn-small btn-primary"%>

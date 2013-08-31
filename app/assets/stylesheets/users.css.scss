@@ -2,6 +2,10 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+.row {
+  margin: 5px auto 25px;
+}
+
 .note {
   text-align: center;
   margin: -10px 0 10px;
@@ -38,6 +42,9 @@ li .gravatar {
 #user_stats {
   text-align: left;
   vertical-align: middle;
+  background: white;
+  width: 500px;
+  margin-top: 10px;
   .category {
     font-weight: bold;
     padding: 0 5px 0 10px;
