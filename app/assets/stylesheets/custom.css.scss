@@ -19,7 +19,7 @@ html {
 
 body {
   padding-top: 85px;
-  background-image: url(/assets/t-34-85-1280x720.jpg);
+  background-image: url(image_path('t-34-85-1280x720.jpg'));
   background-repeat: no-repeat;
   background-attachment: fixed;
 }
@@ -112,6 +112,7 @@ p {
 .navbar-inverse .navbar-inner {
   background: transparent;
   border: none;
+  box-shadow: none;
 }
 
 .navbar .container {
