@@ -1,14 +1,12 @@
 <footer class="footer">
-	<small>
-		<a href="http://worldoftanks.com/" id="worldoftanks">
-			<%= image_tag('04_WoT_logo_decor_colour.jpg', alt: "World of Tanks Logo") %>
-		</a>
-		<a href="https://support.worldoftanks.com/index.php?/Default" id="wot_support">
-		<%= image_tag('support_button_wot_na.jpg', alt: "North American Wargaming Support") %>
-		<span class="b-b4r_text_position">
-            <span class="b-b4r_header">North America Wargaming Support</span>
-        </span>
-		</a>
+	<small> 
+		<%= link_to image_tag('04_WoT_logo_decor_colour.jpg', alt: "World of Tanks Logo"), "http://worldoftanks.com/", target: "_blank", id: "worldoftanks" %>
+		<%= link_to "https://support.worldoftanks.com/index.php?/Default", target: "_blank", id:"wot_support" do %> 
+			<%= image_tag('support_button_wot_na.jpg', alt: "North American Wargaming Support") %>
+			<span class="b-b4r_text_position"> 
+				<span class="b-b4r_header">North America Wargaming Support</span> 
+			</span> 
+		<% end %> 	
 	</small>
 	<nav>
 		<ul>
@@ -18,7 +16,9 @@
 			<li>
 				<%= link_to "Contact", contact_path %>
 			</li>
-			<li><a href="http://worldoftanks.com/en/news/">News</a></li>
+			<li>
+				<%= link_to "News", "http://worldoftanks.com/en/news/", target: "_blank" %>
+			</li>
 		</ul>
 	</nav>
 </footer>
