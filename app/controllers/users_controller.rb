@@ -159,14 +159,15 @@ class UsersController < ApplicationController
     user = User.find_by(email: params[:email].downcase)
     token = User.new_remember_token;
     expire = 6.hours.from_now;
-    if !user.update_attribute(:reset_token, User.encrypt(token))
-      flash[:error] = "Unable to generate reset"
-    end
-    if !user.update_attribute(:reset_expire, expire)
-      flash[:error] = "Unable to generate reset"
+    if !user 
+      flash[:error] = "No account found for that email address!"
     else
-      UserMailer.request_password_reset(user, token).deliver
-      flash[:info] = "Password Reset Email Sent"      
+      if !user.update_attribute(:reset_expire, expire) || !user.update_attribute(:reset_token, User.encrypt(token))
+        flash[:error] = "Unable to generate reset"
+      else
+        UserMailer.request_password_reset(user, token).deliver
+        flash[:info] = "Password Reset Email Sent"      
+      end      
     end
     redirect_to(root_url)
   end
