@@ -1,7 +1,18 @@
 <% provide(:title, @tournament.name) %>
 <div class="tournament_page">
-	<h1> <%= @tournament.name %> </h2>
+	<% if @tournament.user_id == current_user.id %>
+	<div class="button_pannel" data-no-turbolink>
+		<%= link_to "Edit Tournament", edit_tournament_path(@tournament), class: "btn btn-info" %>
+		<% if @tournament.status == TournamentForming && @tournament.team.split(',').length >= @tournament.minimum_team_size %>
+			<%= link_to "Close Team", close_tournament_path(@tournament), method: :patch, class: "btn btn-info" %>
+		<% elsif @tournament.status == TournamentFormed %>
+			<%= link_to "Open Team", open_tournament_path(@tournament), method: :patch, class: "btn btn-info" %>
+		<% end %>
+		<%= link_to "Delete Tournament", @tournament, method: :delete, data: { confirm: "You sure?" }, class: "btn btn-info" %>
+	</div>
+	<% end %>
 	
+	<h1> <%= @tournament.name %> </h2>	
 	<div class="text">
 		<%= @tournament.description %>
 	</div>
@@ -55,10 +66,10 @@
 	
 	<h2> Registration </h2>
 	<div class="registration">
-		<% if @team.count < @tournament.maximum_team_size %>
-			<%= render 'tournaments/join_team' %>
+		<% if @team.count >= @tournament.maximum_team_size || @tournament.status == TournamentFormed %>
+			<%= render 'tournaments/full_team' %>
 		<% else %>
-			<%= render 'tournaments/full_team' %>			
+			<%= render 'tournaments/join_team' %>			
 		<% end %>
 	</div>
 </div>

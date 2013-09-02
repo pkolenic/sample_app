@@ -1,13 +1,12 @@
 class Tournament < ActiveRecord::Base
-  before_create :add_owner_to_team
+  before_validation :add_owner_to_team
   before_save :fix_urls
-  
   # Validation Classes
   class EndDateValidator < ActiveModel::EachValidator
     def validate_each(record, attribute, value)
       if (!value.nil?)
         if !record.end_date.nil? && !record.start_date.nil?
-          record.errors[attribute] << 'model.errors.custom.end_date' if record.start_date > record.end_date
+          record.errors[attribute] << 'can not be before the Start Date' if record.start_date > record.end_date
         end
       end
     end
@@ -17,35 +16,38 @@ class Tournament < ActiveRecord::Base
     def validate_each(record, attribute, value)
       if (!value.nil?)
         if !record.start_date.nil?
-          record.errors[attribute] << I18n.t('model.errors.custom.start_date') if DateTime.now > record.start_date
+          record.errors[attribute] << 'can not be in the past' if DateTime.now > record.start_date
         end
       end
     end
   end
-  
+
   class MaximumTeamValidator < ActiveModel::EachValidator
     def validate_each(record, attribute, value)
       if (!value.nil?)
         if !record.maximum_team_size? && !record.minimum_team_size?
-           record.errors[attribute] << I18n.t('model.errors.custom.maximum_team_size') if record.maximum_team_size < record.minimum_team_size
+          record.errors[attribute] << 'model.errors.custom.maximum_team_size' if record.maximum_team_size < record.minimum_team_size
+        end
+        if record.maximum_team_size? && record.minimum_team_size?
+          record.errors[attribute] << 'can not be less than Minimum Team Size' if record.maximum_team_size < record.minimum_team_size
         end
       end
     end
   end
-  
+
   class TeamTierValidator < ActiveModel::EachValidator
     def validate_each(record, attribute, value)
       if (!value.nil?)
         if !record.team_maximum_tier_points? && !record.minimum_team_size?
-           record.errors[attribute] << I18n.t('model.errors.custom.team_maximum_tier_points') if record.team_maximum_tier_points < record.minimum_team_size
+          record.errors[attribute] << 'can not be blank' if record.team_maximum_tier_points < record.minimum_team_size
         end
         if record.minimum_team_size?
-          record.errors[attribute] << I18n.t('model.errors.custom.team_maximum_tier_points') if record.team_maximum_tier_points < record.minimum_team_size
+          record.errors[attribute] << 'can not be less than the Minimum Team Size' if record.team_maximum_tier_points < record.minimum_team_size
         end
       end
     end
   end
-  
+
   # Association
   belongs_to :user
 
@@ -67,27 +69,41 @@ class Tournament < ActiveRecord::Base
   validates :team_maximum_tier_points, presence: true, team_tier: true
   validates :start_date, presence: true, start_date: true
   validates :end_date, presence: true, end_date: true
+  validates :wot_tournament_link, presence: true
+  validates :wot_team_link, presence: true
 
   validate  :ensure_team_less_or_equal_to_max_team_size
 
   def ensure_team_less_or_equal_to_max_team_size
     members = self.team.split(',').length
     if members > self.maximum_team_size.to_i
-      errors.add(:team, 'team is too large')
+      errors.add(:team, 'is too large')
     end
   end
-  
+
   private
-    def fix_urls
-      if !%w( http https ).include?(self.wot_tournament_link)
-        self.wot_tournament_link = "http://#{self.wot_tournament_link}"
-      end
-      if !%w( http https ).include?(self.wot_team_link)
-        self.wot_team_link = "http://#{self.wot_team_link}"
-      end
+
+  def uri?(string)
+    uri = URI.parse(string)
+    %w( http https ).include?(uri.scheme)
+    rescue URI::BadURIError
+      false
+    rescue URI::InvalidURIError
+      false
+  end
+
+  def fix_urls
+    if !self.wot_tournament_link.blank? && !uri?(self.wot_tournament_link)
+      self.wot_tournament_link = "http://#{self.wot_tournament_link}"
     end
-    
-    def add_owner_to_team
+    if !self.wot_team_link.blank? && !uri?(self.wot_team_link)
+      self.wot_team_link = "http://#{self.wot_team_link}"
+    end
+  end
+
+  def add_owner_to_team
+    if self.team.blank?
       self.team = "#{self.user_id}"
     end
+  end
 end

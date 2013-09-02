@@ -98,6 +98,7 @@ describe "Authentication" do
 
     describe "for non-signed-in users" do
       let(:user) { FactoryGirl.create(:user) }
+      let!(:tournament) { FactoryGirl.create(:tournament, user: user) }
 
       describe "when attempting to visit a protected page" do
         before do
@@ -128,6 +129,19 @@ describe "Authentication" do
         describe "visiting the user index" do
           before { visit users_path }
           it { should have_title('Sign in') }
+        end
+      end
+      
+      describe "in the Tournament controller" do
+
+        describe "visiting the edit page" do
+          before { visit edit_tournament_path(tournament) }
+          it { should have_title('Sign in') }
+        end
+
+        describe "submitting to the update action" do
+          before { patch tournament_path(tournament) }
+          specify { expect(response).to redirect_to(signin_path) }
         end
       end
       
@@ -224,7 +238,34 @@ describe "Authentication" do
       describe "submitting a PATCH request to the Users#update action" do
         before { patch user_path(wrong_user) }
         specify { expect(response).to redirect_to(root_url) }
+      end  
+    end
+    
+    describe "as non tournament owner" do
+      let(:user) { FactoryGirl.create(:user, role: UserSoldier) }
+      let(:wrong_user) { FactoryGirl.create(:user, email: "wrong@example.com", role: UserSoldier) }
+      let!(:tournament) { FactoryGirl.create(:tournament, user: user) }
+      before { sign_in wrong_user, no_capybara: true }
+
+      describe "visiting Tournament#edit page" do
+        before { visit edit_tournament_path(tournament) }
+        it { should_not have_title(full_title('Edit Tournament')) }
       end
+
+      describe "submitting a PATCH request to the Tournament#update action" do
+        before { patch tournament_path(tournament) }
+        specify { expect(response).to redirect_to(root_url) }
+      end   
+      
+      describe "submitting a PATCH request to the Tournament#open_tournament action" do
+        before { patch open_tournament_path(tournament) }
+        specify { expect(response).to redirect_to(root_url) }
+      end  
+      
+      describe "submitting a PATCH request to the Tournament#close_tournament action" do
+        before { patch close_tournament_path(tournament) }
+        specify { expect(response).to redirect_to(root_url) }
+      end             
     end
     
     describe "as non-admin user" do

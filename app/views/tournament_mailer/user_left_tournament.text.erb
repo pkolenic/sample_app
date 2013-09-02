@@ -1,0 +1,9 @@
+<%= @user.wot_name %> has left the tournament: <%= @tournament.name %>
+===============================================
+<%= @owner.wot_name%>,
+
+
+	<%= @tournament.name %> now has <%= @tournament.team.split(',').length %> members on the team.
+
+    Please visit the official team page for '<%= @tournament.team_name %>' <%= @tournament.wot_team_link %>
+    to verify that it reflects the same team as listed on <%= tournament_url @tournament, host: 'https://fearthefallen.herokuapp.com' %>

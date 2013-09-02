@@ -19,9 +19,11 @@ html {
 
 body {
   padding-top: 85px;
-  background-image: url(image_path('t-34-85-1280x720.jpg'));
+  background-image: url(image_path('t-34-85-2560x1600.jpg'));
   background-repeat: no-repeat;
   background-attachment: fixed;
+  background-position: center;
+  background-size: 100%;
 }
 
 section {
@@ -78,9 +80,18 @@ p {
   line-height: 1.7em;
 }
 
+.span8 {
+  background: white;
+  padding: 10px 20px;
+  margin: 0 auto;
+  float: none;
+}
+
 .span6 {
   background: white;
   padding: 10px;
+  margin: 0 auto;
+  float: none;
 }
 
 /* header */
@@ -291,4 +302,20 @@ input {
   .btn {
     margin-right: 10px;
   }
+}
+
+/* Forms */
+.form_block {
+  display: inline-block;
+  margin-right: 40px;
+  .width200 {
+    width: 200px;
+  }
+  .width120 {
+    width: 120px;
+  }
+}
+
+.mce-tinymce.mce-container.mce-panel {
+  margin-bottom: 10px;
 }

@@ -15,3 +15,7 @@
 	</li>
 	<% end %>
 </ul>
+
+<%if current_user.id != @tournament.user_id && @tournament.status == TournamentForming %>
+	<%= link_to "LEAVE TEAM", leave_tournament_path(@tournament), method: :patch, class: "btn btn-small btn-primary"%>
+<% end %>

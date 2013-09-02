@@ -242,6 +242,8 @@ GEM
     thread_safe (0.1.0)
       atomic
     tilt (1.4.1)
+    tinymce-rails (4.0.2)
+      railties (>= 3.1.1)
     treetop (1.4.14)
       polyglot
       polyglot (>= 0.3.1)
@@ -286,6 +288,7 @@ DEPENDENCIES
   sdoc (= 0.3.20)
   selenium-webdriver (= 2.0.0)
   spork-rails!
+  tinymce-rails
   turbolinks (= 1.1.1)
   uglifier (= 2.1.1)
   will_paginate (= 3.0.4)

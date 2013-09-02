@@ -1,0 +1,16 @@
+The tournament "<%= @tournament.name %>" has reach its full team size
+===============================================
+<%= @owner.wot_name%>,
+
+
+	<%= @tournament.name %> has reach its full team size of <%= @tournament.maximum_team_size %>
+	
+	The current Team is:
+    <% @team.each do |member| %>
+        <%= member.wot_name %>
+    <% end %>
+
+    Please visit the official team page for '<%= @tournament.team_name %>' <%= @tournament.wot_team_link %>
+    to verify that it reflects the same team as listed on <%= tournament_url @tournament, host: 'https://fearthefallen.herokuapp.com' %>
+    
+    Also don't forget to update the team status while at '<%= @tournament.team_name %>' <%= @tournament.wot_team_link %>

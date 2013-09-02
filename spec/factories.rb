@@ -37,7 +37,7 @@ FactoryGirl.define do
     schedule "When everyone can't make it"
     prizes "Gold and stuff"
     maps "Only the one noone likes"
-    team "2,3,4,5"
+    team "2,3,4"
     start_date "2099-08-20 18:30:00".to_datetime
     end_date "2099-12-26 18:30:00".to_datetime
     user

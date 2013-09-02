@@ -103,8 +103,11 @@ describe Tournament do
     it { should_not be_valid }
   end
   
-  describe "with maximum_team_size that is too small" do
-    before { @tournament.maximum_team_size = 1 }
+  describe "with maximum_team_size that is smaller than miniumum_team_size" do
+    before do 
+      @tournament.minimum_team_size = 3
+      @tournament.maximum_team_size = 2
+    end
     it { should_not be_valid }
   end
   
@@ -200,4 +203,14 @@ describe Tournament do
     end
     it { should_not be_valid }
   end   
+  
+  describe "with blank tournament link" do
+    before { @tournament.wot_tournament_link = '' }
+    it { should_not be_valid }
+  end
+  
+  describe "with blank team link" do
+    before { @tournament.wot_team_link = '' }
+    it { should_not be_valid }
+  end
 end

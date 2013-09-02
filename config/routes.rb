@@ -12,6 +12,11 @@ SampleApp::Application.routes.draw do
   match '/users/:id/add_clanwar', to: 'users#add_clanwar', as:'add_clanwar', via: 'patch'
   match '/users/:id/remove_clanwar', to: 'users#remove_clanwar', as:'remove_clanwar', via: 'patch'
   
+  match '/tournaments/:id/join', to: 'tournaments#join_tournament', as:'join_tournament', via: 'patch'
+  match '/tournaments/:id/leave', to: 'tournaments#leave_tournament', as:'leave_tournament', via: 'patch'
+  match '/tournaments/:id/close', to: 'tournaments#close_tournament', as:'close_tournament', via: 'patch'
+  match '/tournaments/:id/open', to: 'tournaments#open_tournament', as:'open_tournament', via: 'patch'
+  
   root  'static_pages#home'
   match '/signup',  to: 'users#new',            via: 'get'
   match '/help',    to: 'static_pages#help',    via: 'get'

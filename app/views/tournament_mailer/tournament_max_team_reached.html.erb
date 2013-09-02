@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+  	<h1>The tournament "<%= @tournament.name %>" has reach its full team size</h1>
+    <p>
+   	  <%= @owner.wot_name%>,<br/><br/>
+   	  
+   	  <%= @tournament.name %> has reach its full team size of <%= @tournament.maximum_team_size %>
+    </p>
+    <p>
+    	The current Team is:
+    	<ul>
+    		<% @team.each do |member| %>
+    			<li>
+    				<%= member.wot_name %>
+    			</li>
+    		<% end %>
+    	</ul>
+    </p>
+    <p> Please visit the official team page for <%= link_to @tournament.team_name, @tournament.wot_team_link, target: '_blank' %>
+    	to verify that it reflects the same team as listed on <%= link_to @tournament.name, @tournament %>
+    </p>
+    
+    <p> Also don't forget to update the team status while at <%= link_to @tournament.team_name, @tournament.wot_team_link, target: '_blank' %></p>
+  </body>
+</html>

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+  	<h1><%= @user.wot_name %> has joined the tournament: <%= @tournament.name %></h1>
+    <p>
+   	  <%= @owner.wot_name%>,<br/><br/>
+   	  
+   	  <%= @tournament.name %> now has <%= @tournament.team.split(',').length %> members on the team.
+    </p>
+    <p> Please visit the official team page for <%= link_to @tournament.team_name, @tournament.wot_team_link, target: '_blank' %>
+    	to verify that it reflects the same team as listed on <%= link_to @tournament.name, @tournament %>
+    </p>
+  </body>
+</html>

@@ -15,4 +15,5 @@
 //= require bootstrap
 //= require bootstrap-datetimepicker
 //= require turbolinks
+//= require tinymce
 //= require_tree .

@@ -2,7 +2,7 @@
 <h1>Promoting <%= @user.wot_name %></h1>
 <h2>Current Rank: <%= user_role(@user.role) %> </h2>
 <div class="row">
-  <div class="span6 offset3">
+  <div class="span6">
     <%= form_tag promotion_path(@user), method: "patch" do %>
     	<%= label_tag 'promotion[role_id]', "Choice new role for #{@user.wot_name}" %>
 		<%= select_tag('promotion[role_id]', options_for_select(promotion_choices(current_user.role, @user.role))) %>
