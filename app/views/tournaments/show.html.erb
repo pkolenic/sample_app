@@ -14,10 +14,11 @@
 	
 	<h1> <%= @tournament.name %> </h2>	
 	<div class="text">
-		<%= @tournament.description %>
+		<%= @tournament.description.html_safe %>
 	</div>
 	
 	<div class="dates">
+		All Times are in PST as found on the World of Tank Page<br/>
 		<span class="title">Registration Begins</span> <span class="value">: <%= @tournament.start_date %></span><br/>
 		<span class="title">Registration Ends</span> <span class="value">: <%= @tournament.end_date %></span><br/>
 	</div>
@@ -46,22 +47,22 @@
 	
 	<h2> Victory Conditions </h2>
 	<div class="text box">
-		<%= @tournament.victory_conditions %>
+		<%= @tournament.victory_conditions.html_safe %>
 	</div>
 	
 	<h2> Schedule </h2>
 	<div class="text box">
-		<%= @tournament.schedule %>
+		<%= @tournament.schedule.html_safe %>
 	</div>
 	
 	<h2> Prizes </h2>
 	<div class="text box">
-		<%= @tournament.prizes %>
+		<%= @tournament.prizes.html_safe %>
 	</div>
 	
 	<h2> Maps </h2>
 	<div class="text box">
-		<%= @tournament.maps %>
+		<%= @tournament.maps.html_safe %>
 	</div>
 	
 	<h2> Registration </h2>
