@@ -19,6 +19,8 @@ describe User do
   it { should respond_to(:clan_war_team) }
   it { should respond_to(:admin) }
   it { should respond_to(:wot_id) }
+  it { should respond_to(:reset_token) }
+  it { should respond_to(:reset_expire) }
 
   # Clan Details
   it { should respond_to(:clan_id) }

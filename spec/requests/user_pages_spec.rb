@@ -9,6 +9,11 @@ describe "User pages" do
     it { should have_title(full_title(page_title)) }
   end
   
+  shared_examples_for "bad_reset_request" do
+    it { should_not have_selector('h1', text: heading) }
+    it { should_not have_title(full_title(page_title)) }
+  end
+  
   shared_examples_for "should promote recruit" do
     before do        
       tanker.update_attribute(:role, UserRecruit)
@@ -496,6 +501,56 @@ describe "User pages" do
       end
       before { patch user_path(user), params }
       specify { expect(user.reload).not_to be_admin }
+    end
+  end
+  
+  describe "password reset" do
+    let(:heading) { 'Reset Password' }
+    let(:page_title) { 'Reset Password' }
+    let(:token) { User.new_remember_token }
+      
+    describe "with valid token and expiration date" do           
+      let(:user) { FactoryGirl.create(:user, reset_token: User.encrypt(token), reset_expire: 3.days.from_now) }
+        
+      before { visit reset_password_path(user) + "?token=#{token}" } 
+      
+      it_should_behave_like "all user pages"
+      it {should have_content(user.wot_name)}
+      
+      describe "with valid information" do
+        before do
+          fill_in "New Password",     with: user.password
+          fill_in "Confirm Password", with: user.password
+          click_button "Submit Reset"          
+        end
+        
+        it { should have_title(user.wot_name) }
+        it { should have_selector('div.alert.alert-success') }
+        it { should have_link('Sign out', href: signout_path) }        
+        it { should have_success_message('Password Reset') }
+      end
+      
+      describe "with invalid information" do
+        before { click_button "Submit Reset" }
+
+        it { should have_content('error') }
+      end
+    end 
+    
+    describe "with valid token and invalid expiration date" do
+      let(:user) { FactoryGirl.create(:user, reset_token: User.encrypt(token), reset_expire: 3.days.ago) }
+      
+      before { visit reset_password_path(user) + "?token=#{token}" }
+      
+      it_should_behave_like "bad_reset_request" 
+    end 
+    
+    describe "with invalid token" do
+      let(:user) { FactoryGirl.create(:user, reset_token: User.encrypt(token), reset_expire: 3.days.from_now) }
+      
+      before { visit reset_password_path(user) + "?token=junk" }
+      
+      it_should_behave_like "bad_reset_request"             
     end
   end
 end

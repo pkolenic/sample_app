@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130824050902) do
+ActiveRecord::Schema.define(version: 20130902174556) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -132,10 +132,13 @@ ActiveRecord::Schema.define(version: 20130824050902) do
     t.integer  "damage_dealt_60day",   limit: 8
     t.integer  "hit_percentage_60day", limit: 8
     t.float    "avg_tier_60day"
+    t.string   "reset_token"
+    t.datetime "reset_expire"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["remember_token"], name: "index_users_on_remember_token", using: :btree
+  add_index "users", ["reset_token"], name: "index_users_on_reset_token", using: :btree
   add_index "users", ["wot_id"], name: "index_users_on_wot_id", using: :btree
 
 end

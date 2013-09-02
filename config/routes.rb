@@ -17,6 +17,13 @@ SampleApp::Application.routes.draw do
   match '/tournaments/:id/close', to: 'tournaments#close_tournament', as:'close_tournament', via: 'patch'
   match '/tournaments/:id/open', to: 'tournaments#open_tournament', as:'open_tournament', via: 'patch'
   
+  match 'users/:id/reset_password', to: 'users#reset_password', as:'reset_password', via: 'get'
+  match 'users/:id/reset_password', to: 'users#update_password', as:'update_password', via: 'patch'
+  
+  
+  match '/reset_password', to: 'users#request_password', as:'request_password', via: 'get'
+  match '/reset_password', to: 'users#send_reset_request', as:'send_reset_request', via: 'patch'
+  
   root  'static_pages#home'
   match '/signup',  to: 'users#new',            via: 'get'
   match '/help',    to: 'static_pages#help',    via: 'get'

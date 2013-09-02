@@ -121,8 +121,58 @@ class UsersController < ApplicationController
     end
   end
 
-  private
+  def reset_password
+    reset_token = User.encrypt(params[:token])
+    @user = User.find_by(reset_token: reset_token)
+    @token = params[:token]
+    if !@user
+      flash[:error] = "Invalid reset token!"
+      redirect_to(root_url)
+    elsif @user.reset_expire < DateTime.now
+      flash[:error] = "The Reset Token has expired, please request a new one!"
+      redirect_to(root_url)
+    end
+  end
 
+  def update_password
+    reset_token = User.encrypt(params[:token])
+    @user = User.find_by(reset_token: reset_token)
+    @token = params[:token]
+    params = user_params
+    params[:reset_token] = nil
+    params[:reset_expire] = nil
+    if @user.update_attributes(params)
+      flash[:success] = "Password Reset"
+      UserMailer.password_reset(@user).deliver
+      sign_in @user
+      redirect_to @user
+    else
+      render 'reset_password'
+    end
+  end
+
+  def request_password  
+      @user = User.new
+  end
+
+  def send_reset_request
+    user = User.find_by(email: params[:email].downcase)
+    token = User.new_remember_token;
+    expire = 6.hours.from_now;
+    if !user.update_attribute(:reset_token, User.encrypt(token))
+      flash[:error] = "Unable to generate reset"
+    end
+    if !user.update_attribute(:reset_expire, expire)
+      flash[:error] = "Unable to generate reset"
+    else
+      UserMailer.request_password_reset(user, token).deliver
+      flash[:info] = "Password Reset Email Sent"      
+    end
+    redirect_to(root_url)
+  end
+  
+
+  private
   def user_params
     params.require(:user).permit(:name, :wot_name, :email, :password,
     :password_confirmation)
