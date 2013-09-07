@@ -12,16 +12,6 @@ class Tournament < ActiveRecord::Base
     end
   end
 
-  class StartDateValidator < ActiveModel::EachValidator
-    def validate_each(record, attribute, value)
-      if (!value.nil?)
-        if !record.start_date.nil?
-          record.errors[attribute] << 'can not be in the past' if DateTime.now > record.start_date
-        end
-      end
-    end
-  end
-
   class MaximumTeamValidator < ActiveModel::EachValidator
     def validate_each(record, attribute, value)
       if (!value.nil?)
@@ -67,7 +57,7 @@ class Tournament < ActiveRecord::Base
   validates :light_tier_limit, presence: true, numericality: { greater_than: 0 }
   validates :spg_tier_limit, presence: true, numericality: { greater_than: 0 }
   validates :team_maximum_tier_points, presence: true, team_tier: true
-  validates :start_date, presence: true, start_date: true
+  validates :start_date, presence: true
   validates :end_date, presence: true, end_date: true
   validates :wot_tournament_link, presence: true
   validates :wot_team_link, presence: true

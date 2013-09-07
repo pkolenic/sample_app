@@ -181,11 +181,6 @@ describe Tournament do
     it { should_not be_valid }
   end
   
-  describe "with start_date in past" do
-    before { @tournament.start_date = "1970-08-20 18:30:00".to_datetime }
-    it { should_not be_valid }
-  end  
-  
   describe "with blank end_date" do
     before { @tournament.end_date = '' }
     it { should_not be_valid }
