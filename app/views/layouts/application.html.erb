@@ -7,6 +7,11 @@
 		<%= javascript_include_tag "application", "data-turbolinks-track" => true %>
 		<%= csrf_meta_tags %>
 		<%= render 'layouts/shim' %>
+		<style type="text/css">
+			body {
+				background-image: url(<%= random_image %>);
+			}	
+		</style>
 	</head>
 	<body>
 		<%= render 'layouts/header' %>

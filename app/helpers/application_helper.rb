@@ -8,4 +8,9 @@ module ApplicationHelper
       "#{base_title} | #{page_title}"
     end
   end
+  
+  def random_image
+    files = Dir.glob("app/assets/images/backgrounds/*")
+    "#{ image_url files.shuffle.first.gsub('app/assets/images/', '')}"
+  end
 end
