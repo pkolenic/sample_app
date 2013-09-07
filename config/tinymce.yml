@@ -1,2 +1,28 @@
-menubar: false
-
+theme_advanced_toolbar_location: top
+theme_advanced_toolbar_align: left
+theme_advanced_statusbar_location: bottom
+theme_advanced_buttons3_add:
+  - tablecontrols
+  - toolscontrols
+menubar: 
+  - edit 
+  - insert
+  - view
+  - format
+  - table
+  - tools
+plugins:
+  - table
+  - autolink
+  - lists
+  - link
+  - image
+  - charmap
+  - preview
+  - anchor
+  - searchreplace
+  - visualblocks
+  - code
+  - insertdatetime
+  - media
+  - paste

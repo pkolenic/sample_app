@@ -72,26 +72,17 @@
 
 <div class="input-append form_block datetimepicker">
 	<%= f.label :start_date, "Start Date"%>
-	<%= f.text_field :start_date, class: "width200", data: {format: "yyyy-MM-dd HH:mm:ss"} %>
-	<span class="add-on">
-      <i data-time-icon="icon-time" data-date-icon="icon-calendar">
-      </i>
-    </span>
+	<%= f.text_field :start_date, class: "width200" %>
 </div>
 
 <div class="input-append form_block datetimepicker">
 	<%= f.label :end_date, "End Date"%>
-	<%= f.text_field :end_date, class: "width200", data: {format: "yyyy-MM-dd HH:mm:ss"} %>
-	<span class="add-on">
-      <i data-time-icon="icon-time" data-date-icon="icon-calendar">
-      </i>
-    </span>
+	<%= f.text_field :end_date, class: "width200" %>
 </div>
 
 <script type="text/javascript">
   $(function() {
-    $('.datetimepicker').datetimepicker({
-      language: 'en',
-    });
+    $('#tournament_start_date').datetimepicker();
+    $('#tournament_end_date').datetimepicker();
   });
 </script>
