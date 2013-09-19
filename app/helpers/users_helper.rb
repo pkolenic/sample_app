@@ -39,4 +39,29 @@ module UsersHelper
     end
   end
 
+  def self.convert_role(role, clan)
+    if clan == 'Fear the Fallen'
+      case role
+      when 'recruit'
+        role_id = UserRecruit
+      when 'private'
+        role_id = UserSoldier
+      when 'treasurer'
+        role_id =UserTreasurer
+      when 'recruiter'
+        role_id = UserRecruiter
+      when 'diplomat'
+        role_id = UserDiplomat
+      when 'commander'
+        role_id= UserCompanyCommander
+      when 'vice_leader'
+        role_id = UserDeputyCommander
+      when 'leader'
+        role_id =UserCommander
+      end
+    else
+      role_id = UserAmbassador
+    end
+    role_id
+  end
 end

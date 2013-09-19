@@ -4,6 +4,7 @@ FactoryGirl.define do
     sequence(:email)    { |n| "person_#{n}@example.com"}
     sequence(:wot_name) { |n| "tanker_#{n}"}
     role  UserPending
+    active  true
     clan_war_team false
     password "foobar"
     password_confirmation "foobar"

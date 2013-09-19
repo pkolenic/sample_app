@@ -21,6 +21,7 @@ describe User do
   it { should respond_to(:wot_id) }
   it { should respond_to(:reset_token) }
   it { should respond_to(:reset_expire) }
+  it { should respond_to(:active) }
 
   # Clan Details
   it { should respond_to(:clan_id) }
@@ -205,6 +206,35 @@ describe User do
     end
   end
 
+  describe "wot_name is already taken" do
+    before do
+      user_with_same_wot_name = @user.dup
+      user_with_same_wot_name.active = true
+      user_with_same_wot_name.email = "new-email@email.com"
+      user_with_same_wot_name.save
+    end
+    
+    it { should_not be_valid }
+  end
+  
+  describe "wot_name is already taken by holder account" do
+    before do
+      user_with_same_wot_name = @user.dup
+      user_with_same_wot_name.active = false
+      user_with_same_wot_name.email = "new-email@email.com"
+      user_with_same_wot_name.save
+    end
+ 
+    it { should be_valid }
+    
+    it "should send approval email" do
+      @user.save
+      expect(ActionMailer::Base.deliveries.last.to).to eq [@user.email]
+      expect(ActionMailer::Base.deliveries.last.subject).to eq "Clan Status Approved"
+      #expect(@user.role).to eq UserRecruit #Not sure why role is showing as UserPending
+    end
+  end
+  
   describe "when password is not present" do
     before do
       @user = User.new(name: "Example User", email: "user@example.com",

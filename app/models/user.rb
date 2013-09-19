@@ -9,9 +9,21 @@ class User < ActiveRecord::Base
   # Associations
   has_many :tournaments, dependent: :destroy
 
+  # Validation Classes
+  class WotNameValidator < ActiveModel::EachValidator
+    def validate_each(record, attribute, value)
+      if (!value.nil?)
+        if record.id.nil?
+          existing_user = User.find_by(wot_name: record.wot_name)
+          record.errors['World'] << 'of Tanks Name already in use' if existing_user && existing_user.active?
+        end
+      end
+    end
+  end
+
   # Validations
   validates :name, presence: true, length: { maximum: 50 }
-  validates :wot_name, presence: true, length: { maximum: 50 }
+  validates :wot_name, presence: true, length: { maximum: 50 }, wot_name: true
 
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i
   validates :email, presence: true, format: { with: VALID_EMAIL_REGEX },
@@ -170,15 +182,15 @@ class User < ActiveRecord::Base
           self.clan_abbr = total["clan"]["clan"]["abbreviation"]
           self.clan_logo = total["clan"]["clan"]["emblems_urls"]["large"]
           
-          if self.role > UserPending
+          if self.role > UserPending || !self.active?
             previous_role = self.role
             self.role = convert_role(total["clan"]["member"]["role"], total["clan"]["clan"]["name"])
             if previous_role != self.role 
-              if self.role == UserAmbassador
+              if self.role == UserAmbassador && self.active?
                 UserMailer.made_ambassador(self).deliver
-              elsif self.role > previous_role
+              elsif self.role > previous_role && self.active?
                 UserMailer.promoted(self, user_role(self.role), '').deliver
-              else 
+              elsif self.active?
                 UserMailer.demoted(self, user_role(self.role), 'Auto Sent based on action taken on the Official World of Tank Clan page.').deliver
               end
             end

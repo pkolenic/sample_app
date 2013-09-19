@@ -1,4 +1,6 @@
 class UsersController < ApplicationController
+  include HTTParty
+  
   before_action :signed_in_user, only: [:index, :edit, :update, :destroy]
   before_action :correct_user,   only: [:edit, :update]
   before_action :admin_user,     only: :destroy
@@ -6,6 +8,8 @@ class UsersController < ApplicationController
   before_action :approval_user,  only: :approve
   before_action :appointment_user, only: [:add_clanwar, :remove_clanwar]
   before_action :fetch_user_stats, only: [:index, :show]
+  before_action :build_new_users, only: [:index]
+  
   def index
     if params[:type]
       type = params[:type]
@@ -22,13 +26,16 @@ class UsersController < ApplicationController
       when 'ambassadors'
         filter = "role = ?"
         value = UserAmbassador
+      when 'active'
+        filter = "active = ?"
+        value = true
       end
     end
 
     if filter
-      @users = User.where(filter, value).paginate(page: params[:page], :per_page => 10).order(:id)
+      @users = User.where(filter, value).paginate(page: params[:page], :per_page => 10).order(:wot_name)
     else
-      @users = User.paginate(page: params[:page], :per_page => 10).order(:id)
+      @users = User.paginate(page: params[:page], :per_page => 10).order(:wot_name)
     end
   end
 
@@ -56,13 +63,28 @@ class UsersController < ApplicationController
   end
 
   def create
-    @user = User.new(user_params)
-    if @user.save
-      sign_in @user
-      flash[:success] = "Welcome to Fear The Fallen"
-      redirect_to @user
+    params = user_params
+    @user = User.find_by(wot_name: params[:wot_name])
+    if @user && !@user.active?
+      params[:active] = true
+      if @user.update_attributes(params)
+        UserMailer.approved(@user).deliver
+        sign_in @user
+        flash[:success] = "Welcome to Fear The Fallen"
+        redirect_to @user
+       else
+         render 'new'
+       end
     else
-      render 'new'
+      params[:active] = true
+      @user = User.new(params)
+      if @user.save
+        sign_in @user
+        flash[:success] = "Welcome to Fear The Fallen"
+        redirect_to @user
+      else
+        render 'new'
+      end
     end
   end
 
@@ -191,6 +213,41 @@ class UsersController < ApplicationController
     elsif Rails.env.test?
       User.all.each do |user|
         user.update_stats
+      end
+    end
+  end
+
+  def build_new_users
+    last_update = User.first.updated_at
+    if DateTime.now.to_i - last_update.to_i > (3600 * 12) && !Rails.env.test?
+      clan_id = "1000007730"
+      clan_name = "Fear the Fallen"
+      url = "http://api.worldoftanks.com/community/clans/#{clan_id}/api/1.1/?source_token=WG-WoT_Assistant-1.3.2"
+      response = self.class.get url
+      if response.parsed_response.class == Hash
+        json_response = response.parsed_response
+      else
+        json_response = JSON.parse response.parsed_response  
+      end
+      
+      if json_response["status"] == 'ok'
+          members = json_response["data"]["members"]
+          members.each do |member|
+            role = UsersHelper.convert_role(member['role_localised'], clan_name)
+            password = User.new_remember_token
+            email = "#{member['account_name']}@fearthefallen.com"
+            user = User.new(name: "Inactive", 
+                            wot_name: member['account_name'], 
+                            email: email, 
+                            password: password, 
+                            password_confirmation: password, 
+                            wot_id: member['account_id'],
+                            role: role)            
+            existing_user = User.find_by(wot_name: member['account_name'])
+            if !existing_user
+              user.save!
+            end
+          end
       end
     end
   end

@@ -62,6 +62,19 @@ describe "Authentication" do
         it { should have_link('Sign in') }
       end
     end
+    
+    describe "with inactive user" do
+      let(:user) { FactoryGirl.create(:user, active: false)}
+      let(:params) do
+          { user: { name: user.name, email: 'new_user@example.com',
+                  password: user.password, password_confirmation: user.password } }
+      end
+      
+      before { sign_in user }
+      
+      it { should have_title('Sign up') }
+      it { should have_error_message('User not active') }
+    end
   end
   
   describe "authorization" do

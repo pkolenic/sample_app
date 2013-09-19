@@ -5,6 +5,7 @@
 
 <div class="filter_bar">
 	<%= link_to "All Tankers", "#{users_path}", class: "btn btn-small btn-primary" %>
+	<%= link_to "Active", "#{users_path}/?type=active", class: "btn btn-small btn-primary" %>
 <% if current_user.can_approve? %>
 	<%= link_to "Pending", "#{users_path}/?type=pending", class: "btn btn-small btn-primary" %>
 	<%= link_to "Ambassadors", "#{users_path}/?type=ambassadors", class: "btn btn-small btn-primary" %>
