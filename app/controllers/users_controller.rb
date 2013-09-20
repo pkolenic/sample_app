@@ -220,34 +220,37 @@ class UsersController < ApplicationController
   def build_new_users
     last_update = User.first.updated_at
     if DateTime.now.to_i - last_update.to_i > (3600 * 12) && !Rails.env.test?
-      clan_id = "1000007730"
-      clan_name = "Fear the Fallen"
-      url = "http://api.worldoftanks.com/community/clans/#{clan_id}/api/1.1/?source_token=WG-WoT_Assistant-1.3.2"
-      response = self.class.get url
-      if response.parsed_response.class == Hash
-        json_response = response.parsed_response
-      else
-        json_response = JSON.parse response.parsed_response  
-      end
-      
-      if json_response["status"] == 'ok'
-          members = json_response["data"]["members"]
-          members.each do |member|
-            role = UsersHelper.convert_role(member['role_localised'], clan_name)
-            password = User.new_remember_token
-            email = "#{member['account_name']}@fearthefallen.com"
-            user = User.new(name: "Inactive", 
-                            wot_name: member['account_name'], 
-                            email: email, 
-                            password: password, 
-                            password_confirmation: password, 
-                            wot_id: member['account_id'],
-                            role: role)            
-            existing_user = User.find_by(wot_name: member['account_name'])
-            if !existing_user
-              user.save!
+      Thread.new do
+        clan_id = "1000007730"
+        clan_name = "Fear the Fallen"
+        url = "http://api.worldoftanks.com/community/clans/#{clan_id}/api/1.1/?source_token=WG-WoT_Assistant-1.3.2"
+        response = self.class.get url
+        if response.parsed_response.class == Hash
+          json_response = response.parsed_response
+        else
+          json_response = JSON.parse response.parsed_response  
+        end
+        
+        if json_response["status"] == 'ok'
+            members = json_response["data"]["members"]
+            members.each do |member|
+              role = UsersHelper.convert_role(member['role_localised'], clan_name)
+              password = User.new_remember_token
+              email = "#{member['account_name']}@fearthefallen.com"
+              user = User.new(name: "Inactive", 
+                              wot_name: member['account_name'], 
+                              email: email, 
+                              password: password, 
+                              password_confirmation: password, 
+                              wot_id: member['account_id'],
+                              role: role)            
+              existing_user = User.find_by(wot_name: member['account_name'])
+              if !existing_user
+                user.save!
+              end
             end
-          end
+        end
+        ActiveRecord::Base.connection.close
       end
     end
   end
