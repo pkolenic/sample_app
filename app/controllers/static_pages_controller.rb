@@ -37,6 +37,13 @@ class StaticPagesController < ApplicationController
     render 'videos'    
   end
   
+  def mapvideos
+    @title = "World of Tanks Map Guides"
+    @disqus = "mapvideos"
+    @header = "World of Tanks Map Guides"
+    render 'map_videos'     
+  end
+  
   private
   
     # Before filters
