@@ -8,7 +8,7 @@ class UsersController < ApplicationController
   before_action :approval_user,  only: :approve
   before_action :appointment_user, only: [:add_clanwar, :remove_clanwar]
   before_action :fetch_user_stats, only: [:index, :show]
-  before_action :build_new_users, only: [:index]
+  # before_action :build_new_users, only: [:index]
   
   def index
     if params[:type]
@@ -228,8 +228,16 @@ class UsersController < ApplicationController
   end
 
   def build_new_users
-    last_update = User.first.updated_at
+    if Update.first
+      last_update = Update.first.updated_at  
+    else
+      last_update = DateTime.now
+      update = Update.new
+      update.save
+    end
+    
     if DateTime.now.to_i - last_update.to_i > (3600 * 12) && !Rails.env.test?
+      Update.first.touch
       Thread.new do
         clan_id = "1000007730"
         clan_name = "Fear the Fallen"
