@@ -202,8 +202,18 @@ class UsersController < ApplicationController
   end
 
   def fetch_user_stats
-    last_update = User.first.updated_at
+    if Update.first
+      last_update = Update.first.updated_at  
+    else
+      last_update = DateTime.now
+      update = Update.new
+      update.save
+    end
+    
     if DateTime.now.to_i - last_update.to_i > 3600 && !Rails.env.test?
+      # Set the Update Time
+      Update.first.touch
+      Rails.logger.info "About to Start Update Thread"
       Thread.new do
         User.all.each do |user|
           user.update_stats
