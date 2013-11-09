@@ -177,24 +177,24 @@ class User < ActiveRecord::Base
           if !total.blank? 
           
           # Clan Details
-          self.clan_id = total["clan"]["clan"]["id"]
-          self.clan_name = total["clan"]["clan"]["name"]
-          self.clan_abbr = total["clan"]["clan"]["abbreviation"]
-          self.clan_logo = total["clan"]["clan"]["emblems_urls"]["large"]
+          # self.clan_id = total["clan"]["clan"]["id"]
+          # self.clan_name = total["clan"]["clan"]["name"]
+          # self.clan_abbr = total["clan"]["clan"]["abbreviation"]
+          # self.clan_logo = total["clan"]["clan"]["emblems_urls"]["large"]
           
-          if self.role > UserPending || !self.active?
-            previous_role = self.role
-            self.role = convert_role(total["clan"]["member"]["role"], total["clan"]["clan"]["name"])
-            if previous_role != self.role 
-              if self.role == UserAmbassador && self.active?
-                UserMailer.made_ambassador(self).deliver
-              elsif self.role > previous_role && self.active?
-                UserMailer.promoted(self, user_role(self.role), '').deliver
-              elsif self.active?
-                UserMailer.demoted(self, user_role(self.role), 'Auto Sent based on action taken on the Official World of Tank Clan page.').deliver
-              end
-            end
-          end
+          # if self.role > UserPending || !self.active?
+            # previous_role = self.role
+            # self.role = convert_role(total["clan"]["member"]["role"], total["clan"]["clan"]["name"])
+            # if previous_role != self.role 
+              # if self.role == UserAmbassador && self.active?
+                # UserMailer.made_ambassador(self).deliver
+              # elsif self.role > previous_role && self.active?
+                # UserMailer.promoted(self, user_role(self.role), '').deliver
+              # elsif self.active?
+                # UserMailer.demoted(self, user_role(self.role), 'Auto Sent based on action taken on the Official World of Tank Clan page.').deliver
+              # end
+            # end
+          # end
           
           # Total Stats
           self.battles_count = total["summary"]["battles_count"]
