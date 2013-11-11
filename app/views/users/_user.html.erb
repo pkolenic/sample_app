@@ -8,6 +8,9 @@
   
   <div class="gravatar">
   	<%= gravatar_for user, size: 52 %>
+  	<% if user.clan_id != 1000007730 %>
+  		<span><%= user.clan_abbr %></span>
+  	<% end %>
   </div>
   <%= image_tag("http://wotlabs.net/sig/na/#{user.wot_name}/signature.png", alt: 'win7 data') %>
   <%= link_to user.wot_name, user %> 
