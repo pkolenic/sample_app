@@ -176,38 +176,9 @@ class User < ActiveRecord::Base
         total = json_response["data"]["#{self.wot_id}"]
         if !total.blank? 
           # Clan Details
-          if !total["clan"].blank?       
-            clan_id = total["clan"]["clan_id"]                 
-            self.clan_id = clan_id
-            clan_url = "http://api.worldoftanks.com/2.0/clan/info/?application_id=16924c431c705523aae25b6f638c54dd&clan_id=#{clan_id}"
-            clan_response = self.class.get clan_url
-            if clan_response.parsed_response.class == Hash
-              clan = clan_response.parsed_response
-            else
-              clan = JSON.parse response.parsed_response
-            end
-            
-            if clan && clan['status'] == 'ok'
-              clan = clan['data']["#{clan_id}"]
-              
-              self.clan_name = clan["name"]
-              self.clan_abbr = clan["abbreviation"]
-              self.clan_logo = clan["emblems"]["large"]                                    
-            end
-
-            if self.role > UserPending || !self.active?
-              previous_role = self.role
-              self.role = convert_role(total["clan"]["role"], clan_id)
-              if previous_role != self.role 
-                if self.role == UserAmbassador && self.active?
-                  UserMailer.made_ambassador(self).deliver
-                elsif self.role > previous_role && self.active?
-                  UserMailer.promoted(self, user_role(self.role), '').deliver
-                elsif self.active?
-                  UserMailer.demoted(self, user_role(self.role), 'Auto Sent based on action taken on the Official World of Tank Clan page.').deliver
-                end
-              end
-            end
+          if !total["clan"].blank?    
+            Rails.logger.info "Updating Clan Info For #{self.wot_name}"   
+            update_clan(total["clan"]["clan_id"], total["clan"]["role"])
           else
             self.clan_id = nil
             self.role = UserRecruit
@@ -215,6 +186,7 @@ class User < ActiveRecord::Base
           
           # Total Stats
           if total["statistics"]
+            Rails.logger.info "Updating Statistics For #{self.wot_name}"
             self.battles_count = total["statistics"]["all"]["battles"]
             self.wins = total["statistics"]["all"]["wins"]
             self.losses = total["statistics"]["all"]["losses"] 
@@ -231,7 +203,9 @@ class User < ActiveRecord::Base
           end
                       
           self.save validate: false
-          self.touch
+          # Rails.logger.info "\n\n\n"
+          # Rails.logger.info self.inspect
+          # Rails.logger.info "\n\n\n"
         end
       end
     end
@@ -257,7 +231,44 @@ class User < ActiveRecord::Base
       win7 -= ((5 - [avg_tier, 5].min * 125) / (1 + Math::E**(( avg_tier - (games_played/220)**(3/avg_tier) )*1.5)))       
     end
   
-    def convert_role(role, clan_id)      
+    def update_clan(clan_id, role)         
+      if self.clan_id != clan_id || self.clan_name.blank?           
+        self.clan_id = clan_id
+        clan_url = "http://api.worldoftanks.com/2.0/clan/info/?application_id=16924c431c705523aae25b6f638c54dd&clan_id=#{clan_id}"
+        clan_response = User.get(clan_url)
+                           
+        if clan_response.parsed_response.class == Hash
+          clan = clan_response.parsed_response
+        else
+          clan = JSON.parse response.parsed_response
+        end            
+              
+        if clan && clan['status'] == 'ok'
+          Rails.logger.info "Received Clan Data for #{self.wot_name}"
+          data = clan['data']["#{clan_id}"]
+                        
+          self.clan_name = data["name"]
+          self.clan_abbr = data["abbreviation"]
+          self.clan_logo = data["emblems"]["large"]                                              
+        end
+      end
+      
+      if self.role > UserPending || !self.active?
+        previous_role = self.role
+        self.role = convert_role(clan_id, role)
+        if previous_role != self.role 
+          if self.role == UserAmbassador && self.active?
+            UserMailer.made_ambassador(self).deliver
+          elsif self.role > previous_role && self.active?
+            UserMailer.promoted(self, user_role(self.role), '').deliver
+          elsif self.active?
+            UserMailer.demoted(self, user_role(self.role), 'Auto Sent based on action taken on the Official World of Tank Clan page.').deliver
+          end
+        end
+      end      
+    end
+  
+    def convert_role(clan_id, role)      
       if clan_id == 1000007730
         case role
         when 'recruit'

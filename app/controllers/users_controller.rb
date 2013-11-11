@@ -202,6 +202,7 @@ class UsersController < ApplicationController
   end
 
   def fetch_user_stats
+    # User.find(150).update_stats
     if Update.first
       last_update = Update.first.updated_at  
     else
@@ -251,10 +252,7 @@ class UsersController < ApplicationController
           json_response = JSON.parse response.parsed_response  
         end
         
-        if json_response["status"] == 'ok'    
-                Rails.logger.info "\n\n\n"
-                Rails.logger.info "New Users Created:"
-                Rails.logger.info "\n\n\n"                              
+        if json_response["status"] == 'ok'                               
             members = json_response['data']["#{clan_id}"]["members"]
             members.each do |member|
               data = member[1]
@@ -270,9 +268,6 @@ class UsersController < ApplicationController
                               role: role)            
               existing_user = User.find_by(wot_name: data['account_name'])
               if !existing_user
-                Rails.logger.info "\n\n\n"
-                Rails.logger.info user.inspect
-                Rails.logger.info "\n\n\n"
                 user.save!
               end
             end
