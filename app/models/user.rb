@@ -163,7 +163,7 @@ class User < ActiveRecord::Base
                         "emblems_urls" => { "large" => "http://cw.worldoftanks.com/media/clans/emblems/clans_1/1000007730/emblem_64x64.png" }}}}
         json_response = { "status" => 'ok', "data" => total }
       else 
-        url = "http://api.worldoftanks.com/uc/accounts/#{self.wot_id}/api/1.9/?source_token=WG-WoT_Assistant-1.3.2"
+        url = "http://api.worldoftanks.com/2.0/account/info/?application_id=16924c431c705523aae25b6f638c54dd&account_id=#{self.wot_id}"
         response = self.class.get url
         if response.parsed_response.class == Hash
           json_response = response.parsed_response
@@ -173,44 +173,62 @@ class User < ActiveRecord::Base
       end
  
       if json_response["status"] == 'ok'
-          total = json_response["data"]
-          if !total.blank? 
-          
+        total = json_response["data"]["#{self.wot_id}"]
+        if !total.blank? 
           # Clan Details
-          # self.clan_id = total["clan"]["clan"]["id"]
-          # self.clan_name = total["clan"]["clan"]["name"]
-          # self.clan_abbr = total["clan"]["clan"]["abbreviation"]
-          # self.clan_logo = total["clan"]["clan"]["emblems_urls"]["large"]
-          
-          # if self.role > UserPending || !self.active?
-            # previous_role = self.role
-            # self.role = convert_role(total["clan"]["member"]["role"], total["clan"]["clan"]["name"])
-            # if previous_role != self.role 
-              # if self.role == UserAmbassador && self.active?
-                # UserMailer.made_ambassador(self).deliver
-              # elsif self.role > previous_role && self.active?
-                # UserMailer.promoted(self, user_role(self.role), '').deliver
-              # elsif self.active?
-                # UserMailer.demoted(self, user_role(self.role), 'Auto Sent based on action taken on the Official World of Tank Clan page.').deliver
-              # end
-            # end
-          # end
+          if !total["clan"].blank?            
+            self.clan_id = total["clan"]["clan_id"]
+            clan_url = "http://api.worldoftanks.com/2.0/clan/info/?application_id=16924c431c705523aae25b6f638c54dd&clan_id=#{self.clan_id}"
+            clan_response = self.class.get clan_url
+            if clan_response.parsed_response.class == Hash
+              clan = clan_response.parsed_response
+            else
+              clan = JSON.parse response.parsed_response
+            end
+            
+            if clan && clan['status'] == 'ok'
+              clan = clan['data']["#{self.clan_id}"]
+              
+              self.clan_name = clan["name"]
+              self.clan_abbr = clan["abbreviation"]
+              self.clan_logo = clan["emblems"]["large"]                                    
+            end
+
+            if self.role > UserPending || !self.active?
+              previous_role = self.role
+              self.role = convert_role(total["clan"]["role"], total["clan"]["clan_id"])
+              if previous_role != self.role 
+                if self.role == UserAmbassador && self.active?
+                  UserMailer.made_ambassador(self).deliver
+                elsif self.role > previous_role && self.active?
+                  UserMailer.promoted(self, user_role(self.role), '').deliver
+                elsif self.active?
+                  UserMailer.demoted(self, user_role(self.role), 'Auto Sent based on action taken on the Official World of Tank Clan page.').deliver
+                end
+              end
+            end
+          else
+            self.clan_id = nil
+            self.role = UserRecruit
+          end
           
           # Total Stats
-          self.battles_count = total["summary"]["battles_count"]
-          self.wins = total["summary"]["wins"]
-          self.losses = total["summary"]["losses"] 
-          self.survived = total["summary"]["survived_battles"]
-          self.experiance = total["experience"]["xp"]
-          self.max_experiance = total["experience"]["max_xp"]
-          self.spotted = total["battles"]["spotted"]
-          self.frags = total["battles"]["frags"]
-          self.damage_dealt = total["battles"]["damage_dealt"]
-          self.hit_percentage = total["battles"]["hits_percents"]
-          self.capture_points = total["battles"]["capture_points"]
-          self.defense_points = total["battles"]["dropped_capture_points"]
-          self.avg_tier = calculate_avg_tier(total["vehicles"])
-                    
+          if total["statistics"]
+            self.battles_count = total["statistics"]["all"]["battles"]
+            self.wins = total["statistics"]["all"]["wins"]
+            self.losses = total["statistics"]["all"]["losses"] 
+            self.survived = total["statistics"]["all"]["survived_battles"]
+            self.experiance = total["statistics"]["all"]["xp"]
+            self.max_experiance = total["statistics"]["max_xp"]
+            self.spotted = total["statistics"]["all"]["spotted"]
+            self.frags = total["statistics"]["all"]["frags"]
+            self.damage_dealt = total["statistics"]["all"]["damage_dealt"]
+            self.hit_percentage = total["statistics"]["all"]["hits_percents"]
+            self.capture_points = total["statistics"]["all"]["capture_points"]
+            self.defense_points = total["statistics"]["all"]["dropped_capture_points"]
+            # self.avg_tier = calculate_avg_tier(total["vehicles"])
+          end
+                      
           self.save validate: false
           self.touch
         end
@@ -238,8 +256,8 @@ class User < ActiveRecord::Base
       win7 -= ((5 - [avg_tier, 5].min * 125) / (1 + Math::E**(( avg_tier - (games_played/220)**(3/avg_tier) )*1.5)))       
     end
   
-    def convert_role(role, clan)
-      if clan == 'Fear the Fallen'
+    def convert_role(role, clan_id)      
+      if clan_id == 1000007730
         case role
         when 'recruit'
           role_id = UserRecruit
@@ -283,8 +301,9 @@ class User < ActiveRecord::Base
       when UserCommander
         role = 'Commander'
       else
-      role = 'Recruit'
+        role = 'Recruit'
       end
+      
       role
     end
   
