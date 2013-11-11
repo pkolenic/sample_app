@@ -8,7 +8,7 @@ class UsersController < ApplicationController
   before_action :approval_user,  only: :approve
   before_action :appointment_user, only: [:add_clanwar, :remove_clanwar]
   before_action :fetch_user_stats, only: [:index, :show]
-  # before_action :build_new_users, only: [:index]
+  before_action :build_new_users, only: [:index]
   
   def index
     if params[:type]
@@ -242,7 +242,8 @@ class UsersController < ApplicationController
       Thread.new do
         clan_id = "1000007730"
         clan_name = "Fear the Fallen"
-        url = "http://api.worldoftanks.com/community/clans/#{clan_id}/api/1.1/?source_token=WG-WoT_Assistant-1.3.2"
+        url = "http://api.worldoftanks.com/2.0/clan/info/?application_id=16924c431c705523aae25b6f638c54dd&clan_id=#{clan_id}"               
+        
         response = self.class.get url
         if response.parsed_response.class == Hash
           json_response = response.parsed_response
@@ -250,21 +251,28 @@ class UsersController < ApplicationController
           json_response = JSON.parse response.parsed_response  
         end
         
-        if json_response["status"] == 'ok'
-            members = json_response["data"]["members"]
+        if json_response["status"] == 'ok'    
+                Rails.logger.info "\n\n\n"
+                Rails.logger.info "New Users Created:"
+                Rails.logger.info "\n\n\n"                              
+            members = json_response['data']["#{clan_id}"]["members"]
             members.each do |member|
-              role = UsersHelper.convert_role(member['role_localised'], clan_name)
+              data = member[1]
+              role = UsersHelper.convert_role(data['role'], clan_name)
               password = User.new_remember_token
-              email = "#{member['account_name']}@fearthefallen.com"
+              email = "#{data['account_name']}@fearthefallen.com"
               user = User.new(name: "Inactive", 
-                              wot_name: member['account_name'], 
+                              wot_name: data['account_name'], 
                               email: email, 
                               password: password, 
                               password_confirmation: password, 
-                              wot_id: member['account_id'],
+                              wot_id: data['account_id'],
                               role: role)            
-              existing_user = User.find_by(wot_name: member['account_name'])
+              existing_user = User.find_by(wot_name: data['account_name'])
               if !existing_user
+                Rails.logger.info "\n\n\n"
+                Rails.logger.info user.inspect
+                Rails.logger.info "\n\n\n"
                 user.save!
               end
             end
