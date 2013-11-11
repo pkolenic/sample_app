@@ -26,3 +26,19 @@
           });
     });
 })(jQuery);
+
+function switchHomePageTab(tab) {
+	jQuery('.tab_body').hide();
+	jQuery('.tab').removeClass('active');
+	
+	jQuery('#' + tab + '-tab').addClass('active');
+	jQuery('#' + tab +'-tab-body').show();
+}
+
+jQuery(document).ready(function(){
+	if (jQuery('#default_home_body')) {
+		jQuery('.tab').bind('click', function() {
+			switchHomePageTab(jQuery(this).attr("data-id"));
+		});
+	}
+});
