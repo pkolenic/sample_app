@@ -5,10 +5,9 @@
   	<% end %>
   	<br>
   <% end %>
-  
   <div class="gravatar">
   	<%= gravatar_for user, size: 52 %>
-  	<% if user.clan_id != 1000007730 %>
+  	<% if user.clan_id != '1000007730' %>
   		<span><%= user.clan_abbr %></span>
   	<% end %>
   </div>
