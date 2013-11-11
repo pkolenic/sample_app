@@ -7,8 +7,8 @@ class UsersController < ApplicationController
   before_action :no_user,        only: [:new, :create]
   before_action :approval_user,  only: :approve
   before_action :appointment_user, only: [:add_clanwar, :remove_clanwar]
-  before_action :fetch_user_stats, only: [:index, :show]
   before_action :build_new_users, only: [:index]
+  before_action :fetch_user_stats, only: [:index, :show]
   
   def index
     if params[:type]

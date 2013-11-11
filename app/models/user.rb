@@ -176,9 +176,10 @@ class User < ActiveRecord::Base
         total = json_response["data"]["#{self.wot_id}"]
         if !total.blank? 
           # Clan Details
-          if !total["clan"].blank?            
-            self.clan_id = total["clan"]["clan_id"]
-            clan_url = "http://api.worldoftanks.com/2.0/clan/info/?application_id=16924c431c705523aae25b6f638c54dd&clan_id=#{self.clan_id}"
+          if !total["clan"].blank?       
+            clan_id = total["clan"]["clan_id"]                 
+            self.clan_id = clan_id
+            clan_url = "http://api.worldoftanks.com/2.0/clan/info/?application_id=16924c431c705523aae25b6f638c54dd&clan_id=#{clan_id}"
             clan_response = self.class.get clan_url
             if clan_response.parsed_response.class == Hash
               clan = clan_response.parsed_response
@@ -187,7 +188,7 @@ class User < ActiveRecord::Base
             end
             
             if clan && clan['status'] == 'ok'
-              clan = clan['data']["#{self.clan_id}"]
+              clan = clan['data']["#{clan_id}"]
               
               self.clan_name = clan["name"]
               self.clan_abbr = clan["abbreviation"]
@@ -196,7 +197,7 @@ class User < ActiveRecord::Base
 
             if self.role > UserPending || !self.active?
               previous_role = self.role
-              self.role = convert_role(total["clan"]["role"], total["clan"]["clan_id"])
+              self.role = convert_role(total["clan"]["role"], clan_id)
               if previous_role != self.role 
                 if self.role == UserAmbassador && self.active?
                   UserMailer.made_ambassador(self).deliver
