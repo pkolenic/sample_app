@@ -249,7 +249,8 @@ class User < ActiveRecord::Base
                         
           self.clan_name = data["name"]
           self.clan_abbr = data["abbreviation"]
-          self.clan_logo = data["emblems"]["large"]                                              
+          clan_url = data["emblems"]["large"]  
+          self.clan_logo = clan_url.sub! 'http:', 'https:'                                            
         end
       end
       
