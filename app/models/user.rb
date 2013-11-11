@@ -298,19 +298,15 @@ class User < ActiveRecord::Base
           self.update_attribute(:wot_id, '1001261893')
         end
       else
-        # Thread.new do
+        Thread.new do
           response = self.class.get "http://api.worldoftanks.com/2.0/account/list/?application_id=16924c431c705523aae25b6f638c54dd&search=#{self.wot_name}&limit=1"
-          Rails.logger.info response
-          # json_response = JSON.parse response.parsed_response      
-          # if json_response["status"] == 'ok'
           if response["status"] == 'ok'
-            # data = json_response["data"]
             data = response["data"]
             if data.count && !data[0].empty?
               self.update_attribute(:wot_id, data[0]["id"])
             end
-          # end
-          # ActiveRecord::Base.connection.close
+          end
+          ActiveRecord::Base.connection.close
         end
       end
     end
