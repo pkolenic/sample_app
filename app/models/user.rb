@@ -177,7 +177,7 @@ class User < ActiveRecord::Base
         if !total.blank? 
           # Clan Details
           if !total["clan"].blank?    
-            Rails.logger.info "Updating Clan Info For #{self.wot_name}"   
+            #Rails.logger.info "Updating Clan Info For #{self.wot_name}"   
             update_clan(total["clan"]["clan_id"], total["clan"]["role"])
           else
             self.clan_id = nil
@@ -186,7 +186,7 @@ class User < ActiveRecord::Base
           
           # Total Stats
           if total["statistics"]
-            Rails.logger.info "Updating Statistics For #{self.wot_name}"
+            #Rails.logger.info "Updating Statistics For #{self.wot_name}"
             self.battles_count = total["statistics"]["all"]["battles"]
             self.wins = total["statistics"]["all"]["wins"]
             self.losses = total["statistics"]["all"]["losses"] 
@@ -244,7 +244,7 @@ class User < ActiveRecord::Base
         end            
               
         if clan && clan['status'] == 'ok'
-          Rails.logger.info "Received Clan Data for #{self.wot_name}"
+          #Rails.logger.info "Received Clan Data for #{self.wot_name}"
           data = clan['data']["#{clan_id}"]
                         
           self.clan_name = data["name"]

@@ -23,11 +23,6 @@ module UsersHelper
       disqus_serializer_message = {"id"=>user_id, "username"=>user.wot_name, "email"=>user.email}.to_json            
       disqus_message = Base64.strict_encode64(disqus_serializer_message)
       disqus_signature = OpenSSL::HMAC.hexdigest(digest, ENV['DISQUS_SECRET'], disqus_message + ' ' + disqus_timestamp.to_s)
-                  
-      Rails.logger.info "\n\n\n"
-      Rails.logger.info "RAW MESSAGE: " + disqus_serializer_message + "\n"
-      Rails.logger.info "------------------------------------\n\n\n"
-      
       auth = "#{disqus_message} #{disqus_signature} #{disqus_timestamp}"
     end
   end
