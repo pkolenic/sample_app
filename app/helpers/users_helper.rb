@@ -14,6 +14,29 @@ module UsersHelper
     image_tag gravatar_url, alt: user.name, id: 'profileImage'
   end
 
+  def sso_auth(user)
+    if !Rails.env.test?
+      digest = OpenSSL::Digest::Digest.new('sha1')
+      disqus_timestamp = Time.now.to_i
+      user_id = "ftf-#{user.id}#{Rails.env.development? ? '-dev' : ''}"
+      
+      disqus_serializer_message = {"id"=>user_id, "username"=>user.wot_name, "email"=>user.email}.to_json            
+      disqus_message = Base64.strict_encode64(disqus_serializer_message)
+      disqus_signature = OpenSSL::HMAC.hexdigest(digest, ENV['DISQUS_SECRET'], disqus_message + ' ' + disqus_timestamp.to_s)
+                  
+      Rails.logger.info "\n\n\n"
+      Rails.logger.info "RAW MESSAGE: " + disqus_serializer_message + "\n"
+      Rails.logger.info "MESSAGE: " + disqus_message + "\n"
+      Rails.logger.info "SECRET: " + ENV['DISQUS_SECRET'] + "\n"
+      disqus_signature = OpenSSL::HMAC.hexdigest(digest, ENV['DISQUS_SECRET'], disqus_message + ' ' + disqus_timestamp.to_s)
+      Rails.logger.info "SIGNATURE: " + disqus_signature + "\n"
+      Rails.logger.info "TIMESTAMP: " + disqus_timestamp.to_s + "\n"
+      Rails.logger.info "------------------------------------\n\n\n"
+      
+      auth = "#{disqus_message} #{disqus_signature} #{disqus_timestamp}"
+    end
+  end
+
   def role_for(user)
     case user.role
     when UserRecruit
