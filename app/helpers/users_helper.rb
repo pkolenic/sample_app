@@ -26,11 +26,6 @@ module UsersHelper
                   
       Rails.logger.info "\n\n\n"
       Rails.logger.info "RAW MESSAGE: " + disqus_serializer_message + "\n"
-      Rails.logger.info "MESSAGE: " + disqus_message + "\n"
-      Rails.logger.info "SECRET: " + ENV['DISQUS_SECRET'] + "\n"
-      disqus_signature = OpenSSL::HMAC.hexdigest(digest, ENV['DISQUS_SECRET'], disqus_message + ' ' + disqus_timestamp.to_s)
-      Rails.logger.info "SIGNATURE: " + disqus_signature + "\n"
-      Rails.logger.info "TIMESTAMP: " + disqus_timestamp.to_s + "\n"
       Rails.logger.info "------------------------------------\n\n\n"
       
       auth = "#{disqus_message} #{disqus_signature} #{disqus_timestamp}"
