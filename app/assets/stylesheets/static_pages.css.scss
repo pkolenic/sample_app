@@ -22,7 +22,7 @@ h3 {
 }
 
 #videos {
-  width: 940px;
+  width: 960px;
   height: 300px;
   overflow: auto;
   background: white;
@@ -41,8 +41,9 @@ h3 {
 }
 
 #player_wrapper {
-  width: 1000px;
+  width: 680px;
   padding: 0 160px 30px;
+  margin: 0 auto;
 }
 
 .about_text {

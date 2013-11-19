@@ -11,7 +11,7 @@ module UsersHelper
       user_id = "ftf-#{user.id}#{Rails.env.development? ? '-dev' : ''}"
            
       # disqus_serializer_message = {"id"=>user_id, "username"=>user.wot_name, "email"=>user.email, "avatar"=>user.clan_logo}.to_json
-      disqus_serializer_message = {"id"=>user_id, "username"=>user.wot_name, "email"=>user.email, "avatar"=>gravatar_url(user, {size: 92})}.to_json               
+      disqus_serializer_message = {"id"=>user_id, "username"=>user.wot_name, "email"=>user.email, "avatar"=>gravatar_url(user, {size: 160})}.to_json               
       disqus_message = Base64.strict_encode64(disqus_serializer_message)
       disqus_signature = OpenSSL::HMAC.hexdigest(digest, ENV['DISQUS_SECRET'], disqus_message + ' ' + disqus_timestamp.to_s)
       auth = "#{disqus_message} #{disqus_signature} #{disqus_timestamp}"

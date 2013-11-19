@@ -244,6 +244,9 @@ input, textarea, select, .uneditable-input {
 
 input {
   height: auto !important;
+  input[type="text"] {
+    height: 30px !important;
+  }
 }
 
 #error_explanation {
