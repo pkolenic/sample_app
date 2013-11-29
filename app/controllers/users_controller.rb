@@ -21,7 +21,7 @@ class UsersController < ApplicationController
       when 'leadership'
         filter = "role > ?"        
         value = UserTreasurer
-        order ='role DESC'
+        order ='role DESC, lower(wot_name)'
       when 'clan_war'
         filter = "clan_war_team = ?"
         value = true
