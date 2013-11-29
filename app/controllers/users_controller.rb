@@ -13,13 +13,15 @@ class UsersController < ApplicationController
   def index
     if params[:type]
       type = params[:type]
+      order = 'wot_name'
       case type
       when 'pending'
         filter = "role = ?"
         value = UserPending
       when 'leadership'
-        filter = "role > ?"
+        filter = "role > ?"        
         value = UserTreasurer
+        order ='role DESC'
       when 'clan_war'
         filter = "clan_war_team = ?"
         value = true
@@ -33,7 +35,8 @@ class UsersController < ApplicationController
     end
 
     if filter
-      @users = User.where(filter, value).paginate(page: params[:page], :per_page => 10).order(:wot_name)
+      # @users = User.where(filter, value).paginate(page: params[:page], :per_page => 10).order(:wot_name)
+      @users = User.where(filter, value).paginate(page: params[:page], :per_page => 10).order(order)
     else
       @users = User.paginate(page: params[:page], :per_page => 10).order(:wot_name)
     end
