@@ -46,7 +46,7 @@ h3 {
   margin: 0 auto;
 }
 
-.about_text {
+.about_text, .notes {
   text-shadow: 1px 1px 2px white;
   font-size: 16px;
   color: black;
@@ -98,6 +98,23 @@ h3 {
       text-align: left;
       padding: 10px;
       font-size: 18px;
+    }
+  }
+}
+
+.notes {
+  text-align: left;
+}
+
+#schedule_list {
+  width: 600px;
+  background: rgba(255, 255, 255, 0.4);
+  margin: 0 auto;
+  padding: 0 28px;
+  table {
+    width: 100%;
+    td {
+      text-align:left;
     }
   }
 }

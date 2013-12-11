@@ -13,6 +13,9 @@ class StaticPagesController < ApplicationController
   def contact
   end
   
+  def schedule
+  end
+  
   def riisingsun
     @title = "RiisingSun"
     @youtube = "TheRiisingSun"

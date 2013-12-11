@@ -7,7 +7,10 @@
           <li><%= link_to "Home", root_path %></li>
           <li><%= link_to "Help", help_path %></li>
           <% if signed_in? %>
+          	<% if current_user.role >= UserSoldier %>
+          	<li><%= link_to "Schedule", schedule_path %></li>
 			<%= render 'layouts/tournaments' %>
+			<% end %>
             <li><%= link_to "Battle Roster", users_path %></li>
 			<%= render 'layouts/videos' %>
 			<%= render 'layouts/profile' %>
