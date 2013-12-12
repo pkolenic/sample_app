@@ -4,7 +4,7 @@
 <div id="player_wrapper">
 	<div id="player"></div>
 
-	<script>
+	<script>	
 		// 2. This code loads the IFrame Player API code asynchronously.
 		var tag = document.createElement('script');
 
@@ -23,6 +23,11 @@
 				events : {
 					'onReady' : onPlayerReady
 				}
+			});
+			
+			// Add click events to each video
+			$(".video_link").click(function() {
+				playVideo(this);
 			});
 		}
 
