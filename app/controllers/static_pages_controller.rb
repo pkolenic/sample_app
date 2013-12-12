@@ -2,6 +2,7 @@ class StaticPagesController < ApplicationController
   before_action :signed_in_user, only: [:riisingsun, :wotvideos, :wgnavideos, :mapvideos, :schedule]
   
   def home
+    @disqus = "general"
   end
 
   def help
@@ -14,6 +15,7 @@ class StaticPagesController < ApplicationController
   end
   
   def schedule
+    @disqus = "schedule"
   end
   
   def riisingsun

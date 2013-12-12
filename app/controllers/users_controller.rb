@@ -40,10 +40,12 @@ class UsersController < ApplicationController
     else
       @users = User.paginate(page: params[:page], :per_page => 10).order(:wot_name)
     end
+    @disqus = "battleroster"
   end
 
   def show
     @user = User.find(params[:id])
+    @disqus = "user:#{ params[:id] }"
     if (@user.wins)
       @wins = "#{(@user.wins.to_f / @user.battles_count * 100).round(2)}%"
     end
