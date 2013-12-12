@@ -56,7 +56,13 @@ class StaticPagesController < ApplicationController
                { id: 'DnGU623s6Rw', title: "RissingSun's El Halluf" },
                { id: 'O1qKyBqMmps', title: "RissingSun's South Coast" },
                { id: 'AjvjhHcI_cA', title: "RiisingSun's Westfield" },
-               { id: '78Ih381ZaLA', title: "RiisingSun's Komarin" }]
+               { id: '78Ih381ZaLA', title: "RiisingSun's Komarin" },
+               { id: 'rul-AsK39WQ', title: "QuickyBabyTv's Sand River" },
+               { id: 'qBZB536sOYo', title: "QuickyBabyTv's Redshire" },
+               { id: 'CbpT_xbdFYg', title: "QuickyBabyTv's Airfield" },
+               { id: 'FlmOoUOtcBY', title: "QuickyBabyTv's Arctic Region" },
+               { id: 'Nvuje-sme_A', title: "QuickyBabyTv's Pearl River" },
+               { id: 'E6pfEYA_y9U', title: "Phalhell's Abbey" }]
     render 'static_videos'    
     # render 'map_videos'     
   end
