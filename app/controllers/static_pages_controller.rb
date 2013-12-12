@@ -49,7 +49,14 @@ class StaticPagesController < ApplicationController
     @default_video = 'sP0uk76wuq8'
     @videos = [{ id: 'sP0uk76wuq8', title: 'World of Tanks. Map guide - Sacred Valley' },
                { id: '5cv4G59BY3c', title: 'World of Tanks 8.7 Patch Review' },
-               { id: 'k4DZau_l-EI', title: 'World of Tanks. 8.8 Maps review' }]
+               { id: 'k4DZau_l-EI', title: 'World of Tanks. 8.8 Maps review' },
+               { id: '7GOFyQv9dlM', title: "RissingSun's Ruinberg" },
+               { id: 'B2o9r0d0cWU', title: "RissingSun's Malinovka" },
+               { id: 'c5nAObZA9EI', title: "RiisingSun's Prokhorovka" },
+               { id: 'DnGU623s6Rw', title: "RissingSun's El Halluf" },
+               { id: 'O1qKyBqMmps', title: "RissingSun's South Coast" },
+               { id: 'AjvjhHcI_cA', title: "RiisingSun's Westfield" },
+               { id: '78Ih381ZaLA', title: "RiisingSun's Komarin" }]
     render 'static_videos'    
     # render 'map_videos'     
   end
