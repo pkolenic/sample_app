@@ -292,11 +292,15 @@ input {
   background-color: white;
 }
 
+.hero-unit {
+  min-height:300px;
+}
+
 /* Disqus Chat */
 #disqus_thread {
   background-color: white;
   padding: 15px;
-  height: 600px;
+  height: 300px;
   overflow: scroll;
   width: 910px;
   margin: 0 auto;
