@@ -47,13 +47,13 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     @disqus = "user:#{ params[:id] }"
     if (@user.wins)
-      @wins = "#{(@user.wins.to_f / @user.battles_count * 100).round(2)}%"
+      @wins = (@user.wins.to_f / @user.battles_count * 100).round(2)
     end
     if (@user.losses)
-      @losses = "#{(@user.losses.to_f / @user.battles_count * 100).round(2)}%"
+      @losses = (@user.losses.to_f / @user.battles_count * 100).round(2)
     end
     if (@user.survived)
-      @survived = "#{(@user.survived.to_f / @user.battles_count * 100).round(2)}%"
+      @survived = (@user.survived.to_f / @user.battles_count * 100).round(2)
     end
     if (@user.experiance)
       @average_xp = "#{(@user.experiance.to_f / @user.battles_count).round(2)}"
@@ -61,6 +61,17 @@ class UsersController < ApplicationController
     if (@user.damage_dealt)
       @average_damage = "#{(@user.damage_dealt.to_f / @user.battles_count).round(2)}"
     end
+    
+    # TODO need to pull from DataBase
+    # @ht_percent = 45.0
+    # @mt_percent = 25.0
+    # @lt_percent = 20.0
+    # @td_percent = 5.0
+    # @spg_percent = 5.0
+    # @max_tank_percent = [@ht_percent, @mt_percent, @lt_percent, @td_percent, @spg_percent].max
+    # @overall_win7 = 1250
+    # @range_win7 = 1800
+    # @range_win_rate = 74.444
   end
 
   def new
