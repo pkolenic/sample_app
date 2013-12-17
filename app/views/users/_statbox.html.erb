@@ -1,0 +1,34 @@
+<table class="user_stats_box">
+	<tr class="win_rate_header">
+		<th colspan="3" style="background-color: rgb(<%= win_rate_color(@range_win_rate) %>);">14-DAY WR</th>
+		<th colspan="2" style="background-color: rgb(<%= win_rate_color(@wins) %>);">OVERALL</th>
+	</tr>
+	<tr class="win_rate">
+		<td colspan="3" style="background-color: rgb(<%= win_rate_color(@range_win_rate) %>);"><%= @range_win_rate.round %>%</td>
+		<td colspan="2" style="background-color: rgb(<%= win_rate_color(@wins) %>);"><%= @wins.round %>%</td>
+	</tr>
+	<tr class="win7_header">
+		<th colspan="3" style="background-color: rgb(<%= win7_color(@overall_win7) %>);">14-DAY-WN7</th>
+		<th colspan="2" style="background-color: rgb(<%= win7_color(@range_win7) %>);">OVERALL</th>	
+	</tr>
+	<tr class="win7">
+		<td colspan="3" style="background-color: rgb(<%= win7_color(@overall_win7) %>);"><%= @overall_win7 %></td>
+		<td colspan="2" style="background-color: rgb(<%= win7_color(@range_win7) %>);"><%= @range_win7 %></td>
+	</tr>
+</table>	
+<table class="user_tanks_breakout">	
+	<tr class="types">
+		<td><div style="line-height:<%= (@ht_percent / @max_tank_percent * 25.0) %>px; background-color: rgb(215,121,0);">&nbsp;</div></td>
+		<td><div style="line-height:<%= (@mt_percent / @max_tank_percent * 25.0) %>px; background-color: rgb(109,149,33);">&nbsp;</div></td>
+		<td><div style="line-height:<%= (@lt_percent / @max_tank_percent * 25.0) %>px; background-color: rgb(62,160,192);">&nbsp;</div></td>
+		<td><div style="line-height:<%= (@td_percent / @max_tank_percent * 25.0) %>px; background-color: rgb(131,87,157);">&nbsp;</div></td>
+		<td><div style="line-height:<%= (@spg_percent / @max_tank_percent * 25.0) %>px; background-color: rgb(205,51,51);">&nbsp;</div></td>
+	</tr>
+	<tr class="type_labels">
+		<td>HT</td>
+		<td>MT</td>
+		<td>LT</td>
+		<td>TD</td>
+		<td>SPG</td>		
+	</tr>
+</table>

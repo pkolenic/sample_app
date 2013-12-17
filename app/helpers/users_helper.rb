@@ -78,4 +78,46 @@ module UsersHelper
     end
     role_id
   end
+  
+  def win_rate_color(rate)
+    case rate.round
+    when 0..44
+      color = "255,0,0"
+    when 45..49
+      color = "255,100,0"
+    when 50..54
+      color = "100,255,0"
+    when 55..74
+      color = "100,255,100"
+    when 75..84
+      color = "100,255,255"
+    else
+      color = "75,125,75"
+    end
+    color;
+  end
+  
+  def win7_color(value)
+    case value
+    when 0..499
+      color = "255,0,0"
+    when 500..699
+      color = "255,100,0"
+    when 700..899
+      color = "100,255,0"
+    when 900..1099
+      color = "100,255,100"
+    when 1100..1349
+      color = "100,255,255"
+    when 1350..1499
+      color = "0,255,100"
+    when 1500..1699
+      color = "100,100,100"
+    when 1700..1999
+      color = "10,255,255"
+    else
+      color = "75,125,75"
+    end
+    color                        
+  end
 end

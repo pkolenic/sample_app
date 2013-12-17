@@ -26,15 +26,15 @@
 		</tr>
 		<tr>
 			<td class="category">Wins</td>
-			<td><%= number_with_delimiter(@user.wins) %> (<%= @wins %>)</td>
+			<td><%= number_with_delimiter(@user.wins) %> (<%= @wins %>%)</td>
 		</tr>
 		<tr>
 			<td class="category">Losses</td>
-			<td><%= number_with_delimiter(@user.losses) %> (<%= @losses %>)</td>
+			<td><%= number_with_delimiter(@user.losses) %> (<%= @losses %>%)</td>
 		</tr>
 		<tr>
 			<td class="category">Survived</td>
-			<td><%= number_with_delimiter(@survived) %></td>
+			<td><%= number_with_delimiter(@survived) %>%</td>
 		</tr>
 		<tr>
 			<td class="category">Total Experiance</td>
@@ -77,6 +77,8 @@
 			<td><%= number_with_delimiter(@user.defense_points) %></td>
 		</tr>
 	</table>
+	
+<%= render 'statbox' %>
 </div>
 <% if signed_in? %>
 	<%= render 'shared/disqus' %>

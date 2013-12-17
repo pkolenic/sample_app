@@ -55,3 +55,40 @@ li .gravatar {
     padding: 0 5px 0 10px;
   }
 }
+
+.user_stats_box {
+  width: 100px;
+  color: white;
+  text-align:center;
+  th {
+    font-size: 8px;
+  }
+  td {
+    font-size: 18px;
+    padding: 0 0 2px;    
+  }
+}
+
+.user_tanks_breakout {
+  width: 100px;
+  color: white;
+  text-align:center;  
+  .types td {
+    vertical-align: bottom;
+    font-size: 8px;
+    background-color: rgb(70,70,70);
+    height: 25px;
+    padding: 0;
+    div {
+      float: left;
+      width: 20px;
+    }
+  }
+  .type_labels td {
+    font-size: 8px;
+    position: relative;
+    top: -10px;
+    line-height: 0;
+    padding: 0; 
+  }  
+}
