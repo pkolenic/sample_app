@@ -62,15 +62,16 @@ class UsersController < ApplicationController
       @average_damage = "#{(@user.damage_dealt.to_f / @user.battles_count).round(2)}"
     end
     
-    @ht_percent = 45.0
-    @mt_percent = 25.0
-    @lt_percent = 20.0
-    @td_percent = 5.0
-    @spg_percent = 5.0
-    @max_tank_percent = [@ht_percent, @mt_percent, @lt_percent, @td_percent, @spg_percent].max
-    @overall_win7 = 1250
-    @range_win7 = 1800
-    @range_win_rate = 74.444
+    # TODO need to pull from DataBase
+    # @ht_percent = 45.0
+    # @mt_percent = 25.0
+    # @lt_percent = 20.0
+    # @td_percent = 5.0
+    # @spg_percent = 5.0
+    # @max_tank_percent = [@ht_percent, @mt_percent, @lt_percent, @td_percent, @spg_percent].max
+    # @overall_win7 = 1250
+    # @range_win7 = 1800
+    # @range_win_rate = 74.444
   end
 
   def new
