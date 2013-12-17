@@ -298,10 +298,10 @@ input {
 
 /* Disqus Chat */
 #disqus_thread {
-  background-color: white;
+  background-color: rgba(255,255,255,0.4);
   padding: 15px;
   height: 300px;
-  overflow: scroll;
+  overflow: auto;
   width: 910px;
   margin: 0 auto;
 }
