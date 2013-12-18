@@ -298,15 +298,34 @@ input {
 
 /* Disqus Chat */
 #disqus_thread {
-  background-color: rgba(255,255,255,0.4);
-  -moz-box-shadow:    0px 0px 25px 5px #eee;
-  -webkit-box-shadow: 0px 0px 25px 5px #eee;
-  box-shadow:         0px 0px 25px 5px #eee;
+  background-color: white;
+  -moz-box-shadow:    0px 0px 10px 1px #eee;
+  -webkit-box-shadow: 0px 0px 10px 1px #eee;
+  box-shadow:         0px 0px 10px 1px #eee;
   padding: 15px;
   height: 300px;
   overflow: auto;
   width: 910px;
   margin: 0 auto;
+}
+
+.header_wrapper {
+  width: 910px;
+  background-color: white;
+  padding: 5px 15px 0px;
+  position: fixed;
+  z-index: 10;
+  top: 80px;
+}
+
+#message_board {
+  margin-top: 82px;
+  #disqus_thread {
+    height: 100%;
+    -moz-box-shadow:    0px 0px 0px 0px white;
+    -webkit-box-shadow: 0px 0px 0px 0px white;
+    box-shadow:         0px 0px 0px 0px white;
+  }
 }
 
 /* Filter Bar */
