@@ -11,7 +11,9 @@
 			<%= date.day %>
 			<ul>
 				<% for event in events %>
-					<li><%= event.name %></li>
+					<li><%= event.name %></br>
+						(<%= event.event_start.strftime("%I:%M%p") %> PST)
+					</li>
 				<% end %>
 			</ul>
 		<% end %>
