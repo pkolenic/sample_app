@@ -36,13 +36,14 @@ module SessionsHelper
   end
   
   def clan_soldier
-    unless signed_in?
+    if signed_in?
+      unless current_user.role >= UserSoldier
+        flash[:error] = "You need to be at least a Soldier in Fear The Fallen to view Tournaments!"
+        redirect_to(root_url)      
+      end      
+    else
       store_location
-      redirect_to signin_url, notice: "Please sign in."      
-    end
-    unless current_user.role >= UserSoldier
-      flash[:error] = "You need to be at least a Soldier in Fear The Fallen to view Tournaments!"
-      redirect_to(root_url)      
+      redirect_to signin_url, notice: "Please sign in."        
     end
   end
   
