@@ -3,11 +3,7 @@
 	<ul class="dropdown-menu">
 		<li><%= link_to "Helpful Links", links_path %></li>
 		<li><%= link_to "Mods", mods_path %></li>
-		<% if current_user %>
-			<% if current_user.role >= UserSoldier %>
-        		<li><%= link_to "Schedule", schedule_path %></li>
-			<% end %>
-			<li><%= link_to "Message Board", messageboard_path  %></li>
-		<% end %>			    
+		<li><%= link_to "Schedule", schedule_path %></li>
+		<li><%= link_to "Message Board", messageboard_path  %></li>
 	</ul>
 </li>

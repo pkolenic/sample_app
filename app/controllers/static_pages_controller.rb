@@ -1,5 +1,5 @@
 class StaticPagesController < ApplicationController
-  before_action :signed_in_user, only: [:messageboard, :schedule]
+  before_action :signed_in_user, only: [:messageboard]
   
   def home
   end

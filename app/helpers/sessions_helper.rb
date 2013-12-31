@@ -35,6 +35,17 @@ module SessionsHelper
     end
   end
   
+  def clan_soldier
+    unless signed_in?
+      store_location
+      redirect_to signin_url, notice: "Please sign in."      
+    end
+    unless current_user.role >= UserSoldier
+      flash[:error] = "You need to be at least a Soldier in Fear The Fallen to view Tournaments!"
+      redirect_to(root_url)      
+    end
+  end
+  
   def redirect_back_or(default)
     redirect_to(session[:return_to] || default)
     session.delete(:return_to)

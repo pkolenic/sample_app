@@ -1,5 +1,5 @@
 class TournamentsController < ApplicationController
-  before_action :signed_in_user
+  before_action :clan_soldier
   before_action :user_can_create_tournament, only: [:new, :create]
   before_action :correct_user,   only: [:edit, :update, :open_tournament, :close_tournament]
 
@@ -115,7 +115,10 @@ class TournamentsController < ApplicationController
   
   # Before Filters
     def user_can_create_tournament
-      redirect_to(root_url) if current_user.role < UserSoldier
+      if current_user.role < UserSoldier
+        flash[:error] = "You need to be at least a Soldier in Fear The Fallen to create a new Tournament!"
+        redirect_to(root_url)        
+      end
     end
     
     def correct_user
