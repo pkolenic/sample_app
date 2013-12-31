@@ -7,7 +7,104 @@
 	</p>
 	
 	<div id="ts3viewer_1033593"></div>
-	<script type="text/javascript" src="http://static.tsviewer.com/short_expire/js/ts3viewer_loader.js"></script>
+	<!-- <script type="text/javascript" src="http://static.tsviewer.com/short_expire/js/ts3viewer_loader.js"></script> -->
+	<script type="text/javascript">
+/* 
+TSViewer.com asynchronous JavaScript TeamSpeak 3 Viewer loader
+artz code by http://www.artzstudio.com/2008/07/beating-blocking-javascript-asynchronous-js/
+*/
+
+/*
+function debug(add)
+{
+	var debug_content = document.getElementById('debug').innerHTML;
+	document.getElementById('debug').innerHTML = debug_content + '<br />' + add;
+}
+*/
+
+var artz = 
+{
+	d:document,
+	id:function(id){return artz.d.getElementById(id)},
+	tag:function(element){return artz.d.getElementsByTagName(element)},
+	ce:function(element){return artz.d.createElement(element)},
+	js:function(url)
+	{
+		// If you want to call IE and Safari straight up without the delay, uncomment this.
+		// (navigator.userAgent.search('Firefox')) ? js = setTimeout("artz.create('"+url+"')", 1) : artz.create(url);
+		js = setTimeout("artz.create('"+url+"')", 1);
+	},
+	create:function(url)
+	{
+		s = artz.ce("script");
+		s.type = "text/javascript";
+		s.charset = "utf-8";
+		s.src = url;
+		artz.tag("head")[0].appendChild(s);
+		//debug("+ script created, loading");
+	}
+}
+
+
+var ts3v_display =
+{
+	init: function(Url, RegID, maxTries)
+	{
+		document.getElementById('ts3viewer_'+RegID).innerHTML = ' <img src="http://static.tsviewer.com/images/content/ajax-loading2.gif" alt="" title="' + RegID + '" /> Contacting <a href="http://www.tsviewer.com" target="_blank">TSViewer.com</a>';
+		
+		if(typeof ts3v == "undefined")
+		{
+			ts3v = new Array();
+			//debug("- " + RegID + " ts3v array created");
+		}
+		
+		ts3v_dontWrite = 1; // tell ts3viewer.php not to document.write, instead write it into the ts3v variable
+		
+		artz.js(Url); // generate and load the script with given url
+		
+		if(typeof ts3v_maxTries_i == "undefined")
+		{
+			ts3v_maxTries_i = new Array();
+			//debug("- " + RegID + " ts3v_maxTries_i array created");
+		}	
+		ts3v_maxTries_i[RegID] = 0;
+
+		if(typeof ts3v_init == "undefined")
+		{
+			ts3v_init = new Array();
+			//debug("- " + RegID + " ts3v_init array created");
+		}		
+		ts3v_init[RegID] = setInterval("ts3v_display.check("+RegID+","+maxTries+")", 100);
+	},	
+	check: function(RegID, maxTries)
+	{	
+		if(ts3v_maxTries_i[RegID] < maxTries)
+		{
+			if(typeof ts3v[RegID] != "undefined")
+			{
+				//debug("- " + RegID + " ts3v var available, delivery to finishUpdate");
+				ts3v_display.finishUpdate(RegID, ts3v[RegID]);
+			} 
+			else 
+			{
+				ts3v_maxTries_i[RegID]++;
+			}
+		}
+		else 
+		{
+			//debug("- " + RegID + " timeout");
+			ts3v_display.finishUpdate(RegID, "Timeout after " +ts3v_maxTries_i[RegID]/10+ " second(s). Please check at <a href=\"http://www.tsviewer.com/index.php?page=ts_viewer&ID=" +  RegID + "\" target=\"_blank\">TSViewer.com</a> if there is something wrong.");
+		}
+	},
+	finishUpdate: function(RegID, text)
+	{
+		clearInterval(ts3v_init[RegID]);
+		document.getElementById('ts3viewer_'+RegID).innerHTML = text;
+		//debug("- " + RegID + " var received, interval cleared, innerHTML updated");
+	}
+}
+	
+	</script>
 	
 	<script type="text/javascript">
 		<!--
