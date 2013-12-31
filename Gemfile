@@ -12,6 +12,7 @@ gem 'pg', '0.15.1'
 gem 'newrelic_rpm'
 gem 'httparty'
 gem 'bootstrap-datetimepicker-rails'
+gem "watu_table_builder", :require => "table_builder"
 
 group :development, :test do
   gem 'rspec-rails', '2.13.1'

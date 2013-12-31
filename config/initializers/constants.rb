@@ -12,3 +12,5 @@ UserSuper             = 100
 
 TournamentForming     = 0
 TournamentFormed      = 10
+
+TournamentType        = 10

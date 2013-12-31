@@ -1,46 +1,6 @@
 <% provide(:title, 'Schedule') %> 
-<h1>Schedule</h1>
 <div class="center">
-	<section class="notes">
-		<p>
-			This schedule is designed to give structure and predictability to the clan.
-			If you have suggestions for the schedule please make sure to leave comments below
-			and to follow up with clan leadership.	
-		</p>
-	</section>
-	<section id="schedule_list">
-		<table>
-			<thead>
-				<tr>
-					<th>Day of Week</th>
-					<th>Time (PST)</th>
-					<th>Event</th>
-				</tr>
-			</thead>		
-			<tbody>
-				<tr>
-					<td>Monday</td>
-					<td>6:00pm until complete</td>
-					<td>3v3 Daily Blitz</td>
-				</tr>
-				<tr>
-					<td>Thursday</td>
-					<td>7:00pm to 8:00pm</td>
-					<td>Team Training Room</td>
-				</tr>
-				<tr class="canceled">
-					<td>Friday</td>
-					<td>4:00pm to 7:00pm</td>
-					<td>Tank Company Battles</td>
-				</tr>
-				<tr class="canceled">
-					<td>Sunday</td>
-					<td>9:00pm to 11:00pm</td>
-					<td>Team Battles</td>
-				</tr>
-			</tbody>
-		</table>
-	</section>
+	<%= render 'static_pages/calendar' %>	
 </div>
 <% if signed_in? %>
 	<%= render 'shared/disqus' %>

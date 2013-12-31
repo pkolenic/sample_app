@@ -1,7 +1,8 @@
 SampleApp::Application.routes.draw do
+  get "events/new"
   # Resource Paths
   resources :users
-  
+  resources :events, only: [:new, :create, :destroy]
   resources :sessions, only: [:new, :create, :destroy]
   resources :promotions, only: [:edit, :update]
   resources :tournaments, except: :index
