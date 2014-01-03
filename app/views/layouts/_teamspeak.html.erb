@@ -6,15 +6,14 @@
 		<span class='ts_bold'>pancakes</span>
 	</p>
 	<p id="teamspeak_ie">
-		The current status of the Team Speak Server Does not work on IE.
-		Try viewing in a different browers
+		If the TS3 Server Status doesn't load make sure you're not using IE
 	</p>
-	<div id="teamspeak_server" style="display:none;">		
+	<div id="teamspeak_server">		
 		<iframe
 			sandbox="allow-scripts "			
 			seamless 
 			srcdoc="
-			<div id='ts3viewer_1033593'></div>
+			<div id='ts3viewer_1033593' style='background: white;'></div>
 			<script type='text/javascript' src='http://static.tsviewer.com/short_expire/js/ts3viewer_loader.js'></script>
 			<script type='text/javascript'>
 				<!--
@@ -25,11 +24,5 @@
 		</div>">
 		</iframe>
 	</div>
-	<script type="text/javascript">
-		$("#teamspeak_server iframe").load(function(){
-			$("#teamspeak_ie").hide();
-			$("#teamspeak_server").show();
-		});
-	</script>
 </div>
 
