@@ -372,8 +372,7 @@ input {
 /* TeamSpeak */
 #teamspeak_box {
   width: 155px;
-  min-height: 400px;
-  max-height: 700px;
+  height: 400px;
   background-color: white;
   position: fixed;
   padding: 5px 0px 0px 5px;
@@ -384,6 +383,11 @@ input {
   }
   .ts_bold {
     font-weight: bold;
+  }
+  iframe {
+    width: 155px;
+    min-height: 400px;
+    max-height: 700px;
   }
 }
 
