@@ -1,11 +1,19 @@
 <div id='teamspeak_box'>
 	<p>
-		Team Speak Server:</br>
-		<span class='ts_bold'>199.167.19.50:9170</span></br>
-		Password:</br> 
+		Team Speak Server:<br>
+		<span class='ts_bold'>199.167.19.50:9170</span><br>
+		Password:<br> 
 		<span class='ts_bold'>pancakes</span>
 	</p>
-	<iframe id="teamspeak_server" sandbox="allow-scripts" seamless srcdoc="
+	<p id="teamspeak_ie">
+		The current status of the Team Speak Server Does not work on IE.
+		Try viewing in a different browers
+	</p>	
+	<iframe id="teamspeak_server" 
+		sandbox="allow-same-origin allow-scripts"
+		allow-same-origin 
+		seamless 
+		srcdoc="
 		<div id='ts3viewer_1033593'></div>
 		<script type='text/javascript' src='http://static.tsviewer.com/short_expire/js/ts3viewer_loader.js'></script>
 		<script type='text/javascript'>
@@ -16,9 +24,11 @@
 		</script>
 	</div>">
 	</iframe>
-	
+
 	<script type="text/javascript">
-		if (!$("#teamspeak_server").contents().find('body').length) {
+		if ($("#teamspeak_server").contents().find('body').length) {
+			$("#teamspeak_ie").hide();
+		} else {
 			$("#teamspeak_server").hide();
 		}
 	</script>
