@@ -70,29 +70,28 @@
 <%= f.text_area :maps, class: "tinymce", ros: 40, cols: 120 %>
 
 <div>
-	<span>For simplicity enter all times as found on the World of Tank Page (PST or PDT).</span><br/>
-	<span class="font12px">(PST is -08:00 and PDT is -07:00)</span>
+	<span>Enter All Times in Local Time</span><span class="font12px"> (Current Time Zone is <%= Time.zone.now.zone %>)</span>
 </div>
 
 <div class="input-append form_block datetimepicker">
 	<%= f.label :start_date, "Start Date"%>
-	<%= f.text_field :start_date, value: (f.object.start_date.strftime('%b %d %Y %H:%M %z') if f.object.start_date), class: "width200" %>
+	<%= f.text_field :start_date, value: (f.object.start_date.strftime('%b %d %Y %l:%M%p') if f.object.start_date), class: "width200" %>
 </div>
 
 <div class="input-append form_block datetimepicker">
 	<%= f.label :end_date, "End Date"%>
-	<%= f.text_field :end_date, value: (f.object.end_date.strftime('%b %d %Y %H:%M %z') if f.object.end_date), class: "width200" %>
+	<%= f.text_field :end_date, value: (f.object.end_date.strftime('%b %d %Y %l:%M%p') if f.object.end_date), class: "width200" %>
 </div>
 
 <script type="text/javascript">
   $(function() {
     $('#tournament_start_date').datetimepicker({
 		dateFormat: "M dd yy",
-		timeFormat: "HH:mm Z"
+		timeFormat: "h:mmTT"
 	});
     $('#tournament_end_date').datetimepicker({
 		dateFormat: "M dd yy",
-		timeFormat: "HH:mm Z"
+		timeFormat: "h:mmTT"
 	});
   });
 </script>

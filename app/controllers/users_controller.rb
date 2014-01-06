@@ -214,7 +214,7 @@ class UsersController < ApplicationController
   private
   def user_params
     params.require(:user).permit(:name, :wot_name, :email, :password,
-    :password_confirmation)
+    :password_confirmation, :time_zone)
   end
 
   def fetch_user_stats
@@ -281,7 +281,8 @@ class UsersController < ApplicationController
                               password: password, 
                               password_confirmation: password, 
                               wot_id: data['account_id'],
-                              role: role)            
+                              role: role,
+                              time_zone: 'Pacific Time (US & Canada)')            
               existing_user = User.find_by(wot_name: data['account_name'])
               if !existing_user
                 user.save!

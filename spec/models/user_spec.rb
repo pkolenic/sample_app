@@ -22,6 +22,7 @@ describe User do
   it { should respond_to(:reset_token) }
   it { should respond_to(:reset_expire) }
   it { should respond_to(:active) }
+  it { should respond_to(:time_zone) }
 
   # Clan Details
   it { should respond_to(:clan_id) }

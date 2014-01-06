@@ -25,7 +25,7 @@ class StaticPagesController < ApplicationController
   
   def schedule
     @disqus = "schedule"
-    @events = Event.find(:all)
+    @events = Event.all
     @date = params[:month] ? DateTime.strptime(params[:month], '%Y-%m') : Date.today
   end
   

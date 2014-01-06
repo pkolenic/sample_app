@@ -18,8 +18,8 @@
 	</div>
 	
 	<div class="dates">
-		<span class="title">Registration Begins</span> <span class="value">: <%= @tournament.start_date.strftime('%b %d %Y %H:%M %Z(%z)') %></span><br/>
-		<span class="title">Registration Ends</span> <span class="value">: <%= @tournament.end_date.strftime('%b %d %Y %H:%M %Z(%z)') %></span><br/>
+		<span class="title">Registration Begins</span> <span class="value">: <%= @tournament.start_date.strftime('%b %d %Y %l:%M%p %Z') %></span><br/>
+		<span class="title">Registration Ends</span> <span class="value">: <%= @tournament.end_date.strftime('%b %d %Y %l:%M%p %Z') %></span><br/>
 	</div>
 	
 	<div class="links box">
