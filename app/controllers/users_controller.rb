@@ -9,17 +9,15 @@ class UsersController < ApplicationController
   before_action :appointment_user, only: [:add_clanwar, :remove_clanwar]
   before_action :build_new_users, only: [:index]
   before_action :fetch_user_stats, only: [:index, :show]
-  
-  def index
-    if params[:type]
-      type = params[:type]
-      order = 'wot_name'
-      case type
+ def index
+    type = params[:type]
+    order = 'wot_name'
+    case type
       when 'pending'
         filter = "role = ?"
         value = UserPending
       when 'leadership'
-        filter = "role > ?"        
+        filter = "role > ?"
         value = UserTreasurer
         order ='role DESC, lower(wot_name)'
       when 'clan_war'
@@ -34,10 +32,9 @@ class UsersController < ApplicationController
       when 'inactive'
         filter = "clan_id = ? AND last_online < '#{Time.now - 30.days}'"
         value = "#{CLANID}"
-      else 
+      else
         filter = "clan_id = ?"
         value = "#{CLANID}"
-      end      
     end
 
     @users = User.where(filter, value).paginate(page: params[:page], :per_page => 10).order(order)
