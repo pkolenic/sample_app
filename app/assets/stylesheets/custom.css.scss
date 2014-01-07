@@ -404,6 +404,25 @@ input {
   }
 }
 
+/* Last Online */
+.LastOnline {
+  clear: both;
+  background-color: rgba(255,255,255,0.2);
+  text-shadow: 1px 1px 25px white;
+  font-weight: normal;
+  color: black;
+  padding: 0 3px 0 2px;
+  .Label {
+    font-weight: bold;
+  }
+  .OnlineDate {
+    font-style: italic;
+  }
+  span {
+    display: inline;
+  }
+}
+
 /* Time Picker */
 /* css for timepicker */
 .ui-timepicker-div .ui-widget-header { margin-bottom: 8px; }

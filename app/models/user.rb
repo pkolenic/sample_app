@@ -163,7 +163,7 @@ class User < ActiveRecord::Base
                         "emblems_urls" => { "large" => "http://cw.worldoftanks.com/media/clans/emblems/clans_1/1000007730/emblem_64x64.png" }}}}
         json_response = { "status" => 'ok', "data" => total }
       else 
-        url = "http://api.worldoftanks.com/2.0/account/info/?application_id=16924c431c705523aae25b6f638c54dd&account_id=#{self.wot_id}"
+        url = "https://api.worldoftanks.com/wot/account/info/?application_id=#{ENV['WOT_API_KEY']}&account_id=#{self.wot_id}"     
         response = self.class.get url
         if response.parsed_response.class == Hash
           json_response = response.parsed_response
@@ -175,6 +175,9 @@ class User < ActiveRecord::Base
       if json_response["status"] == 'ok'
         total = json_response["data"]["#{self.wot_id}"]
         if !total.blank? 
+          # Last Online
+          self.last_online = DateTime.strptime("#{total['updated_at']}", '%s')
+          
           # Clan Details
           if !total["clan"].blank?    
             #Rails.logger.info "Updating Clan Info For #{self.wot_name}"   

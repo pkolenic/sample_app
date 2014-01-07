@@ -31,6 +31,9 @@ class UsersController < ApplicationController
       when 'active'
         filter = "active = ?"
         value = true
+      when 'inactive'
+        filter = "clan_id = ? AND last_online < '#{Time.now - 30.days}'"
+        value = "#{CLANID}"
       end
     end
 
@@ -217,7 +220,7 @@ class UsersController < ApplicationController
     :password_confirmation, :time_zone)
   end
 
-  def fetch_user_stats
+  def fetch_user_stats 
     # User.find(150).update_stats
     if Update.first
       last_update = Update.first.updated_at  
@@ -228,7 +231,7 @@ class UsersController < ApplicationController
     end
 
     if DateTime.now.to_i - last_update.to_i > 3600 && !Rails.env.test?
-      # Set the Update Time
+      Set the Update Time
       Update.first.touch
       
       Rails.logger.info "About to Start Update Thread"

@@ -11,8 +11,17 @@
   		<span><%= user.clan_abbr %></span>
   	<% end %>
   </div>
+  <div class="user_summary">
+  	<%= link_to user.wot_name, user %>
+  	<% if !user.last_online.blank? %>
+		<div class="LastOnline">
+			<span class="Label">Last Online:</span>
+			<span class="OnlineDate"><%= user.last_online.strftime("%b %d %Y %l:%M%p %Z") %></span>
+		</div>
+	<% end %>	
+  </div>
   <%= image_tag("http://wotlabs.net/sig/na/#{user.wot_name}/signature.png", alt: 'win7 data') %>
-  <%= link_to user.wot_name, user %> 
+   
 
   <div class="action_buttons">
 	  <% if current_user.admin? && !current_user?(user) %>
