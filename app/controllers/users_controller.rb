@@ -29,20 +29,18 @@ class UsersController < ApplicationController
         filter = "role = ?"
         value = UserAmbassador
       when 'active'
-        filter = "active = ?"
+        filter = "active = ? AND clan_id = '#{CLANID}'"
         value = true
       when 'inactive'
         filter = "clan_id = ? AND last_online < '#{Time.now - 30.days}'"
         value = "#{CLANID}"
-      end
+      else 
+        filter = "clan_id = ?"
+        value = "#{CLANID}"
+      end      
     end
 
-    if filter
-      # @users = User.where(filter, value).paginate(page: params[:page], :per_page => 10).order(:wot_name)
-      @users = User.where(filter, value).paginate(page: params[:page], :per_page => 10).order(order)
-    else
-      @users = User.paginate(page: params[:page], :per_page => 10).order(:wot_name)
-    end
+    @users = User.where(filter, value).paginate(page: params[:page], :per_page => 10).order(order)
     @disqus = "battleroster"
   end
 
