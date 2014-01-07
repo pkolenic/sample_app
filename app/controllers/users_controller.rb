@@ -231,7 +231,7 @@ class UsersController < ApplicationController
     end
 
     if DateTime.now.to_i - last_update.to_i > 3600 && !Rails.env.test?
-      Set the Update Time
+      #Set the Update Time
       Update.first.touch
       
       Rails.logger.info "About to Start Update Thread"
