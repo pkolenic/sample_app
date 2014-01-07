@@ -1,4 +1,20 @@
 <% provide(:title, @user.wot_name) %>
+<% if @user.wins %>
+	<% @wins = (@user.wins.to_f / @user.battles_count * 100).round(2) %>
+<% end %>
+<% if @user.losses %>
+	<% @losses = (@user.losses.to_f / @user.battles_count * 100).round(2) %>
+<% end %>
+<% if @user.survived %>
+	<% @survived = (@user.survived.to_f / @user.battles_count * 100).round(2) %>
+<% end %>
+<% if (@user.experiance) %>
+	<% @average_xp = "#{(@user.experiance.to_f / @user.battles_count).round(2)}" %>
+<% end %>
+<% if (@user.damage_dealt) %>
+	<% @average_damage = "#{(@user.damage_dealt.to_f / @user.battles_count).round(2)}" %>
+<% end %>
+
 <div class="row">
 	<aside class="span4">
 		<section>
@@ -18,9 +34,9 @@
 				<% end %>
 			</div> 
 			<% if !@user.last_online.blank? %>
-				<div class="LastOnline">
-					<span class="Label">Last Online:</span>
-					<span class="OnlineDate"><%= @user.last_online.strftime("%b %d %Y %l:%M%p %Z") %></span>
+				<div class="profile_last_online">
+					<span class="stat_label">Last Online:</span>
+					<span class="stat_value"><%= @user.last_online.strftime("%b %d %Y %l:%M%p %Z") %></span>
 				</div>	
 			<% end %>
 		</section>

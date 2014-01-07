@@ -98,3 +98,14 @@ li .gravatar {
     padding: 0; 
   }  
 }
+
+.profile_last_online {
+  clear: both;
+  background-color: rgba(255,255,255,0.2);
+  text-shadow: 1px 1px 25px white;
+  font-weight: normal;
+  color: black;
+  padding: 0 3px 0 2px;
+  width: 245px;
+  text-align: center;
+}

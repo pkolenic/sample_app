@@ -15,8 +15,22 @@
   	<%= link_to user.wot_name, user %>
   	<% if !user.last_online.blank? %>
 		<div class="LastOnline">
-			<span class="Label">Last Online:</span>
-			<span class="OnlineDate"><%= user.last_online.strftime("%b %d %Y %l:%M%p %Z") %></span>
+			<span class="stat_label">Last Online:</span>
+			<span class="stat_value"><%= user.last_online.strftime("%b %d %Y %l:%M%p %Z") %></span>			
+		</div>
+	<% end %>
+	<% if !user.battles_count.blank? %>
+		<div class="BattleCount">
+			<span class="stat_label">Battles:</span>
+			<span class="stat_value"><%= user.battles_count %></span>
+		</div>
+		<div class="WinRatio">
+			<span class="stat_label">Win Rate</span>
+			<span class="stat_value"><%= (user.wins.to_f / user.battles_count * 100).round(2) %>%</span>
+		</div>		
+		<div class="KillDeathRatio">
+			<span class="stat_label">Kill/Death Ratio:</span>
+			<span class="stat_value"><%= (user.frags.to_f / (user.battles_count - user.survived)).round(2) %></span>				
 		</div>
 	<% end %>	
   </div>
