@@ -17,10 +17,12 @@
 					<%= link_to 'Official World of Tanks Profile', "http://worldoftanks.com/community/accounts/#{@user.wot_id}-#{@user.wot_name}/", target: "_blank" %>
 				<% end %>
 			</div> 
+			<% if !user.last_online.blank? %>
 			<div class="LastOnline">
 				<span class="Label">Last Online:</span>
 				<span class="OnlineDate"><%= @user.last_online.strftime("%b %d %Y %l:%M%p %Z") %></span>
 			</div>	
+			<% end %>
 		</section>
 	</aside>
 	<table id="user_stats">
