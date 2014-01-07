@@ -8,9 +8,11 @@
 	<%= link_to "Active", "#{users_path}/?type=active", class: "btn btn-small btn-primary" %>
 	<%= link_to "Clan War Team", "#{users_path}/?type=clan_war", class: "btn btn-small btn-primary" %>
 	<%= link_to "Leadership", "#{users_path}/?type=leadership", class: "btn btn-small btn-primary" %>
+<% if current_user.role > UserSoldier %>
+	<%= link_to "Ambassadors", "#{users_path}/?type=ambassadors", class: "btn btn-small btn-primary" %>
+<% end %	
 <% if current_user.can_approve? %>
 	<%= link_to "Pending", "#{users_path}/?type=pending", class: "btn btn-small btn-primary" %>
-	<%= link_to "Ambassadors", "#{users_path}/?type=ambassadors", class: "btn btn-small btn-primary" %>
 <% end %>	
 <% if current_user.role > UserCompanyCommander %>
 	<%= link_to "InActive", "#{users_path}/?type=inactive", class: "btn btn-small btn-primary" %>		
