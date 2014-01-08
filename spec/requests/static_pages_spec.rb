@@ -44,18 +44,16 @@ describe "Static pages" do
     
   describe "Schedule page" do
     before { visit schedule_path }
-    let(:heading)     { 'Schedule' }
     let(:page_title)  { 'Schedule' }
     
-    it_should_behave_like "all static pages"
+    it { should have_title(full_title(page_title)) }
   end  
     
   it "should have the right links on the layout" do
+    # TODO - Need to check that all links are present for the Header and Footer
     visit root_path
     click_link "About"
     expect(page).to have_title(full_title('About Us'))
-    click_link "Help"
-    expect(page).to have_title(full_title('Help'))
     click_link "Contact"
     expect(page).to have_title(full_title('Contact'))
     click_link "Home"
@@ -81,16 +79,4 @@ describe "Static pages" do
     it { should have_link('Bar') }
   end
   
-  describe "tournament links do not show" do
-    let(:user) { FactoryGirl.create(:user, role: UserRecruit) }
-    let!(:t1) { FactoryGirl.create(:tournament, user: user, name: "Foo") }
-    let!(:t2) { FactoryGirl.create(:tournament, user: user, name: "Bar") }
-    
-    before { sign_in user }
-    
-    it { should_not have_link('Tournaments') }
-    it { should_not have_link('<Create New Tournament>')}
-    it { should_not have_link('Foo') }
-    it { should_not have_link('Bar') } 
-  end
 end
