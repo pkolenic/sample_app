@@ -17,7 +17,7 @@ describe UserMailer do
  
     #ensure that the sender is correct
     it 'renders the sender email' do
-      mail.from.should == ['noreply@fearthefallen.net']
+      mail.from.should == [CLAN_NO_REPLAY]
     end
  
     #ensure that the @name variable appears in the email body
@@ -42,7 +42,7 @@ describe UserMailer do
     
     #ensure that the sender is correct
     it 'renders the sender email' do
-      mail.from.should == ['noreply@fearthefallen.net']
+      mail.from.should == [CLAN_NO_REPLAY]
     end
     
     #ensure that the @name variable appears in the email body
@@ -72,7 +72,7 @@ describe UserMailer do
     
     #ensure that the sender is correct
     it 'renders the sender email' do
-      mail.from.should == ['noreply@fearthefallen.net']
+      mail.from.should == [CLAN_NO_REPLAY]
     end
     
     #ensure that the @name variable appears in the email body
@@ -106,7 +106,7 @@ describe UserMailer do
     
     #ensure that the sender is correct
     it 'renders the sender email' do
-      mail.from.should == ['noreply@fearthefallen.net']
+      mail.from.should == [CLAN_NO_REPLAY]
     end
     
     #ensure that the @name variable appears in the email body
@@ -131,7 +131,7 @@ describe UserMailer do
     
     #ensure that the sender is correct
     it 'renders the sender email' do
-      mail.from.should == ['noreply@fearthefallen.net']
+      mail.from.should == [CLAN_NO_REPLAY]
     end
     
     #ensure that the @name variable appears in the email body
@@ -146,7 +146,7 @@ describe UserMailer do
     
     # ensure that the subject is correct
     it 'renders the subject' do
-      mail.subject.should == 'You have been appointed as an ambassador to Fear the Fallen for Another Clan'
+      mail.subject.should == "You have been appointed as an ambassador to #{CLAN_NAME} for Another Clan"
     end
     
     #ensure that the receiver is correct
@@ -156,7 +156,7 @@ describe UserMailer do
     
     #ensure that the sender is correct
     it 'renders the sender email' do
-      mail.from.should == ['noreply@fearthefallen.net']
+      mail.from.should == [CLAN_NO_REPLAY]
     end
     
     #ensure that the @name variable appears in the email body
@@ -177,7 +177,7 @@ describe UserMailer do
  
     #ensure that the subject is correct
     it 'renders the subject' do
-      mail.subject.should == 'FearTheFallen Password Reset Request'
+      mail.subject.should == "#{CLAN_NAME} Password Reset Request"
     end
  
     #ensure that the receiver is correct
@@ -187,7 +187,7 @@ describe UserMailer do
  
     #ensure that the sender is correct
     it 'renders the sender email' do
-      mail.from.should == ['noreply@fearthefallen.net']
+      mail.from.should == [CLAN_NO_REPLAY]
     end
  
     #ensure that the @name variable appears in the email body
@@ -202,7 +202,7 @@ describe UserMailer do
  
     #ensure that the subject is correct
     it 'renders the subject' do
-      mail.subject.should == 'FearTheFallen Password has been Reset'
+      mail.subject.should == "#{CLAN_NAME} Password has been Reset"
     end
  
     #ensure that the receiver is correct
@@ -212,7 +212,7 @@ describe UserMailer do
  
     #ensure that the sender is correct
     it 'renders the sender email' do
-      mail.from.should == ['noreply@fearthefallen.net']
+      mail.from.should == [CLAN_NO_REPLAY]
     end
  
     #ensure that the @name variable appears in the email body

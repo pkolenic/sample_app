@@ -19,7 +19,7 @@ describe TournamentMailer do
  
     #ensure that the sender is correct
     it 'renders the sender email' do
-      mail.from.should == ['noreply@fearthefallen.net']
+      mail.from.should == [CLAN_NO_REPLAY]
     end
  
     #ensure that the user @name variable appears in the email body
@@ -70,7 +70,7 @@ describe TournamentMailer do
  
     #ensure that the sender is correct
     it 'renders the sender email' do
-      mail.from.should == ['noreply@fearthefallen.net']
+      mail.from.should == [CLAN_NO_REPLAY]
     end
  
     #ensure that the team member names variable appears in the email body
@@ -123,7 +123,7 @@ describe TournamentMailer do
  
     #ensure that the sender is correct
     it 'renders the sender email' do
-      mail.from.should == ['noreply@fearthefallen.net']
+      mail.from.should == [CLAN_NO_REPLAY]
     end
  
     #ensure that the team member names variable appears in the email body
@@ -172,7 +172,7 @@ describe TournamentMailer do
  
     #ensure that the sender is correct
     it 'renders the sender email' do
-      mail.from.should == ['noreply@fearthefallen.net']
+      mail.from.should == [CLAN_NO_REPLAY]
     end
  
     #ensure that the user @name variable appears in the email body
@@ -223,7 +223,7 @@ describe TournamentMailer do
  
     #ensure that the sender is correct
     it 'renders the sender email' do
-      mail.from.should == ['noreply@fearthefallen.net']
+      mail.from.should == [CLAN_NO_REPLAY]
     end
  
     #ensure that the team member names variable appears in the email body

@@ -1,7 +1,7 @@
-Welcome to Fear The Fallen, <%= @user.name %>
+Welcome to <%= CLAN_NAME %>, <%= @user.name %>
 ===============================================
  
-You account on fearthefallen.herokuapp.com has been approved, 
+You account on <%= CLAN_WEBSITE %> has been approved, 
 you now have an active status and all the privileges that entitles.
  
 To login to the site, just follow this link: <%= @url %>.

@@ -1,9 +1,9 @@
 class UserMailer < ActionMailer::Base
-  default :from => 'noreply@fearthefallen.net'
+  default :from => CLAN_NO_REPLAY
   
   def approved(user)
     @user = user
-    @url = 'https://fearthefallen.herokuapp.com/signin'
+    @url = "#{CLAN_WEBSITE}/signin"
     mail to: user.email, subject: 'Clan Status Approved'
   end
   
@@ -33,20 +33,20 @@ class UserMailer < ActionMailer::Base
   
   def made_ambassador(user)
     @user = user
-    @clan = 'Fear The Fallen'
-    mail to: user.email, subject: "You have been appointed as an ambassador to Fear the Fallen for #{user.clan_name}"
+    @clan = CLAN_NAME
+    mail to: user.email, subject: "You have been appointed as an ambassador to #{CLAN_NAME} for #{user.clan_name}"
   end
   
   def request_password_reset(user, token)
     @user = user
-    @clan = 'Fear The Fallen'
+    @clan = CLAN_NAME
     @token = token
-    mail to: user.email, subject: "FearTheFallen Password Reset Request"    
+    mail to: user.email, subject: "#{CLAN_NAME} Password Reset Request"    
   end
   
   def password_reset(user)
     @user = user
-    @clan = 'Fear The Fallen'
-    mail to: user.email, subject: "FearTheFallen Password has been Reset"     
+    @clan = CLAN_NAME
+    mail to: user.email, subject: "#{CLAN_NAME} Password has been Reset"     
   end
 end

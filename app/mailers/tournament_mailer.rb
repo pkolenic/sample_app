@@ -1,5 +1,5 @@
 class TournamentMailer < ActionMailer::Base
-  default :from => 'noreply@fearthefallen.net'
+  default :from => CLAN_NO_REPLAY
   
   def user_joined_tournament(user, tournament)
     @user = user

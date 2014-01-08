@@ -4,9 +4,9 @@
     <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
   </head>
   <body>
-    <h1>Welcome to Fear The Fallen, <%= @user.wot_name %></h1>
+    <h1>Welcome to <%= CLAN_NAME %>, <%= @user.wot_name %></h1>
     <p>
-      You account on fearthefallen.herokuapp.com has been approved, <br/>
+      You account on <%= CLAN_WEBSITE %> has been approved, <br/>
       you now have an active status and all the privileges that entitles. <br />
       Please explore the Clan Site and feel free to leave comments and suggestions.
     </p>
@@ -16,8 +16,8 @@
     	Even if you don't have a microphone teamspeak will be valuable in coorinating battles.<br/>
     </p>
     <p>	
-    	The Clan Server Address: 199.167.19.50:9170 <br/ >
-		Password: pancakes<br />
+    	The Clan TeamSpeak Server Address: <%= CLAN_TEAMSPEAK_SERVER %> <br/ >
+		Password: <%= CLAN_TEAMSPEAK_PASSWORD %><br />
     </p>
     <p>
       To login to the site, just follow this link: <%= @url %>.

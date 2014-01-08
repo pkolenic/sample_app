@@ -27,8 +27,6 @@ describe "Authentication" do
         it { should_not have_selector('div.alert.alert-error') }
       end
       
-      it { should_not have_link('Battle Roster',       href: users_path) }
-      it { should_not have_link('RiisingSun Videos', href: riisingsun_path) }
       it { should_not have_link('Profile') }
       it { should_not have_link('Settings') }
       it { should_not have_link('Sign out',    href: signout_path) }
@@ -45,8 +43,6 @@ describe "Authentication" do
       before { sign_in user }
 
       it { should have_title(user.wot_name) }
-      it { should have_link('Battle Roster',       href: users_path) }
-      it { should have_link('RiisingSun Videos',   href: riisingsun_path) }
       it { should have_link('Profile',     href: user_path(user)) }
       it { should have_link('Settings',    href: edit_user_path(user)) }
       it { should have_link('Sign out',    href: signout_path) }
@@ -98,7 +94,7 @@ describe "Authentication" do
       describe "in the Users controller" do
         describe "visiting the new page" do
           before { visit new_user_path }
-          it { should have_content("Don't Fear Death As It is Only The Beginning") }
+          it { should have_content(CLAN_MOTTO) }
         end
 
         # Redirect should happen, but its not and is still creating the user
@@ -155,14 +151,6 @@ describe "Authentication" do
         describe "submitting to the update action" do
           before { patch tournament_path(tournament) }
           specify { expect(response).to redirect_to(signin_path) }
-        end
-      end
-      
-      describe "in the Static controller" do
-        
-        describe "visiting RiisingSun Videos" do
-          before { visit riisingsun_path }
-          it { should have_title('Sign in') }
         end
       end
       

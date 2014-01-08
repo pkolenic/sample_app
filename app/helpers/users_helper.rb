@@ -8,9 +8,8 @@ module UsersHelper
     if !Rails.env.test?
       digest = OpenSSL::Digest::Digest.new('sha1')
       disqus_timestamp = Time.now.to_i
-      user_id = "ftf-#{user.id}#{Rails.env.development? ? '-dev' : ''}"
-           
-      # disqus_serializer_message = {"id"=>user_id, "username"=>user.wot_name, "email"=>user.email, "avatar"=>user.clan_logo}.to_json
+      user_id = "#{CLAN_SHORT_NAME.downcase}-#{user.id}#{Rails.env.development? ? '-dev' : ''}"
+
       disqus_serializer_message = {"id"=>user_id, "username"=>user.wot_name, "email"=>user.email, "avatar"=>gravatar_url(user, {size: 160})}.to_json               
       disqus_message = Base64.strict_encode64(disqus_serializer_message)
       disqus_signature = OpenSSL::HMAC.hexdigest(digest, ENV['DISQUS_SECRET'], disqus_message + ' ' + disqus_timestamp.to_s)
@@ -21,7 +20,7 @@ module UsersHelper
   def gravatar_url(user, options = { size: 50 })
     gravatar_id = Digest::MD5::hexdigest(user.email.downcase)
     size = options[:size]
-    if user.clan_name == 'Fear the Fallen' || user.clan_name.blank?
+    if user.clan_name == CLAN_NAME || user.clan_name.blank?
       gravatar_url = "https://secure.gravatar.com/avatar/#{gravatar_id}?s=#{size}&d=#{request.protocol}#{request.host_with_port}#{image_path('logo.png')}"
     else
       gravatar_url = "https://secure.gravatar.com/avatar/#{gravatar_id}?s=#{size}&d=#{user.clan_logo}"
@@ -54,7 +53,7 @@ module UsersHelper
   end
 
   def self.convert_role(role, clan)
-    if clan == 'Fear the Fallen'
+    if clan == CLAN_NAME
       case role
       when 'recruit'
         role_id = UserRecruit

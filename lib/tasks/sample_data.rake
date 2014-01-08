@@ -29,7 +29,7 @@ namespace :db do
                                                    wot_team_link: "http://www.somewhere.com/teamlink",
                                                    team_name: "Teamname",
                                                    description: "This is a Tournament",
-                                                   password: "pancakes",
+                                                   password: CLAN_TEAMSPEAK_PASSWORD,
                                                    minimum_team_size: 3,
                                                    maximum_team_size: 5,
                                                    heavy_tier_limit: 3,

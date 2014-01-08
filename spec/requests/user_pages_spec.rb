@@ -379,7 +379,7 @@ describe "User pages" do
     it_should_behave_like "all user pages"
     
     describe "when role recruit" do
-      let(:user) { FactoryGirl.create(:user, wot_name: "valid", role: UserSoldier, clan_name: "Fear the Fallen") } 
+      let(:user) { FactoryGirl.create(:user, wot_name: "valid", role: UserSoldier, clan_name: CLAN_NAME) } 
       before do
           user.update_attribute(:role, UserRecruit)
           visit user_path(user) 
@@ -390,7 +390,7 @@ describe "User pages" do
     end
     
     describe "when role Company Commander" do
-      let(:user) { FactoryGirl.create(:user, wot_name: "valid", role: UserDeputyCommander, clan_name: "Fear the Fallen") } 
+      let(:user) { FactoryGirl.create(:user, wot_name: "valid", role: UserDeputyCommander, clan_name: CLAN_NAME) } 
       before do
         user.update_attribute(:role, UserDeputyCommander)
         visit user_path(user) 
@@ -408,7 +408,7 @@ describe "User pages" do
       end
       
       specify { expect(ActionMailer::Base.deliveries.last.to).to eq [User.first.email] }
-      specify { expect(ActionMailer::Base.deliveries.last.subject).to eq 'You have been appointed as an ambassador to Fear the Fallen for Something Else' }      
+      specify { expect(ActionMailer::Base.deliveries.last.subject).to eq "You have been appointed as an ambassador to #{CLAN_NAME} for Something Else" }      
     end    
   end
 

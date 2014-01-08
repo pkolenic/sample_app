@@ -116,7 +116,7 @@ class TournamentsController < ApplicationController
   # Before Filters
     def user_can_create_tournament
       if current_user.role < UserSoldier
-        flash[:error] = "You need to be at least a Soldier in Fear The Fallen to create a new Tournament!"
+        flash[:error] = "You need to be at least a Soldier in #{CLAN_NAME} to create a new Tournament!"
         redirect_to(root_url)        
       end
     end

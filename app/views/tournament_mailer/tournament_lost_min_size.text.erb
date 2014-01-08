@@ -11,4 +11,4 @@ The tournament "<%= @tournament.name %>" no longer has the minimum team size nee
     <% end %>
 
     Please visit the official team page for '<%= @tournament.team_name %>' <%= @tournament.wot_team_link %>
-    to verify that it reflects the same team as listed on <%= tournament_url @tournament, host: 'https://fearthefallen.herokuapp.com' %>
+    to verify that it reflects the same team as listed on <%= tournament_url @tournament, host: CLAN_WEBSITE %>

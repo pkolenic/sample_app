@@ -27,14 +27,14 @@ class UsersController < ApplicationController
         filter = "role = ?"
         value = UserAmbassador
       when 'active'
-        filter = "active = ? AND clan_id = '#{CLANID}'"
+        filter = "active = ? AND clan_id = '#{CLAN_ID}'"
         value = true
       when 'inactive'
         filter = "clan_id = ? AND last_online < '#{Time.now - 30.days}'"
-        value = "#{CLANID}"
+        value = "#{CLAN_ID}"
       else
         filter = "clan_id = ?"
-        value = "#{CLANID}"
+        value = CLAN_ID
     end
 
     @users = User.where(filter, value).paginate(page: params[:page], :per_page => 10).order(order)
@@ -58,7 +58,7 @@ class UsersController < ApplicationController
       if @user.update_attributes(params)
         UserMailer.approved(@user).deliver
         sign_in @user
-        flash[:success] = "Welcome to Fear The Fallen"
+        flash[:success] = "Welcome to #{CLAN_NAME}"
         redirect_to @user
        else
          render 'new'
@@ -68,7 +68,7 @@ class UsersController < ApplicationController
       @user = User.new(params)
       if @user.save
         sign_in @user
-        flash[:success] = "Welcome to Fear The Fallen"
+        flash[:success] = "Welcome to #{CLAN_NAME}"
         redirect_to @user
       else
         render 'new'
@@ -229,9 +229,7 @@ class UsersController < ApplicationController
     if DateTime.now.to_i - last_update.to_i > (3600 * 12) && !Rails.env.test?
       Update.first.touch
       Thread.new do
-        clan_id = "1000007730"
-        clan_name = "Fear the Fallen"
-        url = "http://api.worldoftanks.com/2.0/clan/info/?application_id=16924c431c705523aae25b6f638c54dd&clan_id=#{clan_id}"               
+        url = "https://api.worldoftanks.com/wot/clan/info/?application_id=#{ENV['WOT_API_KEY']}&clan_id=#{CLAN_ID}"               
         
         response = self.class.get url
         if response.parsed_response.class == Hash
@@ -241,12 +239,12 @@ class UsersController < ApplicationController
         end
         
         if json_response["status"] == 'ok'                               
-            members = json_response['data']["#{clan_id}"]["members"]
+            members = json_response['data']["#{CLAN_ID}"]["members"]
             members.each do |member|
               data = member[1]
-              role = UsersHelper.convert_role(data['role'], clan_name)
+              role = UsersHelper.convert_role(data['role'], CLAN_NAME)
               password = User.new_remember_token
-              email = "#{data['account_name']}@fearthefallen.com"
+              email = "#{data['account_name']}@{CLAN_GENERIC_EMAIL_SUFFIX}"
               user = User.new(name: "Inactive", 
                               wot_name: data['account_name'], 
                               email: email, 

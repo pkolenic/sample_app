@@ -1,7 +1,7 @@
 module ApplicationHelper
   # Returns the full title on a per-page basis.
   def full_title(page_title)
-    base_title = "Fear The Fallen"
+    base_title = CLAN_NAME
     if page_title.empty?
     base_title
     else

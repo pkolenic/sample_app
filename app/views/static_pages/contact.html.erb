@@ -2,12 +2,12 @@
 <h1>Contact</h1>
 <div>
 	<h3>Team Speak Server</h3>
-	<span class="field">Server Address:</span> <span class="value">199.167.19.50:9170</span><br/>
-	<span class="field">Password:</span> <span class="value">pancakes</span><br/>
+	<span class="field">Server Address:</span> <span class="value"><%= CLAN_TEAMSPEAK_SERVER %></span><br/>
+	<span class="field">Password:</span> <span class="value"><%= CLAN_TEAMSPEAK_PASSWORD %></span><br/>
 	
 	<h3>Official Clan Email Address</h3>
-	<%= mail_to 'fearthefallen@live.com' %>
+	<%= mail_to CLAN_EMAIL %>
 	
 	<h3>Official World of Tanks Clan Page</h3>
-	<%= link_to "[FTF] Fear the Fallen", 'http://worldoftanks.com/community/clans/1000007730-FTF/', target: "_blank" %>
+	<%= link_to "[#{CLAN_SHORT_NAME}] #{CLAN_NAME}", "http://worldoftanks.com/community/clans/#{CLAN_ID}-#{CLAN_SHORT_NAME}/", target: "_blank" %>
 </div>

@@ -157,10 +157,10 @@ class User < ActiveRecord::Base
                     "clan" => {
                       "member" => { "role" => "recruiter"}, 
                       "clan" => {
-                        "id" => "1000007730", 
+                        "id" => CLAN_ID, 
                         "name" => self.clan_name, 
-                        "abbreviation" => "FTF",
-                        "emblems_urls" => { "large" => "http://cw.worldoftanks.com/media/clans/emblems/clans_1/1000007730/emblem_64x64.png" }}}}
+                        "abbreviation" => CLAN_SHORT_NAME,
+                        "emblems_urls" => { "large" => "http://cw.worldoftanks.com/media/clans/emblems/clans_1/#{CLAN_ID}/emblem_64x64.png" }}}}
         json_response = { "status" => 'ok', "data" => total }
       else 
         url = "https://api.worldoftanks.com/wot/account/info/?application_id=#{ENV['WOT_API_KEY']}&account_id=#{self.wot_id}"     
@@ -273,7 +273,7 @@ class User < ActiveRecord::Base
     end
   
     def convert_role(clan_id, role)      
-      if clan_id == 1000007730
+      if clan_id == CLAN_ID.to_i
         case role
         when 'recruit'
           role_id = UserRecruit

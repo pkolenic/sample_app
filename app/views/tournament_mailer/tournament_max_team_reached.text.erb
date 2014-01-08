@@ -11,6 +11,6 @@ The tournament "<%= @tournament.name %>" has reach its full team size
     <% end %>
 
     Please visit the official team page for '<%= @tournament.team_name %>' <%= @tournament.wot_team_link %>
-    to verify that it reflects the same team as listed on <%= tournament_url @tournament, host: 'https://fearthefallen.herokuapp.com' %>
+    to verify that it reflects the same team as listed on <%= tournament_url @tournament, host: CLAN_WEBSITE %>
     
     Also don't forget to update the team status while at '<%= @tournament.team_name %>' <%= @tournament.wot_team_link %>

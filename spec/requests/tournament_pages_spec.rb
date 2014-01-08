@@ -161,7 +161,7 @@ describe "Tournament pages" do
       describe "after saving the tournament" do
         before { click_button submit }
 
-        it { should have_selector('h1', text: 'Fear The Fallen') }
+        it { should have_selector('h1', text: CLAN_NAME) }
         it { should have_success_message('Tournament Created') }
       end
     end

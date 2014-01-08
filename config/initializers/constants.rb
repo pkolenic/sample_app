@@ -18,4 +18,15 @@ TournamentFormed      = 10
 TournamentType        = 10
 
 # CLAN SPECIFIC
-CLANID                = 1000007730
+CLAN_ID                       = "1000007730"
+CLAN_SHORT_NAME               = "FTF"
+CLAN_NAME                     = "Fear the Fallen"
+CLAN_DISQUS                   = "fearthefallen"
+CLAN_GENERIC_EMAIL_SUFFIX     = "fearthefallen.com"
+CLAN_EMAIL                    = "fearthefallen@live.com"
+CLAN_NO_REPLAY                = "noreply@fearthefallen.net"
+CLAN_WEBSITE                  = "https://fearthefallen.herokuapp.com"
+CLAN_TEAMSPEAK_SERVER         = "199.167.19.50:9170"
+CLAN_TEAMSPEAK_PASSWORD       = "pancakes"
+CLAN_TSVIEW_ID                = 1033593
+CLAN_MOTTO                    = "Don't Fear Death As It is Only The Beginning"
