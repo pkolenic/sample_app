@@ -131,37 +131,8 @@ class User < ActiveRecord::Base
  def update_stats
     if self.wot_id
       if Rails.env.test?
-        total =  { 
-                    "achievements" => {}, 
-                    "ratings" => {}, 
-                    "name" => 'articblast', 
-                    "vehicles" => {}, 
-                    "battles" => {
-                      "spotted" => 1000,
-                      "frags" => 1500,
-                      "damage_dealt" => 1000000,
-                      "hits_percents" => 55,
-                      "capture_points" => 5000,
-                      "dropped_capture_points" => 6000
-                    }, 
-                    "summary" => {
-                      "battles_count" => 3000,
-                      "wins" => 1500,
-                      "losses" => 1000,
-                      "survived_battles" => 450
-                    }, 
-                    "experience" => {
-                      "xp" => 1500000,
-                      "max_xp" => 1000
-                    }, 
-                    "clan" => {
-                      "member" => { "role" => "recruiter"}, 
-                      "clan" => {
-                        "id" => CLAN_ID, 
-                        "name" => self.clan_name, 
-                        "abbreviation" => CLAN_SHORT_NAME,
-                        "emblems_urls" => { "large" => "http://cw.worldoftanks.com/media/clans/emblems/clans_1/#{CLAN_ID}/emblem_64x64.png" }}}}
-        json_response = { "status" => 'ok', "data" => total }
+        require 'testResponses'
+        json_response = { "status" => 'ok', "data" => TestResponses::sample_wot_user(self.clan_id) }    
       else 
         url = "https://api.worldoftanks.com/wot/account/info/?application_id=#{ENV['WOT_API_KEY']}&account_id=#{self.wot_id}"     
         response = self.class.get url
@@ -177,16 +148,20 @@ class User < ActiveRecord::Base
         if !total.blank? 
           # Last Online
           self.last_online = DateTime.strptime("#{total['updated_at']}", '%s')
-          
-          # Clan Details
+       
+          # Clan Details      
           if !total["clan"].blank?    
-            #Rails.logger.info "Updating Clan Info For #{self.wot_name}"   
             update_clan(total["clan"]["clan_id"], total["clan"]["role"])
           else
+            # Check if was in clan first
+            if self.clan_id || self.role == UserAmbassador
+              self.role = UserAmbassador
+            else
+              self.role = UserRecruit                
+            end
             self.clan_id = nil
-            self.role = UserRecruit
           end
-          
+        
           # Total Stats
           if total["statistics"]
             #Rails.logger.info "Updating Statistics For #{self.wot_name}"
@@ -234,7 +209,7 @@ class User < ActiveRecord::Base
       win7 -= ((5 - [avg_tier, 5].min * 125) / (1 + Math::E**(( avg_tier - (games_played/220)**(3/avg_tier) )*1.5)))       
     end
   
-    def update_clan(clan_id, role)         
+    def update_clan(clan_id, role)            
       if self.clan_id != clan_id || self.clan_name.blank?           
         self.clan_id = clan_id
         clan_url = "http://api.worldoftanks.com/2.0/clan/info/?application_id=16924c431c705523aae25b6f638c54dd&clan_id=#{clan_id}"
@@ -257,9 +232,9 @@ class User < ActiveRecord::Base
         end
       end
       
-      if self.role > UserPending || !self.active?
+      if self.role > UserPending || !self.active?     
         previous_role = self.role
-        self.role = convert_role(clan_id, role)
+        self.role = convert_role(clan_id, role)        
         if previous_role != self.role 
           if self.role == UserAmbassador && self.active?
             UserMailer.made_ambassador(self).deliver
@@ -272,8 +247,8 @@ class User < ActiveRecord::Base
       end      
     end
   
-    def convert_role(clan_id, role)      
-      if clan_id == CLAN_ID.to_i
+    def convert_role(clan_id, role)                     
+      if clan_id.to_i == CLAN_ID.to_i          
         case role
         when 'recruit'
           role_id = UserRecruit
@@ -292,9 +267,9 @@ class User < ActiveRecord::Base
         when 'leader'
           role_id =UserCommander
         end
-      else
+      else            
         role_id = UserAmbassador
-      end
+      end  
       role_id
     end
     
@@ -318,8 +293,7 @@ class User < ActiveRecord::Base
         role = 'Commander'
       else
         role = 'Recruit'
-      end
-      
+      end      
       role
     end
   

@@ -34,7 +34,11 @@ class UserMailer < ActionMailer::Base
   def made_ambassador(user)
     @user = user
     @clan = CLAN_NAME
-    mail to: user.email, subject: "You have been appointed as an ambassador to #{CLAN_NAME} for #{user.clan_name}"
+    if user.clan_name
+      mail to: user.email, subject: "You have been appointed as an ambassador to #{CLAN_NAME} for #{user.clan_name}"
+    else
+      mail to: user.email, subject: "You have been appointed as an ambassador to #{CLAN_NAME}"
+    end            
   end
   
   def request_password_reset(user, token)

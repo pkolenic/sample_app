@@ -8,7 +8,8 @@ class UsersController < ApplicationController
   before_action :approval_user,  only: :approve
   before_action :appointment_user, only: [:add_clanwar, :remove_clanwar]
   before_action :build_new_users, only: [:index]
-  before_action :fetch_user_stats, only: [:index, :show]
+  before_action :fetch_all_user_stats, only: [:index, :show]
+  before_action :fetch_user_stats, only: [:show]
  def index
     type = params[:type]
     order = 'wot_name'
@@ -38,11 +39,10 @@ class UsersController < ApplicationController
     end
 
     @users = User.where(filter, value).paginate(page: params[:page], :per_page => 10).order(order)
-    @disqus = "battleroster"
+    @disqus = "battleroster" 
   end
 
-  def show
-    @user = User.find(params[:id])
+  def show    
     @disqus = "user:#{ params[:id] }"
   end
 
@@ -189,8 +189,19 @@ class UsersController < ApplicationController
     :password_confirmation, :time_zone)
   end
 
-  def fetch_user_stats 
-    # User.find(150).update_stats
+  def fetch_user_stats
+    @user = User.find(params[:id])
+    if Rails.env.test?
+      @user.update_stats
+    else
+      Thread.new do
+        @user.update_stats
+        ActiveRecord::Base.connection.close
+      end
+    end
+  end
+
+  def fetch_all_user_stats 
     if Update.first
       last_update = Update.first.updated_at  
     else
@@ -209,10 +220,6 @@ class UsersController < ApplicationController
           user.update_stats
         end
         ActiveRecord::Base.connection.close
-      end
-    elsif Rails.env.test?
-      User.all.each do |user|
-        user.update_stats
       end
     end
   end

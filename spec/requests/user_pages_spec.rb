@@ -14,156 +14,11 @@ describe "User pages" do
     it { should_not have_title(full_title(page_title)) }
   end
   
-  shared_examples_for "should promote recruit" do
-    before do        
-      tanker.update_attribute(:role, UserRecruit)
-      tanker.reload.role
-      visit users_path
-    end
-
-    it { should have_link('promote/demote', href: edit_promotion_path(tanker)) }    
-  end
-  
-  shared_examples_for "should promote soldier" do
-    before do        
-      tanker.update_attribute(:role, UserSoldier)
-      tanker.reload.role
-      visit users_path
-    end
-
-    it { should have_link('promote/demote', href: edit_promotion_path(tanker)) }            
-  end
-  
-  shared_examples_for "should promote treasurer" do
-    before do        
-      tanker.update_attribute(:role, UserTreasurer)
-      tanker.reload.role
-      visit users_path
-    end
-
-    it { should have_link('promote/demote', href: edit_promotion_path(tanker)) }      
-  end
-  
-  shared_examples_for "should promote recruiter" do
-    before do        
-      tanker.update_attribute(:role, UserRecruiter)
-      tanker.reload.role
-      visit users_path
-    end
-
-    it { should have_link('promote/demote', href: edit_promotion_path(tanker)) }      
-  end
-
-  shared_examples_for "should promote diplomat" do
-    before do        
-      tanker.update_attribute(:role, UserDiplomat)
-      tanker.reload.role
-      visit users_path
-    end
-
-    it { should have_link('promote/demote', href: edit_promotion_path(tanker)) }      
-  end
-    
-  shared_examples_for "should promote company commander" do
-    before do        
-      tanker.update_attribute(:role, UserCompanyCommander)
-      tanker.reload.role
-      visit users_path
-    end
-
-    it { should have_link('promote/demote', href: edit_promotion_path(tanker)) }      
-  end
-  
-  shared_examples_for "should promote deputy commander" do
-    before do        
-      tanker.update_attribute(:role, UserDeputyCommander)
-      tanker.reload.role
-      visit users_path
-    end
-
-    it { should have_link('promote/demote', href: edit_promotion_path(tanker)) }      
-  end
-  
-  shared_examples_for "should not promote pending" do
-    before { visit users_path }
-    it { should_not have_link('promote/demote', href: edit_promotion_path(tanker)) }
-  end
-  
-  shared_examples_for "should not promote soldier" do
-    before do        
-      tanker.update_attribute(:role, UserSoldier)
-      tanker.reload.role
-      visit users_path
-    end
-
-    it { should_not have_link('promote/demote', href: edit_promotion_path(tanker)) }     
-  end
-  
-  shared_examples_for "should not promote treasurer" do
-    before do        
-      tanker.update_attribute(:role, UserTreasurer)
-      tanker.reload.role
-      visit users_path
-    end
-
-    it { should_not have_link('promote/demote', href: edit_promotion_path(tanker)) }      
-  end
-
-  shared_examples_for "should not promote recruiter" do
-    before do        
-      tanker.update_attribute(:role, UserRecruiter)
-      tanker.reload.role
-      visit users_path
-    end
-
-    it { should_not have_link('promote/demote', href: edit_promotion_path(tanker)) }      
-  end
-    
-  shared_examples_for "should not promote diplomat" do
-    before do        
-      tanker.update_attribute(:role, UserDiplomat)
-      tanker.reload.role
-      visit users_path
-    end
-
-    it { should_not have_link('promote/demote', href: edit_promotion_path(tanker)) }      
-  end
-  
-  shared_examples_for "should not promote company commander" do
-    before do        
-      tanker.update_attribute(:role, UserCompanyCommander)
-      tanker.reload.role
-      visit users_path
-    end
-
-    it { should_not have_link('promote/demote', href: edit_promotion_path(tanker)) }      
-  end
-  
-  shared_examples_for "should not promote deputy commander" do
-    before do        
-      tanker.update_attribute(:role, UserDeputyCommander)
-      tanker.reload.role
-      visit users_path
-    end
-
-    it { should_not have_link('promote/demote', href: edit_promotion_path(tanker)) }      
-  end
-  
-  shared_examples_for "should not promote commander" do
-    before do        
-      tanker.update_attribute(:role, UserCommander)
-      tanker.reload.role
-      visit users_path
-    end
-
-    it { should_not have_link('promote/demote', href: edit_promotion_path(tanker)) }      
-  end
-
   describe "index" do
     
     let(:heading) { 'Battle Roster' }
     let(:page_title) { 'Battle Roster' }
-    let(:user) { FactoryGirl.create(:user) }
+    let(:user) { FactoryGirl.create(:user, role: UserSoldier) }
     before(:each) do
       sign_in user
       visit users_path
@@ -186,7 +41,6 @@ describe "User pages" do
     end
     
     describe "delete links" do
-
       it { should_not have_link('delete') }
 
       describe "as an admin user" do
@@ -196,7 +50,7 @@ describe "User pages" do
           visit users_path
         end
 
-        it { should have_link('delete', href: user_path(User.first)) }
+        it { should have_link('delete', href: user_path(user)) }
         it "should be able to delete another user" do
           expect do
             click_link('delete', match: :first)
@@ -208,17 +62,17 @@ describe "User pages" do
     end   
     
     describe "approve links" do
-      it { should_not have_link('approve') }
+      it { should_not have_link('approve') }  
       
       describe "as clan leadership" do
-        let(:valid_tanker) { FactoryGirl.create(:user, wot_name: "valid") } 
-        let(:invalid_tanker) { FactoryGirl.create(:user, wot_name: "a") }
-        let(:leadership) { FactoryGirl.create(:leadership) }
+        let(:valid_tanker) { FactoryGirl.create(:user, wot_name: "valid", wot_id: "1001010101") } 
+        let(:invalid_tanker) { FactoryGirl.create(:user, wot_name: "zzz") }
+        let(:leadership) { FactoryGirl.create(:user, role: UserRecruiter) }
         before do
-          leadership.update_attribute(:role, UserRecruiter)
-          valid_tanker.update_attribute(:wot_id, "1001010101")
           sign_in leadership
-          visit users_path
+          valid_tanker.save
+          invalid_tanker.save
+          visit users_path(:type => 'pending')
         end
 
         it { should have_link('approve') }
@@ -228,12 +82,12 @@ describe "User pages" do
         
         describe "should be able to approve another user" do
           before { click_link('approve', match: :first) }
-          specify { expect(User.first).to be_active_member }
-          specify { expect(ActionMailer::Base.deliveries.last.to).to eq [User.first.email] }
+          specify { expect(valid_tanker.reload).to be_active_member }
+          specify { expect(ActionMailer::Base.deliveries.last.to).to eq [valid_tanker.reload.email] }
         end
-      end
-    end
-  end
+      end # describe "as clan leadership"
+    end # describe "approve links"
+  end # describe "index"
   
   describe "clanwar links" do
     describe "appoint clanwar team member" do
@@ -307,68 +161,6 @@ describe "User pages" do
       end
     end
   end
-  
- describe "promote links" do
-    let(:tanker ) { FactoryGirl.create(:user) }   
-    let(:leadership) { FactoryGirl.create(:user) }
-    
-    describe "as Company Commander" do
-      before do
-        leadership.update_attribute(:role, UserCompanyCommander)
-        leadership.reload.role
-        sign_in leadership
-      end
-
-      it { should_not have_link('promote', href: edit_promotion_path(leadership)) }
-      it_should_behave_like "should not promote pending"
-      it_should_behave_like "should promote recruit"
-      it_should_behave_like "should promote soldier"
-      it_should_behave_like "should not promote treasurer"
-      it_should_behave_like "should not promote recruiter"
-      it_should_behave_like "should not promote diplomat"
-      it_should_behave_like "should not promote company commander"
-      it_should_behave_like "should not promote deputy commander"
-      it_should_behave_like "should not promote commander"
-    end
-    
-    describe "as Deputy Commander" do
-      before do
-        leadership.update_attribute(:role, UserDeputyCommander)
-        leadership.reload.role
-        sign_in leadership
-      end
-      
-      it { should_not have_link('promote', href: edit_promotion_path(leadership)) }
-      it_should_behave_like "should not promote pending"
-      it_should_behave_like "should promote recruit"
-      it_should_behave_like "should promote soldier"
-      it_should_behave_like "should promote treasurer"
-      it_should_behave_like "should promote recruiter"
-      it_should_behave_like "should promote diplomat"
-      it_should_behave_like "should promote company commander"
-      it_should_behave_like "should not promote deputy commander"
-      it_should_behave_like "should not promote commander"       
-    end
-    
-    describe "as Commander" do
-      before do
-        leadership.update_attribute(:role, UserCommander)
-        leadership.reload.role
-        sign_in leadership
-      end
-      
-      it { should_not have_link('promote', href: edit_promotion_path(leadership)) }
-      it_should_behave_like "should not promote pending"
-      it_should_behave_like "should promote recruit"
-      it_should_behave_like "should promote soldier"
-      it_should_behave_like "should promote treasurer"
-      it_should_behave_like "should promote recruiter"
-      it_should_behave_like "should promote diplomat"
-      it_should_behave_like "should promote company commander"
-      it_should_behave_like "should promote deputy commander"
-      it_should_behave_like "should not promote commander"      
-    end
-  end 
 
   describe "profile page" do
     let(:user) { FactoryGirl.create(:user) }
@@ -379,37 +171,52 @@ describe "User pages" do
     it_should_behave_like "all user pages"
     
     describe "when role recruit" do
-      let(:user) { FactoryGirl.create(:user, wot_name: "valid", role: UserSoldier, clan_name: CLAN_NAME) } 
+      let(:user) { FactoryGirl.create(:user, wot_name: "valid", role: UserSoldier, clan_name: CLAN_NAME, clan_id: CLAN_ID) } 
       before do
           user.update_attribute(:role, UserRecruit)
           visit user_path(user) 
       end
       
+      specify { expect(user.reload.role).to eq UserRecruiter }
       specify { expect(ActionMailer::Base.deliveries.last.to).to eq [User.first.email] }
       specify { expect(ActionMailer::Base.deliveries.last.subject).to eq 'You have been promoted' }
     end
     
     describe "when role Company Commander" do
-      let(:user) { FactoryGirl.create(:user, wot_name: "valid", role: UserDeputyCommander, clan_name: CLAN_NAME) } 
+      let(:user) { FactoryGirl.create(:user, wot_name: "valid", role: UserCompanyCommander, clan_name: CLAN_NAME, clan_id: CLAN_ID) } 
       before do
-        user.update_attribute(:role, UserDeputyCommander)
         visit user_path(user) 
+        
       end
-      
-      specify { expect(ActionMailer::Base.deliveries.last.to).to eq [User.first.email] }
+ 
+      specify { expect(user.reload.role).to eq UserRecruiter }
+      specify { expect(ActionMailer::Base.deliveries.last.to).to eq [user.email] }
       specify { expect(ActionMailer::Base.deliveries.last.subject).to eq 'You have been demoted' }    
     end
     
     describe "when different clan" do
-      let(:user) { FactoryGirl.create(:user, wot_name: "valid", role: UserCompanyCommander, clan_name: "Something Else") } 
+      let(:user) { FactoryGirl.create(:user, wot_name: "valid", role: UserCompanyCommander, clan_name: "Something Else", clan_id: "1001") } 
       before do
           user.update_attribute(:role, UserRecruit)
           visit user_path(user)
       end
       
+      specify { expect(user.reload.role).to eq UserAmbassador }
       specify { expect(ActionMailer::Base.deliveries.last.to).to eq [User.first.email] }
       specify { expect(ActionMailer::Base.deliveries.last.subject).to eq "You have been appointed as an ambassador to #{CLAN_NAME} for Something Else" }      
     end    
+    
+    describe "when not in a clan" do
+      let(:user) { FactoryGirl.create(:user, wot_name: "valid", clan_name: nil, clan_id: nil) } 
+      before do
+          user.update_attribute(:role, UserRecruit)
+          visit user_path(user)
+      end
+      
+      specify { expect(user.reload.role).to eq UserAmbassador }
+      specify { expect(ActionMailer::Base.deliveries.last.to).to eq [User.first.email] }
+      specify { expect(ActionMailer::Base.deliveries.last.subject).to eq "You have been appointed as an ambassador to #{CLAN_NAME}" }        
+    end
   end
 
   describe "signup page" do

@@ -5,6 +5,7 @@ FactoryGirl.define do
     sequence(:wot_name) { |n| "tanker_#{n}"}
     role  UserPending
     active  true
+    clan_id CLAN_ID
     clan_war_team false
     password "foobar"
     password_confirmation "foobar"
