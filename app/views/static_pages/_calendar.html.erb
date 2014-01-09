@@ -5,7 +5,7 @@
 		<%= link_to ">", :month => (@date.end_of_month+1).strftime("%Y-%m") %>
 	</h1>
 	
-	<%= calendar_for @events, :year => @date.year, :month => @date.month do |calendar| %>
+	<%= calendar_for @events, :today => Time.current, :year => @date.year, :month => @date.month do |calendar| %>
 		<%= calendar.head('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday')%>
 		<% calendar.day(:day_method => :event_start) do |date, events| %>
 			<%= date.day %>
