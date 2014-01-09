@@ -128,19 +128,17 @@ class User < ActiveRecord::Base
     Digest::SHA1.hexdigest(token.to_s)
   end
 
- def update_stats
+ def update_stats    
+    if self.wot_id.blank?
+      request_wot_id
+    end
     if self.wot_id
       if Rails.env.test?
         require 'testResponses'
         json_response = { "status" => 'ok', "data" => TestResponses::sample_wot_user(self.clan_id) }    
-      else 
+      else       
         url = "https://api.worldoftanks.com/wot/account/info/?application_id=#{ENV['WOT_API_KEY']}&account_id=#{self.wot_id}"     
-        response = self.class.get url
-        if response.parsed_response.class == Hash
-          json_response = response.parsed_response
-        else
-          json_response = JSON.parse response.parsed_response  
-        end
+        json_response = clean_response(self.class.get url)
       end
  
       if json_response["status"] == 'ok'
@@ -181,9 +179,6 @@ class User < ActiveRecord::Base
           end
                       
           self.save validate: false
-          # Rails.logger.info "\n\n\n"
-          # Rails.logger.info self.inspect
-          # Rails.logger.info "\n\n\n"
         end
       end
     end
@@ -212,15 +207,9 @@ class User < ActiveRecord::Base
     def update_clan(clan_id, role)            
       if self.clan_id != clan_id || self.clan_name.blank?           
         self.clan_id = clan_id
-        clan_url = "http://api.worldoftanks.com/2.0/clan/info/?application_id=16924c431c705523aae25b6f638c54dd&clan_id=#{clan_id}"
-        clan_response = User.get(clan_url)
-                           
-        if clan_response.parsed_response.class == Hash
-          clan = clan_response.parsed_response
-        else
-          clan = JSON.parse response.parsed_response
-        end            
-              
+        clan_url = "https://api.worldoftanks.com/wot/clan/info/?application_id=#{ENV['WOT_API_KEY']}&clan_id=#{CLAN_ID}"
+        clan = clean_response(User.get(clan_url))
+
         if clan && clan['status'] == 'ok'
           #Rails.logger.info "Received Clan Data for #{self.wot_name}"
           data = clan['data']["#{clan_id}"]
@@ -297,9 +286,28 @@ class User < ActiveRecord::Base
       role
     end
   
+    def clean_response(response)
+        if response.parsed_response.class == Hash
+          json_response = response.parsed_response
+        else
+          json_response = JSON.parse response.parsed_response  
+        end                              
+    end
+  
     def create_remember_token
       self.remember_token = User.encrypt(User.new_remember_token)
     end
+        
+    def request_wot_id
+      url = "https://api.worldoftanks.com/wot/account/list/?application_id=#{ENV['WOT_API_KEY']}&search=#{self.wot_name}&limit=1"
+      response = self.class.get url     
+      if response["status"] == 'ok'
+        data = response["data"]
+        if data.count && !data[0].empty?
+          self.update_attribute(:wot_id, data[0]["id"])
+        end
+      end
+    end    
         
     def lookup_wot_id
       if Rails.env.test?
@@ -308,13 +316,7 @@ class User < ActiveRecord::Base
         end
       else
         Thread.new do
-          response = self.class.get "http://api.worldoftanks.com/2.0/account/list/?application_id=16924c431c705523aae25b6f638c54dd&search=#{self.wot_name}&limit=1"
-          if response["status"] == 'ok'
-            data = response["data"]
-            if data.count && !data[0].empty?
-              self.update_attribute(:wot_id, data[0]["id"])
-            end
-          end
+          request_wot_id
           ActiveRecord::Base.connection.close
         end
       end

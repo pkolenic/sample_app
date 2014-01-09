@@ -194,7 +194,7 @@ class UsersController < ApplicationController
     if Rails.env.test?
       @user.update_stats
     else
-      Thread.new do
+      Thread.new do     
         @user.update_stats
         ActiveRecord::Base.connection.close
       end
@@ -238,6 +238,7 @@ class UsersController < ApplicationController
       Thread.new do
         url = "https://api.worldoftanks.com/wot/clan/info/?application_id=#{ENV['WOT_API_KEY']}&clan_id=#{CLAN_ID}"               
         
+        # TODO - Create a Help Function to clean Response that All can use
         response = self.class.get url
         if response.parsed_response.class == Hash
           json_response = response.parsed_response
