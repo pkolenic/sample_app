@@ -373,23 +373,13 @@ input {
 /* TeamSpeak */
 #teamspeak_box {
   width: 155px;
-  height: 380px;
   background-color: white;
   position: fixed;
   padding: 5px 0px 0px 5px;
   top: 82px;
   left: 0;
   #teamspeak_server {
-    position: relative;
-    top: -185px;
-    left: -5px;
-    height: 300px;
-    width: 160px;
-    overflow: hidden;
-    iframe {
-      width: 160px;
-      min-height: 300px;
-    }
+
   }
   p {
     padding: 0 5px;
