@@ -11,7 +11,12 @@
 			<%= date.day %>
 			<ul>
 				<% for event in events %>
-					<li><%= event.name %> <%= event.event_start.strftime("%l:%M%p %Z") %>
+					<li>
+						<% if event.event_type == TYPE_TOURNAMENT %>
+							<%= link_to image_tag('link_icon.png', alt: "Link Image") + "&nbsp;#{event.name} #{event.event_start.strftime("%l:%M%p %Z")}".html_safe, tournament_path(event.ref_id) %>
+						<% else %>
+							<%= event.name %> <%= event.event_start.strftime("%l:%M%p %Z") %>
+						<% end %>
 					</li>
 				<% end %>
 			</ul>

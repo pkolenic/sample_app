@@ -15,7 +15,8 @@ UserSuper             = 100
 TournamentForming     = 0
 TournamentFormed      = 10
 
-TournamentType        = 10
+# EVENT TYPES
+TYPE_TOURNAMENT       = 10
 
 # CLAN SPECIFIC
 CLAN_ID                       = "1000007730"
