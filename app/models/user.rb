@@ -146,7 +146,7 @@ class User < ActiveRecord::Base
         if !total.blank? 
           # Last Online
           self.last_online = DateTime.strptime("#{total['updated_at']}", '%s')
-Rails.logger.info "\n**********\n#{self.wot_name} was last online at #{self.last_online}\n***********\n"       
+ 
           # Clan Details      
           if !total["clan"].blank?    
             update_clan(total["clan"]["clan_id"], total["clan"]["role"])
@@ -207,17 +207,20 @@ Rails.logger.info "\n**********\n#{self.wot_name} was last online at #{self.last
     def update_clan(clan_id, role)            
       if self.clan_id != clan_id || self.clan_name.blank?           
         self.clan_id = clan_id
-        clan_url = "https://api.worldoftanks.com/wot/clan/info/?application_id=#{ENV['WOT_API_KEY']}&clan_id=#{CLAN_ID}"
+        clan_url = "https://api.worldoftanks.com/wot/clan/info/?application_id=#{ENV['WOT_API_KEY']}&clan_id=#{clan_id}"
         clan = clean_response(User.get(clan_url))
 
         if clan && clan['status'] == 'ok'
           #Rails.logger.info "Received Clan Data for #{self.wot_name}"
           data = clan['data']["#{clan_id}"]
-                        
-          self.clan_name = data["name"]
-          self.clan_abbr = data["abbreviation"]
-          clan_url = data["emblems"]["large"]  
-          self.clan_logo = clan_url.sub! 'http:', 'https:'                                            
+          if data                         
+            self.clan_name = data["name"]
+            self.clan_abbr = data["abbreviation"]
+            clan_url = data["emblems"]["large"]  
+            self.clan_logo = clan_url.sub! 'http:', 'https:'
+          else
+            Rails.logger.info "\n---> #{self.wot_name}(#{self.id}) :> Unable to lookup Clan Data\n"            
+          end                                             
         end
       end
       
@@ -302,9 +305,11 @@ Rails.logger.info "\n**********\n#{self.wot_name} was last online at #{self.last
       url = "https://api.worldoftanks.com/wot/account/list/?application_id=#{ENV['WOT_API_KEY']}&search=#{self.wot_name}&limit=1"
       response = self.class.get url     
       if response["status"] == 'ok'
-        data = response["data"]
-        if data.count && !data[0].empty?
+        data = response["data"]    
+        if data && data.count > 0 && !data[0].empty?
           self.update_attribute(:wot_id, data[0]["id"])
+        else 
+          Rails.logger.info "\n---> #{self.wot_name}(#{self.id}) :> Unable to lookup WOT ID\n"
         end
       end
     end    
