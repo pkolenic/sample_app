@@ -210,6 +210,7 @@ class UsersController < ApplicationController
       update.save
     end
 
+    Rails.logger.info "Need to do update = #{ (DateTime.now.to_i - last_update.to_i > 3600)}"
     if DateTime.now.to_i - last_update.to_i > 3600 && !Rails.env.test?
       #Set the Update Time
       Update.first.touch

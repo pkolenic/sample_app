@@ -13,12 +13,12 @@ gem 'newrelic_rpm'
 gem 'httparty'
 gem 'bootstrap-datetimepicker-rails'
 gem "watu_table_builder", :require => "table_builder"
+gem 'quiet_assets', '~> 1.0.2'
 
 group :development, :test do
   gem 'rspec-rails', '2.13.1'
   gem 'guard-rspec', '2.5.0'
   gem 'mailcatcher'
-  gem 'quiet_assets', '~> 1.0.2'
 end
 
 group :test do
