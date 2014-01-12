@@ -204,12 +204,12 @@ class UsersController < ApplicationController
   def fetch_all_user_stats 
     if Update.first
       last_update = Update.first.updated_at
-      Rails.logger.error = "Found Last Update #{last_update}"        
+      Rails.logger.info = "Found Last Update #{last_update}"        
     else
       last_update = DateTime.now
       update = Update.new
       update.save
-      Rails.logger.error = "Created new Update #{last_update}"
+      Rails.logger.info = "Created new Update #{last_update}"
     end
 
     Rails.logger.info "Need to do update = #{DateTime.now.to_i} - #{last_update.to_i} = #{(DateTime.now.to_i - last_update.to_i)}"
