@@ -146,7 +146,7 @@ class User < ActiveRecord::Base
         if !total.blank? 
           # Last Online
           self.last_online = DateTime.strptime("#{total['updated_at']}", '%s')
-       
+Rails.logger.info "\n**********\n#{self.wot_name} was last online at #{self.last_online}\n***********\n"       
           # Clan Details      
           if !total["clan"].blank?    
             update_clan(total["clan"]["clan_id"], total["clan"]["role"])
