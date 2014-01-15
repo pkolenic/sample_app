@@ -25,7 +25,7 @@ class UsersController < ApplicationController
         filter = "clan_war_team = ?"
         value = true
       when 'provisional'
-        filter = "role = ? AND clan_id != '#{CLAN_ID}'"
+        filter = "role = ? AND clan_id IS NULL"
         value = UserRecruit
       when 'ambassadors'
         filter = "role = ?"
