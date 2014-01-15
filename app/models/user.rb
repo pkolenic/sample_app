@@ -60,65 +60,6 @@ class User < ActiveRecord::Base
     end
   end
   
- def can_promote?(user)
-    case self.role
-    when UserCompanyCommander
-      case user.role
-      when UserRecruit
-        true
-      when UserSoldier
-        true
-      else
-        false
-      end
-    when UserDeputyCommander
-      case user.role
-      when UserRecruit
-        true
-      when UserSoldier
-        true
-      when UserTreasurer
-        true
-      when UserRecruiter
-        true
-      when UserDiplomat
-        true
-      when UserCompanyCommander
-        true
-      else
-        false
-      end
-    when UserCommander
-      case user.role
-      when UserRecruit
-        true
-      when UserSoldier
-        true
-      when UserTreasurer
-        true
-      when UserRecruiter
-        true
-      when UserDiplomat
-        true
-      when UserCompanyCommander
-        true
-      when UserDeputyCommander
-        true
-      else
-        false
-      end
-    when UserSuper
-      case user.role
-      when UserPending
-        false
-      else
-        true
-      end
-    else
-      false
-    end
-  end
-  
   # Session Token Creation
   def User.new_remember_token
     SecureRandom.urlsafe_base64
@@ -153,9 +94,7 @@ class User < ActiveRecord::Base
           else
             # Check if was in clan first
             if self.clan_id || self.role == UserAmbassador
-              self.role = UserAmbassador
-            else
-              self.role = UserRecruit                
+              self.role = UserAmbassador              
             end
             self.clan_id = nil
           end
