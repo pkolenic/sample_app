@@ -12,6 +12,7 @@
 	<%= link_to "Ambassadors", users_path(:type => 'ambassadors'), class: "btn btn-small btn-primary" %>
 <% end %>	
 <% if current_user.can_approve? %>
+	<%= link_to "Provisional", users_path(:type => 'provisional'), class: "btn btn-small btn-primary" %>
 	<%= link_to "Pending", users_path(:type => 'pending'), class: "btn btn-small btn-primary" %>
 <% end %>	
 <% if current_user.role > UserCompanyCommander %>
