@@ -46,9 +46,13 @@ module UsersHelper
     when UserCommander
       return 'Commander'
     when UserAmbassador
-      return "Ambassador from #{user.clan_name}"
+      if user.clan_id.blank?
+        return "Alumni"
+      else
+        return "Ambassador from #{user.clan_name}"
+      end      
     else
-    return "spy"
+    return "Status Pending"
     end
   end
 
