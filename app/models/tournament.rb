@@ -51,11 +51,11 @@ class Tournament < ActiveRecord::Base
   validates :password, length: { maximum: 30 }
   validates :minimum_team_size, presence: true, numericality: { greater_than: 1 }
   validates :maximum_team_size, presence: true, maximum_team: true
-  validates :heavy_tier_limit, presence: true, numericality: { greater_than: 0 }
-  validates :medium_tier_limit, presence: true, numericality: { greater_than: 0 }
-  validates :td_tier_limit, presence: true, numericality: { greater_than: 0 }
-  validates :light_tier_limit, presence: true, numericality: { greater_than: 0 }
-  validates :spg_tier_limit, presence: true, numericality: { greater_than: 0 }
+  validates :heavy_tier_limit, presence: true, numericality: { less_than: 11 }
+  validates :medium_tier_limit, presence: true, numericality: { less_than: 11 }
+  validates :td_tier_limit, presence: true, numericality: { less_than: 11 }
+  validates :light_tier_limit, presence: true, numericality: { less_than: 11 }
+  validates :spg_tier_limit, presence: true, numericality: { less_than: 11 }
   validates :team_maximum_tier_points, presence: true, team_tier: true
   validates :start_date, presence: true
   validates :end_date, presence: true, end_date: true

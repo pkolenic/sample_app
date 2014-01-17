@@ -33,11 +33,11 @@
 			( a maximum of <%= @tournament.maximum_team_size %> players total on the team). A team must field a selection of tanks based on the below tier limits</p>
 			
 		<ul>
-			<li>Heavy: <%= @tournament.heavy_tier_limit %></li>
-			<li>Medium: <%= @tournament.medium_tier_limit %></li>
-			<li>TD: <%= @tournament.td_tier_limit %></li>
-			<li>Light: <%= @tournament.light_tier_limit %></li>
-			<li>SPG: <%= @tournament.spg_tier_limit %></li>
+			<li>Heavy: <%= @tournament.heavy_tier_limit == 0 ? 'n/a' :  @tournament.heavy_tier_limit %></li>
+			<li>Medium: <%= @tournament.medium_tier_limit == 0 ? 'n/a' :  @tournament.medium_tier_limit %></li>
+			<li>TD: <%= @tournament.td_tier_limit == 0 ? 'n/a' :  @tournament.td_tier_limit %></li>
+			<li>Light: <%= @tournament.light_tier_limit == 0 ? 'n/a' : @tournament.light_tier_limit %></li>
+			<li>SPG: <%= @tournament.spg_tier_limit == 0 ? 'n/a' :  @tournament.spg_tier_limit %></li>
 			<li><%= @tournament.team_maximum_tier_points %> points maximum</li>	
 		</ul>
 			
