@@ -35,6 +35,17 @@ module SessionsHelper
     end
   end
   
+  def approved_user
+    if signed_in?
+      unless current_user.role > UserPending
+        flash[:error] = "Your account needs to be approved before you can view Tournaments!"
+        redirect_to(root_url)      
+      end       
+    else
+      signed_in_user
+    end
+  end
+  
   def clan_soldier
     if signed_in?
       unless current_user.role >= UserSoldier
@@ -42,8 +53,7 @@ module SessionsHelper
         redirect_to(root_url)      
       end      
     else
-      store_location
-      redirect_to signin_url, notice: "Please sign in."        
+      signed_in_user       
     end
   end
   

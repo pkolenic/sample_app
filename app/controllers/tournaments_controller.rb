@@ -1,5 +1,5 @@
 class TournamentsController < ApplicationController
-  before_action :signed_in_user
+  before_action :approved_user
   before_action :user_can_create_tournament, only: [:new, :create]
   before_action :correct_user,   only: [:edit, :update, :open_tournament, :close_tournament]
 
