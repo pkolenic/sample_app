@@ -98,7 +98,7 @@ class TournamentsController < ApplicationController
     def tournament_params
       params.require(:tournament).permit(:name, :wot_tournament_link, :wot_team_link, :team_name,
                                          :description, :victory_conditions, :schedule, :prizes, :maps,
-                                         :minimum_team_size, :maximum_team_size, :team_maximum_tier_points,
+                                         :minimum_team_size, :maximum_team_size, :team_maximum_tier_points, :password,
                                          :heavy_tier_limit, :medium_tier_limit, :td_tier_limit, :light_tier_limit, :spg_tier_limit,
                                          :start_date, :end_date)
     end
