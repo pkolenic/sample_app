@@ -229,7 +229,7 @@ class UsersController < ApplicationController
 
   def build_new_users
     if Update.first
-      last_update = Update.first.updated_at  
+      last_update = Update.find(USERS_CREATE).updated_at  
     else
       last_update = DateTime.now
       update = Update.new
@@ -237,7 +237,7 @@ class UsersController < ApplicationController
     end
     
     if DateTime.now.to_i - last_update.to_i > (3600 * 12) && !Rails.env.test?
-      Update.first.touch
+      Update.find(USERS_CREATE).touch
       Thread.new do
         url = "https://api.worldoftanks.com/wot/clan/info/?application_id=#{ENV['WOT_API_KEY']}&clan_id=#{CLAN_ID}"               
         
@@ -255,7 +255,7 @@ class UsersController < ApplicationController
               data = member[1]
               role = UsersHelper.convert_role(data['role'], CLAN_NAME)
               password = User.new_remember_token
-              email = "#{data['account_name']}@{CLAN_GENERIC_EMAIL_SUFFIX}"
+              email = "#{data['account_name']}@#{CLAN_GENERIC_EMAIL_SUFFIX}"
               user = User.new(name: "Inactive", 
                               wot_name: data['account_name'], 
                               email: email, 

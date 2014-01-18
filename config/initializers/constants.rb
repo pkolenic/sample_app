@@ -11,6 +11,10 @@ UserDeputyCommander   = 40
 UserCommander         = 50
 UserSuper             = 100
 
+# UPDATES
+USERS_UPDATE           = 3
+USERS_CREATE           = 2
+
 # TOURNAMENT STATUS
 TournamentForming     = 0
 TournamentFormed      = 10
