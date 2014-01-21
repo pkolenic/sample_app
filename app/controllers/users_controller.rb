@@ -218,12 +218,13 @@ class UsersController < ApplicationController
       Update.first.touch
       
       Rails.logger.info "About to Start Update Thread"
-      Thread.new do
+      # Thread.new do
         User.all.each do |user|
           user.update_stats
         end
         ActiveRecord::Base.connection.close
-      end
+        Rails.logger.info "Finished Updating"
+      # end
     end
   end
 
