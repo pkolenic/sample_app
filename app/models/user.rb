@@ -241,7 +241,7 @@ class User < ActiveRecord::Base
     end
         
     def request_wot_id
-      url = "https://api.worldoftanks.com/wot/account/list/?application_id=#{ENV['WOT_API_KEY']}&search=#{self.wot_name}&limit=1"
+      url = "https://api.worldoftanks.com/wot/account/list/?application_id=#{ENV['WOT_API_KEY']}&search=#{CGI.escape self.wot_name}&limit=1"
       response = self.class.get url     
       if response["status"] == 'ok'
         data = response["data"]    
