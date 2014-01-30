@@ -92,9 +92,9 @@ class StaticPagesController < ApplicationController
   end
   
   def tankvideos
-    @title = "Tank Videos"
+    @title = "Tank Guides"
     @disqus = "tankvideos"
-    @header = "Tank Videos"
+    @header = "Tank Guides"
     @video_filter = true
     @default_video = 'cf--U-Mq_S4'
     @videos = [{ id: 'cf--U-Mq_S4', title: 'L&ouml;we'.html_safe, nation: 'German', type: 'Heavy', tier: '8' },
@@ -108,7 +108,11 @@ class StaticPagesController < ApplicationController
                { id: 'XLrsk503mTc', title: 'T-28', nation: 'Soviet', type: 'Medium', tier: '4' },
                { id: 'CL7cGBuU5T4', title: 'IS', nation: 'Soviet', type: 'Heavy', tier: '7' },
                { id: 'IWL-PQoIkWg', title: 'M10 Wolverine', nation: 'American', type: 'TD', tier: '5' },
-               { id: 'bx7ApLPjb8c', title: 'Jagdpanther', nation: 'German', type: 'TD', tier: '7' }]
+               { id: 'bx7ApLPjb8c', title: 'Jagdpanther', nation: 'German', type: 'TD', tier: '7' },
+               { id: '1pnUeMJjNFI', title: 'KV-1 (Pre 7.3)', nation: 'Soviet', type: 'Heavy', tier: '5' },
+               { id: 'qRxlVinaTNo', title: 'IS-4 (Pre 7.3)', nation: 'Soviet', type: 'Heavy', tier: '10' },
+               { id: '5a12jI5QOsg', title: 'M4 Sherman', nation: 'American', type: 'Medium', tier: '5' },
+               { id: 'GjEgcdvBZtQ', title: 'T29', nation: 'American', type: 'Heavy', tier: '7' }]
     render 'static_videos'    
   end
   
