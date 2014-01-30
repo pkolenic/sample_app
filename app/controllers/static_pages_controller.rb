@@ -101,7 +101,14 @@ class StaticPagesController < ApplicationController
                { id: '9sd2W4a9xcA', title: 'Tiger II', nation: 'German', type: 'Heavy', tier: '8' },
                { id: 'CmIUU97UdXU', title: 'PzKpfw IV (Pre 8.0)', nation: 'German', type: 'Medium', tier: '5' },
                { id: 'NykOlAHQq04', title: 'T-43', nation: 'Soviet', type: 'Medium', tier: '7' },
-               { id: 'f2qQzcBN_EY', title: 'PzKpfw III/IV', nation: 'German', type: 'Medium', tier: '5' }]
+               { id: 'f2qQzcBN_EY', title: 'PzKpfw III/IV', nation: 'German', type: 'Medium', tier: '5' },
+               { id: 'nyrFkOFRTy4', title: 'IS-3', nation: 'Soviet', type: 'Heavy', tier: '8' },
+               { id: 'iBLpjumiEj4', title: 'VK 30.01 (H)', nation: 'German', type: 'Heavy', tier: '5' },
+               { id: '0bi1gIShurI', title: 'T40', nation: 'American', type: 'TD', tier: '4' },
+               { id: 'XLrsk503mTc', title: 'T-28', nation: 'Soviet', type: 'Medium', tier: '4' },
+               { id: 'CL7cGBuU5T4', title: 'IS', nation: 'Soviet', type: 'Heavy', tier: '7' },
+               { id: 'IWL-PQoIkWg', title: 'M10 Wolverine', nation: 'American', type: 'TD', tier: '5' },
+               { id: 'bx7ApLPjb8c', title: 'Jagdpanther', nation: 'German', type: 'TD', tier: '7' }]
     render 'static_videos'    
   end
   
