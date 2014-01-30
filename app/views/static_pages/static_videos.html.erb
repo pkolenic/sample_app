@@ -42,11 +42,76 @@
 		}
 	</script>
 </div>
-<div id="videos">
+
+<% if @video_filter %>
+<script>
+	function applyVideoFilter() {
+		var nation = $('#tanks_Nation').val();
+		var type = $('#tanks_Type').val();
+		var tier = $('#tanks_Tier').val();
+
+		if (nation == 'All' && type == 'All' && tier == 'All') {
+			// If All Filters set to All then Show All
+			$(".video_link").show();
+		} else {
+			// Hide All Videos
+			$(".video_link").hide();
+			
+			// Then Show those matching the filters
+			var nation_filter = (nation == "All" ? "" : "[nation-id='" + nation + "']");
+			var type_filter = (type == "All" ? "" : "[type-id='" + type + "']");
+			var tier_filter = (tier == "All" ? "" : "[tier-id='" + tier + "']");
+			$(nation_filter + type_filter + tier_filter).show();
+		}
+	}
+</script>
+
+<div id="video_filters">
+	<div class="wrapper">
+		<div class="filter_headers">
+			<span>Nation</span>
+			<span>Type</span>
+			<span>Tier</span>
+		</div>
+		<div class="filters">
+			<%= select("tanks", "Nation", options_for_select([["All", "All"], 
+														  ["American", "American"], 
+														  ["British","British"], 
+														  ["Chinese", "Chinese"], 
+														  ["French", "French"], 
+														  ["German", "German"], 
+														  ["Japanese", "Japanese"], 
+														  ["Soviet", "Soviet"]]), 
+					{ :selected=> 'All' }, {:class => "video_filter", :onchange => "applyVideoFilter()"}) %>
+			<%= select("tanks", "Type", options_for_select([["All", "All"], 
+														  ["Heavy", "Heavy"], 
+														  ["Light","Light"], 
+														  ["Medium", "Medium"], 
+														  ["SPG", "SPG"], 
+														  ["TD", "TD"]]), 
+					{ :selected=> 'All' }, {:class => "video_filter", :onchange => "applyVideoFilter()"}) %>
+			<%= select("tanks", "Tier", options_for_select([["All", "All"], 
+														  ["1", "1"], 
+														  ["2","2"], 
+														  ["3", "3"], 
+														  ["4", "4"], 
+														  ["5", "5"], 
+														  ["6", "6"], 
+														  ["7", "7"],
+														  ["8", "8"],
+														  ["9", "9"],
+														  ["10", "10"]]), 
+					{ :selected=> 'All' }, {:class => "video_filter", :onchange => "applyVideoFilter()"}) %>								
+		</div>				
+	</div>
+</div>
+<% end %>	
+
+<div id="videos">	
 	<div class="video-list">
 		<div class="video_thumbnail_row">
 			<% @videos.each do |video| %>
-				<div class="video_link" video-id="<%= video[:id] %>">
+				<div class="video_link" video-id="<%= video[:id] %>" <% if @video_filter %> nation-id="<%= video[:nation] %>" type-id="<%= video[:type] %>" tier-id="<%= video[:tier]%>" <%end%>>
 					<img src="http://i.ytimg.com/vi/<%= video[:id] %>/default.jpg" alt="<%= video[:title] %>"><br>
 					<span class="video_title"><%= video[:title] %></span>
 				</div>			

@@ -91,6 +91,20 @@ class StaticPagesController < ApplicationController
     render 'static_videos'
   end
   
+  def tankvideos
+    @title = "Tank Videos"
+    @disqus = "tankvideos"
+    @header = "Tank Videos"
+    @video_filter = true
+    @default_video = 'cf--U-Mq_S4'
+    @videos = [{ id: 'cf--U-Mq_S4', title: 'L&ouml;we'.html_safe, nation: 'German', type: 'Heavy', tier: '8' },
+               { id: '9sd2W4a9xcA', title: 'Tiger II', nation: 'German', type: 'Heavy', tier: '8' },
+               { id: 'CmIUU97UdXU', title: 'PzKpfw IV (Pre 8.0)', nation: 'German', type: 'Medium', tier: '5' },
+               { id: 'NykOlAHQq04', title: 'T-43', nation: 'Soviet', type: 'Medium', tier: '7' },
+               { id: 'f2qQzcBN_EY', title: 'PzKpfw III/IV', nation: 'German', type: 'Medium', tier: '5' }]
+    render 'static_videos'    
+  end
+  
   private
   
     # Before filters

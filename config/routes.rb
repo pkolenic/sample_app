@@ -39,6 +39,7 @@ SampleApp::Application.routes.draw do
   match '/wgnavideos',          to: 'static_pages#wgnavideos',              via: 'get'
   match '/mapvideos',           to: 'static_pages#mapvideos',               via: 'get'
   match '/teamtrainingvideos',  to: 'static_pages#teamtrainingvideos',      via: 'get'
+  match '/tankvideos',          to: 'static_pages#tankvideos',              via: 'get'
   
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

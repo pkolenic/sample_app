@@ -122,3 +122,31 @@ h3 {
 .canceled {
   text-decoration: line-through;
 }
+
+#video_filters {
+  width: 960px;  
+  background: white;
+  padding: 5px 0 0;  
+  .wrapper {
+    width: 640px;
+    margin: 0 auto;     
+    .filter_headers {
+      span {
+        width: 200px;
+        display: block;
+        float: left;
+        text-align: center;
+        color: black;
+        font-size: 1.8em;
+        padding: 5px;
+      }    
+    }
+    .filters {
+      clear: both;     
+      .video_filter {
+        width: 200px;
+        margin: 5px;
+      }
+    }
+  }
+}
