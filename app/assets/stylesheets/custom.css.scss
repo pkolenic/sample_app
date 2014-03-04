@@ -3,6 +3,7 @@
 /* mixins, variables, etc. */
 
 $grayMediumLight: #eaeaea;
+$shadowGray: #969696;
 
 @mixin box_sizing {
   -moz-box-sizing: border-box;
@@ -18,6 +19,10 @@ html {
 
 body {
   padding-top: 60px;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: top center;
+  background-size: 100%;  
 }
 
 section {
@@ -35,9 +40,8 @@ textarea {
   }
 }
 
-.hero-unit {
-  min-height: 586px;
-  padding: 60px 60px 0;
+.content_wrapper {
+  min-height: 510px;
 }
 
 /* typography */
@@ -93,7 +97,8 @@ footer {
   border-top: 1px solid $grayMediumLight;
   color: $grayLight;
   a {
-    color: $gray;
+    color: black;
+    text-shadow: 1px 1px 1px $shadowGray;    
     &:hover {
       color: $grayDarker;
     }
@@ -104,6 +109,8 @@ footer {
   ul {
     float: right;
     list-style: none;
+    background: rgba(255,255,255,0.25);
+    padding-right: 10px;    
     li {
       float: left;
       margin-left: 10px;
@@ -257,7 +264,7 @@ aside {
   background-color: white;
   position: fixed;
   padding: 5px 0px 0px 5px;
-  top: 40px;
+  top: 130px;
   right: 0;
   #teamspeak_server {
 
