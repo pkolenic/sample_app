@@ -9,10 +9,16 @@ gem 'faker', '1.1.2'
 gem 'will_paginate', '3.0.4'
 gem 'bootstrap-will_paginate', '0.0.9'
 gem 'pg', '0.15.1'
+gem 'newrelic_rpm'
+gem 'httparty'
+gem 'bootstrap-datetimepicker-rails'
+gem "watu_table_builder", :require => "table_builder"
+gem 'quiet_assets', '~> 1.0.2'
 
 group :development, :test do
   gem 'rspec-rails', '2.13.1'
   gem 'guard-rspec', '2.5.0'
+  gem 'mailcatcher'
 end
 
 group :test do
@@ -37,6 +43,7 @@ gem 'coffee-rails', '4.0.0'
 gem 'jquery-rails', '2.2.1'
 gem 'turbolinks', '1.1.1'
 gem 'jbuilder', '1.0.2'
+gem 'tinymce-rails'
 
 group :doc do
   gem 'sdoc', '0.3.20', require: false

@@ -1,5 +1,15 @@
 <footer class="footer">
-	<small> <a href="http://railstutorial.org/">Rails Tutorial</a> by Michael Hartl </small>
+	<small> 
+		<%= link_to "https://fearthefallen.herokuapp.com", target: "_blank", class:"logo" do %> 
+			<%= image_tag('04_WoT_logo_decor_colour.jpg', alt: "World of Tanks Logo") %>
+			<span class="logo_label" id="wot_clan">Fear The Fallen Wot Clan</span> 
+		<% end %> 		
+		<%= link_to "https://help.elderscrollsonline.com/app/home?region=US", target: "_blank", class:"logo" do %> 
+			<%= image_tag('elderscrolls_logo.jpg', alt: "Elder Scrolls Logo") %> 
+			<span class="logo_label" id="eso_support" >Elder Scrolls</span> 
+			<span class="logo_label" id="eso_support2" >Online Support</span>
+		<% end %> 	
+	</small>
 	<nav>
 		<ul>
 			<li>
@@ -7,9 +17,6 @@
 			</li>
 			<li>
 				<%= link_to "Contact", contact_path %>
-			</li>
-			<li>
-				<a href="http://news.railstutorial.org/">News</a>
 			</li>
 		</ul>
 	</nav>

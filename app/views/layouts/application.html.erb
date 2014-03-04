@@ -1,14 +1,22 @@
 <!DOCTYPE html>
 <html>
 	<head>
+		<link rel="shortcut icon" href="/favicon.ico" />
 		<title><%= full_title(yield(:title)) %></title>
 		<%= stylesheet_link_tag "application", media: "all", "data-turbolinks-track" => true %>
 		<%= javascript_include_tag "application", "data-turbolinks-track" => true %>
 		<%= csrf_meta_tags %>
 		<%= render 'layouts/shim' %>
+		<style type="text/css">
+			body {
+				background-image: url(<%= random_image %>);
+				background-position-y: 40px;
+			}	
+		</style>		
 	</head>
 	<body>
 		<%= render 'layouts/header' %>
+		<%= render 'layouts/teamspeak' %>
 		<div class="container">
 			<% flash.each do |key, value| %>
 				<%= content_tag(:div, value, class: "alert alert-#{key}") %>

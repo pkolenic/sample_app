@@ -35,6 +35,11 @@ textarea {
   }
 }
 
+.hero-unit {
+  min-height: 586px;
+  padding: 60px 60px 0;
+}
+
 /* typography */
 
 h1, h2, h3, h4, h5, h6 {
@@ -104,6 +109,35 @@ footer {
       margin-left: 10px;
     }
   }
+  .logo {
+    text-decoration: none;
+    float: left;
+    margin-right: 10px;
+  }
+  .logo_label {
+    font-size: 16px;
+    color: #DCDCDC;
+    padding: 0;
+    text-decoration: none;
+    font-family: Arial Narrow,arial,sans-serif;
+    display: block;
+    position: relative;
+    top: -90px;
+    margin: 0 auto;
+  }    
+}
+
+#wot_clan {
+  width: 150px;
+}
+
+#eso_support {
+  width: 75px;
+}
+
+#eso_support2 {
+  top: -40px;
+  width: 86px;
 }
 
 /* sidebar */
@@ -214,5 +248,29 @@ aside {
 
   span {
     display: inline;
+  }
+}
+
+/* TeamSpeak */
+#teamspeak_box {
+  width: 170px;
+  background-color: white;
+  position: fixed;
+  padding: 5px 0px 0px 5px;
+  top: 40px;
+  right: 0;
+  #teamspeak_server {
+
+  }
+  p {
+    padding: 0 5px;
+    font-size: 1em;
+    line-height: 1.4em;
+  }
+  .ts_bold {
+    font-weight: bold;
+  }
+  #teamspeak_ie {
+    margin-top: 100px;
   }
 }
