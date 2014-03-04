@@ -5,7 +5,8 @@ class StaticPagesController < ApplicationController
     end
   end
 
-  def help
+  def guildhall
+    
   end
 
   def about
@@ -13,4 +14,5 @@ class StaticPagesController < ApplicationController
 
   def contact
   end
+  
 end
