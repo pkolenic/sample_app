@@ -3,40 +3,55 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 #wall {
-    background-image: url("/assets/brick_wall.jpg");
+    background-image: url(image_path('brick_wall.jpg'));
     width: 940px;
     height: 510px;
     background-size: 150px;
     
-    #maps {
+    #wall_items {
       float: left;
-      margin: 200px 0 0 10px;
-      img {
-        width: 250px;
+      width: 670px;
+      padding: 110px 15px 0;      
+      #maps {
+        float: left;
+        img {
+          width: 250px;
+        }
+      }
+      
+      #scroll {
+        img {
+          width: 130px;
+        }           
+      }
+      
+      #calendar {
+        float: left;
+        margin-bottom: 15px;
+        img {
+          width: 265px;
+        }
+      }
+      
+      #armor {
+        margin: 0 -71px 0;
+        float: left;        
+        img {
+          height: 300px;
+          margin-top: 103px;
+        }
       }
     }
     
-    #library {
+    #door_way {
       float: left;
-      margin: 160px 0 0 15px;
-      img {
-        width: 220px;
-      }      
-    }
-    
-    #scroll {
-      margin: 200px 15px 0;
-      float: left;
-      img {
-        width: 130px;
-      }           
-    }
-    
-    #calendar {
-      margin: 200px 10px 0 0;
-      float: left;
-      img {
-        width: 265px;
+ 
+      #library {
+        float: left;
+        margin: 160px 0 0 15px;
+        img {
+          width: 220px;
+        }      
       }
     }
 }

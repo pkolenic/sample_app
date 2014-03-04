@@ -1,18 +1,26 @@
 <% provide(:title, 'Guild Hall') %>
 <div id="wall">
+	<div id="wall_items">
 	<%= link_to "https://help.elderscrollsonline.com/app/home?region=US", target: "_blank", id:"maps" do %>
 		<%= image_tag('map.png', alt: "Elder Scrolls Maps") %>
 	<% end %>
-		
-	<%= link_to "https://help.elderscrollsonline.com/app/home?region=US", target: "_blank", id:"scroll" do %>
-		<%= image_tag('scroll.png', alt: "Message Board") %>
+
+	<%= link_to "https://help.elderscrollsonline.com/app/home?region=US", target: "_blank", id:"armor" do %>
+		<%= image_tag('armor.png', alt: "Armory") %>
 	<% end %>
 	
 	<%= link_to "https://help.elderscrollsonline.com/app/home?region=US", target: "_blank", id:"calendar" do %>
 		<%= image_tag('calendar.png', alt: "Calendar") %>
-	<% end %>	
-	
-	<%= link_to "https://help.elderscrollsonline.com/app/home?region=US", target: "_blank", id:"library" do %>
-		<%= image_tag('door.png', alt: "Lore Library") %>
-	<% end %>	
+	<% end %>
+				
+	<%= link_to "https://help.elderscrollsonline.com/app/home?region=US", target: "_blank", id:"scroll" do %>
+		<%= image_tag('scroll.png', alt: "Message Board") %>
+	<% end %>
+		
+	</div>
+	<div id="door_way">
+		<%= link_to "https://help.elderscrollsonline.com/app/home?region=US", target: "_blank", id:"library" do %>
+			<%= image_tag('door.png', alt: "Lore Library") %>
+		<% end %>			
+	</div>
 </div>
