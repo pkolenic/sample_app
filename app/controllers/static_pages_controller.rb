@@ -5,8 +5,10 @@ class StaticPagesController < ApplicationController
     end
   end
 
-  def guildhall
-    
+  def guildhall    
+  end
+  
+  def library
   end
 
   def about
