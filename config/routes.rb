@@ -4,15 +4,16 @@ SampleApp::Application.routes.draw do
   
   resources :sessions, only: [:new, :create, :destroy]
   
-  match '/signin',      to: 'sessions#new',           via: 'get'
-  match '/signout',     to: 'sessions#destroy',       via: 'delete'
+  match '/signin',            to: 'sessions#new',           via: 'get'
+  match '/signout',           to: 'sessions#destroy',       via: 'delete'
   
   root  'static_pages#home'
-  match '/signup',      to: 'users#new',              via: 'get'
-  match '/about',       to: 'static_pages#about',     via: 'get'
-  match '/contact',     to: 'static_pages#contact',   via: 'get'
-  match '/guildhall',   to: 'static_pages#guildhall', via: 'get'
-  match '/library',     to: 'static_pages#library',   via: 'get'
+  match '/signup',            to: 'users#new',              via: 'get'
+  match '/about',             to: 'static_pages#about',     via: 'get'
+  match '/contact',           to: 'static_pages#contact',   via: 'get'
+  match '/guildhall',         to: 'static_pages#guildhall', via: 'get'
+  match '/library',           to: 'static_pages#library',   via: 'get'
+  match '/messageboard',      to: 'static_pages#messageboard',            via: 'get'
   
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

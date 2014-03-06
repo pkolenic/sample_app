@@ -1,0 +1,9 @@
+<% provide(:title, 'Message Board') %> 
+<div class="header_wrapper"><h1>Message Board</h1></div>
+<div id ="message_board" >
+	<% if signed_in? %>
+		<%= render 'shared/disqus' %>
+	<% else %>
+		<h2>Only Guild members shall read this board!</h2>
+	<% end %>
+</div>

@@ -11,6 +11,10 @@ class StaticPagesController < ApplicationController
   def library
   end
 
+  def messageboard
+    @disqus = "general"
+  end
+
   def about
   end
 

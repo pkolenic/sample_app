@@ -9,3 +9,9 @@
     </section>
   </aside>
 </div>
+
+<%-# render 'statbox' -%>
+</div>
+<% if signed_in? %>
+	<%= render 'shared/disqus' %>
+<% end %>
