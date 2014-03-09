@@ -11,7 +11,7 @@ module UsersHelper
       disqus_timestamp = Time.now.to_i
       user_id = "#{CLAN_SHORT_NAME.downcase}-#{user.id}#{Rails.env.development? ? '-dev' : ''}"
 
-      disqus_serializer_message = {"id"=>user_id, "username"=>"{CLAN_DISQUS_PREFIX}{user.name}", "email"=>user.email, "avatar"=>gravatar_url(user, {size: 160})}.to_json               
+      disqus_serializer_message = {"id"=>"{CLAN_DISQUS_PREFIX}{user_id}", "username"=>user.name, "email"=>user.email, "avatar"=>gravatar_url(user, {size: 160})}.to_json               
       disqus_message = Base64.strict_encode64(disqus_serializer_message)
       disqus_signature = OpenSSL::HMAC.hexdigest(digest, ENV['DISQUS_SECRET'], disqus_message + ' ' + disqus_timestamp.to_s)
       auth = "#{disqus_message} #{disqus_signature} #{disqus_timestamp}"
