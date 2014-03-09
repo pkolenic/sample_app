@@ -1,5 +1,6 @@
 # CLAN SPECIFIC
 CLAN_SHORT_NAME               = "FTF"
+CLAN_DISQUS_PREFIX            = "ftfeso-"
 CLAN_NAME                     = "Fear the Fallen"
 CLAN_DISQUS                   = "fearthefallenelderscrollsonline"
 CLAN_GENERIC_EMAIL_SUFFIX     = "fearthefallen.com"
