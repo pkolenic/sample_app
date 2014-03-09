@@ -9,6 +9,8 @@ describe User do
 
   it { should respond_to(:name) }
   it { should respond_to(:email) }
+  it { should respond_to(:rank) }
+  it { should respond_to(:time_zone) }  
   it { should respond_to(:password_digest) }
   it { should respond_to(:password) }
   it { should respond_to(:password_confirmation) }
@@ -31,6 +33,8 @@ describe User do
   describe "remember token" do
     before { @user.save }
     its(:remember_token) { should_not be_blank }
+    its(:rank) { should_not be_blank }
+    its(:rank) { should eq UserPending }
   end
 
   describe "when name is not present" do

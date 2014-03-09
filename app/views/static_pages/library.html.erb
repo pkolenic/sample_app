@@ -1,14 +1,34 @@
 <% provide(:title, 'Lore Library') %> 
-<h1>Lore Library</h1>
-<p>
-	This page will contain links to the game lore.
-	<ul>
-		<li>Alchemy</li>
-		<li>Black Smithing</li>
-		<li>Wood Working</li>
-		<li>Cloth Making</li>
-		<li>Provisioning</li>
-		<li>Enchanting</li>
-		<li>Quests</li>
-	</ul>
-</p>
+<div id="wall">
+	<h1>Lore Library</h1>
+	<div id="bookshelf">
+		<div id="books">
+			<%= link_to "#", id:"blacksmithing" do %>
+				<%= image_tag('book1.png', alt: "Black Smithing") %>
+			<% end %>			
+			<%= link_to "#", id:"woodworking" do %>
+				<%= image_tag('book6.png', alt: "Wood Working") %>
+			<% end %>
+			
+			<%= link_to "#", id:"clothing" do %>
+				<%= image_tag('book6.png', alt: "Clothing") %>
+			<% end %>
+			
+			<%= link_to "#", id:"provisioning" do %>
+				<%= image_tag('book6.png', alt: "Provisioning") %>
+			<% end %>
+			
+			<%= link_to "#", id:"alchemy" do %>
+				<%= image_tag('book6.png', alt: "Alchemy") %>
+			<% end %>
+			
+			<%= link_to "#", id:"enchanting" do %>
+				<%= image_tag('book6.png', alt: "Enchanting") %>
+			<% end %>
+			
+			<%= link_to "#", id:"quests" do %>
+				<%= image_tag('book6.png', alt: "Quests") %>
+			<% end %>													
+		</div>
+	</div>
+</div>

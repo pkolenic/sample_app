@@ -1,13 +1,18 @@
 <%= render 'shared/error_messages', object: f.object %>
 
-<%= f.label :name %>
-<%= f.text_field :name %>
+<% unless signed_in? %>
+<%= f.label :name, "Name <span class='note'> *(used to send guild invite and to display on profile and roster) </span>".html_safe %>
+<%= f.text_field :name, placeholder: "Character or Account Name" %>
+<% end %>
 
 <%= f.label :email %>
-<%= f.text_field :email %>
+<%= f.text_field :email, placeholder: "Email" %>
 
 <%= f.label :password %>
 <%= f.password_field :password %>
 
 <%= f.label :password_confirmation, "Confirm Password" %>
 <%= f.password_field :password_confirmation %>
+
+<%= f.label :time_zone %>
+<%= f.time_zone_select :time_zone, ActiveSupport::TimeZone.us_zones, :default => "Pacific Time (US & Canada)" %>

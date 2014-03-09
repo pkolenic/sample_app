@@ -1,4 +1,4 @@
-SampleApp::Application.routes.draw do
+FTFESO::Application.routes.draw do
   # Resource Paths
   resources :users
   

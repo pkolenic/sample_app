@@ -11,7 +11,7 @@ describe "Static pages" do
 
   describe "Home page" do
     before { visit root_path }
-    let(:heading)    { 'Sample App' }
+    let(:heading)    { 'Fear The Fallen Guild' }
     let(:page_title) { '' }
 
     it_should_behave_like "all static pages"
@@ -24,14 +24,6 @@ describe "Static pages" do
         visit root_path
       end
     end
-  end
-
-  describe "Help page" do
-    before { visit help_path }
-    let(:heading)    { 'Help' }
-    let(:page_title) { 'Help' }
-
-    it_should_behave_like "all static pages"
   end
 
   describe "About page" do
@@ -54,15 +46,13 @@ describe "Static pages" do
     visit root_path
     click_link "About"
     expect(page).to have_title(full_title('About Us'))
-    click_link "Help"
-    expect(page).to have_title(full_title('Help'))
     click_link "Contact"
     expect(page).to have_title(full_title('Contact'))
     click_link "Home"
     expect(page).to have_title(full_title(''))
     click_link "Sign up now!"
     expect(page).to have_title(full_title('Sign up'))
-    click_link "sample app"
+    click_link "logo"
     expect(page).to have_title(full_title(''))
     click_link "Sign in"
     expect(page).to have_title(full_title('Sign in'))

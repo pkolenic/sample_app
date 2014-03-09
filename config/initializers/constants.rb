@@ -9,14 +9,16 @@ CLAN_WEBSITE                  = "https://fearthefallen-eso.herokuapp.com"
 CLAN_TEAMSPEAK_SERVER         = "199.167.19.50:9170"
 CLAN_TEAMSPEAK_PASSWORD       = "pancakes"
 CLAN_TSVIEW_ID                = 1033593
-#CLAN_GOOGLE_PLUS_ID           = 103259274594875534773
+CLAN_GOOGLE_PLUS_ID           = 103259274594875534773
 
 
 # ROLE VALUES
 UserPending           = 0
-UserRecruit           = 10
-
-UserGuildMaster         = 250
+UserRecruit           = 100
+UserSoldier           = 200
+UserA                 = 300
+UserB                 = 400
+UserGuildMaster       = 900
 
 if Rails.env.development?
   ENV['DISQUS_SECRET'] = 'DjIG0dUGqxUvRYOQDGAcEdFzcVsugsoEoBnwXN6CROh7MLBjO7wMzhgJyhYXFY6i' 

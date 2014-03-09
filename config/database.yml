@@ -1,6 +1,6 @@
 development:
   adapter: postgresql
-  database: sample_app_developement
+  database: ftf_eso_developement
   host: localhost
   
 # Warning: The database defined as "test" will be erased and
@@ -8,12 +8,12 @@ development:
 # Do not set this db to the same as development or production.
 test: &test
   adapter: postgresql
-  database: sample_app_test
+  database: ftf_eso_test
   host: localhost
 
 production:
   adapter: postgresql
-  database: sample_app_production
+  database: ftf_eso_production
   host: localhost
 
 cucumber:

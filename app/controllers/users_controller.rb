@@ -30,8 +30,8 @@ class UsersController < ApplicationController
   def edit
   end
 
-  def update
-    if @user.update_attributes(user_params)
+  def update    
+    if @user.update_attributes(user_params.merge(:name => @user.name))
       flash[:success] = "Profile updated"
       sign_in @user
       redirect_to @user
@@ -50,7 +50,7 @@ class UsersController < ApplicationController
 
   def user_params
     params.require(:user).permit(:name, :email, :password,
-    :password_confirmation)
+    :password_confirmation, :time_zone)
   end
 
   # Before filters

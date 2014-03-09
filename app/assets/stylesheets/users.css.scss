@@ -1,3 +1,26 @@
 // Place all the styles related to the Users controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+.row {
+  margin: 5px auto 25px;
+}
+
+.note {
+  text-align: center;
+  margin: -10px 0 10px;
+  span {
+    font-size: 12px;
+    font-style: italic;
+  }
+  .warning {
+    text-shadow: 0px 0px 10px black;
+    font-weight: bold;
+    color: white;
+  }
+}
+
+label span.note {
+  font-size: 12px;
+  font-style: italic;
+}
