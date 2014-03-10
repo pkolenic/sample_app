@@ -25,19 +25,39 @@
               });
           });
           
-		$('#micropost_content').focus(function() {
-			$('#characters_remaining').show();
-		 })
-		 .blur(function () {
-			$('#characters_remaining').hide();
-		 })
-		 .on("keyup", function() {
-		 	var text = $('#micropost_content').val(); 
-		 	if (text.length > 140) {
-		 		$('#micropost_content').val(text.substring(0, 140));
-		 	}
-		 	var count = 140 - $('#micropost_content').val().length;
-		 	$('#remaining_count').text(count);
-		 });
+        $('.book').hover(
+        	function() {
+        		var id = $(this).attr('id');
+        		var book = $('#' + id + "_title"); 
+        		var img = $('#' + id + ' img');
+        		var bookshelf = $('#bookshelf');
+        		var x = img.offset().left - bookshelf.offset().left - (book.width() / 2);
+       			var y = img.offset().top - bookshelf.offset().top + img.height() + 5;
+        		book.css({left:x,top:y});
+        		book.show();
+        	},
+        	function() {
+        		var id = $(this).attr('id');
+        		$('#' + id + "_title").hide();        		
+        	}
+       	);   	
+       	
+       	$('.guildhall_label').hover(
+       		function() {
+       			var id = $(this).attr('id');
+       			var label = $('#' + id + "_label");
+       			var img = $('#' + id + ' img');
+       			var x = img.offset().left;
+       			var y = img.offset().top + img.height() + 5;
+       			
+       			label.css({left:x,top:y});
+       			label.width(img.width());
+       			label.show();
+       		},
+       		function () {
+       			var id = $(this).attr('id');
+       			$('#' + id + "_label").hide();	
+       		}
+       	);
     });
 })(jQuery);

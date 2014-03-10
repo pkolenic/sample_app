@@ -1,34 +1,53 @@
-<% provide(:title, 'Lore Library') %> 
-<h1 class="banner">Lore Library</h1>
+<% provide(:title, 'Lore Library') %> <h1 class="banner">Lore Library</h1>
 <div id="wall">
 	<div id="bookshelf">
-		<div id="books">
-			<%= link_to "#", id:"blacksmithing" do %>
-				<%= image_tag('book1.png', alt: "Black Smithing") %>
-			<% end %>			
-			<%= link_to "#", id:"woodworking" do %>
-				<%= image_tag('book6.png', alt: "Wood Working") %>
-			<% end %>
-			
-			<%= link_to "#", id:"clothing" do %>
-				<%= image_tag('book6.png', alt: "Clothing") %>
-			<% end %>
-			
-			<%= link_to "#", id:"provisioning" do %>
-				<%= image_tag('book6.png', alt: "Provisioning") %>
-			<% end %>
-			
-			<%= link_to "#", id:"alchemy" do %>
-				<%= image_tag('book6.png', alt: "Alchemy") %>
-			<% end %>
-			
-			<%= link_to "#", id:"enchanting" do %>
-				<%= image_tag('book6.png', alt: "Enchanting") %>
-			<% end %>
-			
-			<%= link_to "#", id:"quests" do %>
-				<%= image_tag('book6.png', alt: "Quests") %>
-			<% end %>													
+		<%= link_to "#", id:"blacksmithing", class:"book" do %>
+			<%= image_tag('book1.png', alt: "Black Smithing") %>
+		<% end %>
+		<div class="book_title" id="blacksmithing_title" style="display:none;">
+			<span>Black Smithing</span>
+		</div>
+
+		<%= link_to "#", id:"woodworking", class:"book" do %>
+			<%= image_tag('book2.png', alt: "Wood Working") %>
+		<% end %>
+		<div class="book_title" id="woodworking_title" style="display:none;">
+			<span>Wood Working</span>
+		</div>
+
+		<%= link_to "#", id:"clothing", class:"book" do %>
+			<%= image_tag('book3.png', alt: "Clothing") %>
+		<% end %>
+		<div class="book_title" id="clothing_title" style="display:none;">
+			<span>Clothing</span>
+		</div>
+
+		<%= link_to "#", id:"provisioning", class:"book" do %>
+			<%= image_tag('book4.png', alt: "Provisioning") %>
+		<% end %>
+		<div class="book_title" id="provisioning_title" style="display:none;">
+			<span>Provisioning</span>
+		</div>
+
+		<%= link_to "#", id:"alchemy", class:"book" do %>
+			<%= image_tag('book5.png', alt: "Alchemy") %>
+		<% end %>
+		<div class="book_title" id="alchemy_title" style="display:none;">
+			<span>Alchemy</span>
+		</div>
+
+		<%= link_to "#", id:"enchanting", class:"book" do %>
+			<%= image_tag('book6.png', alt: "Enchanting") %>
+		<% end %>
+		<div class="book_title" id="enchanting_title" style="display:none;">
+			<span>Enchanting</span>
+		</div>
+
+		<%= link_to "#", id:"quests", class:"book" do %>
+			<%= image_tag('book7.png', alt: "Quests") %>
+		<% end %>
+		<div class="book_title" id="quests_title" style="display:none;">
+			<span>Quests</span>
 		</div>
 	</div>
 </div>

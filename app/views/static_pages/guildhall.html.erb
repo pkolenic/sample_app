@@ -1,27 +1,40 @@
-<% provide(:title, 'Guild Hall') %>
-<h1 class="banner">Guild Hall</h1>
+<% provide(:title, 'Guild Hall') %> <h1 class="banner">Guild Hall</h1>
 <div id="wall">
 	<div id="wall_items">
-	<%= link_to "#", id:"maps" do %>
-		<%= image_tag('map.png', alt: "Elder Scrolls Maps") %>
-	<% end %>
+		<%= link_to "#", id:"maps", class:"guildhall_label" do %>
+			<%= image_tag('map.png', alt: "Elder Scrolls Maps") %>
+		<% end %>
+		<div class="hall_label" id="maps_label" style="display:none;">
+			<span>Maps</span>
+		</div>
 
-	<%= link_to "http://www.esoui.com/addons.php", target: "_blank", id:"armor" do %>
-		<%= image_tag('armor.png', alt: "Armory") %>
-	<% end %>
-	
-	<%= link_to "#", id:"calendar" do %>
-		<%= image_tag('calendar.png', alt: "Calendar") %>
-	<% end %>
-				
-	<%= link_to messageboard_path, id:"scroll" do %>
-		<%= image_tag('scroll.png', alt: "Message Board") %>
-	<% end %>
-		
+		<%= link_to "http://www.esoui.com/addons.php", target: "_blank", id:"armor", class:"guildhall_label" do %>
+			<%= image_tag('armor.png', alt: "Armory") %>
+		<% end %>
+		<div class="hall_label" id="armor_label" style="display:none;">
+			<span>Mods</span>
+		</div>
+
+		<%= link_to "#", id:"calendar", class:"guildhall_label" do %>
+			<%= image_tag('calendar.png', alt: "Calendar") %>
+		<% end %>
+		<div class="hall_label" id="calendar_label" style="display:none;">
+			<span>Calendar</span>
+		</div>
+
+		<%= link_to messageboard_path, id:"scroll", class:"guildhall_label" do %>
+			<%= image_tag('scroll.png', alt: "Message Board") %>
+		<% end %>
+		<div class="hall_label" id="scroll_label" style="display:none;">
+			<span>Message Board</span>
+		</div>
 	</div>
 	<div id="door_way">
-		<%= link_to library_path, id:"library" do %>
+		<%= link_to library_path, id:"library", class:"guildhall_label" do %>
 			<%= image_tag('door.png', alt: "Lore Library") %>
-		<% end %>			
+		<% end %>
+		<div class="hall_label" id="library_label" style="display:none;">
+			<span>Lore Library</span>
+		</div>
 	</div>
 </div>

@@ -3,128 +3,163 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 #wall {
-    background-image: url(image_path('brick_wall.jpg'));
-    width: 940px;
-    height: 510px;
-    background-size: 150px;
+  background-image: url(image_path('brick_wall.jpg'));
+  width: 940px;
+  height: 510px;
+  background-size: 150px;
     
-    #wall_items {
+  #wall_items {
+    float: left;
+    width: 670px;
+    padding: 110px 15px 0;      
+    #maps {
       float: left;
-      width: 670px;
-      padding: 110px 15px 0;      
-      #maps {
-        float: left;
-        img {
-          width: 250px;
-        }
-      }
-      
-      #scroll {
-        img {
-          width: 130px;
-        }           
-      }
-      
-      #calendar {
-        float: left;
-        margin-bottom: 15px;
-        img {
-          width: 265px;
-        }
-      }
-      
-      #armor {
-        margin: 0 -71px 0;
-        float: left;        
-        img {
-          height: 300px;
-          margin-top: 103px;
-        }
+      img {
+        width: 250px;
       }
     }
     
-    #door_way {
+    #scroll {
+      img {
+        width: 130px;
+      }           
+    }
+    
+    #calendar {
       float: left;
+      margin-bottom: 15px;
+      img {
+        width: 265px;
+      }
+    }
+    
+    #armor {
+      margin: 0 20px 0;
+      float: left;        
+      img {
+        height: 300px;
+        margin-top: 103px;
+      }
+    }
+  }
+    
+  #door_way {
+    float: left;
  
-      #library {
-        float: left;
-        margin: 160px 0 0 15px;
-        img {
-          width: 220px;
-        }      
-      }
+    #library {
+      float: left;
+      margin: 160px 0 0 15px;
+      img {
+        width: 220px;
+      }      
+    }
+  }
+    
+  #bookshelf {
+    background-image: url(image_path('bookshelf.png'));
+    width: 400px;
+    height: 456px;
+    background-repeat: no-repeat;
+    margin: 0 auto;
+    background-size: 80%;
+    background-position: center;
+    position: relative;
+    top: 80px;
+    
+    a:hover,
+    a:focus {
+      color: white;
+      text-decoration: none; 
     }
     
-    #bookshelf {
-      background-image: url(image_path('bookshelf.png'));
-      width: 400px;
-      height: 456px;
-      background-repeat: no-repeat;
-      margin: 0 auto;
-      background-size: 80%;
-      background-position: center;
-      position: relative;
-      top: 80px;
-      
-      #books {
-        #blacksmithing {
-          position:relative;
-          left: 85px;
-          top: 29px;          
-          img {
-            height:90px;
-          }
-        }
-        #woodworking {
-          position:relative;
-          left: 115px;
-          top: 29px;
-          img {
-            height:90px;
-          }
-        }       
-        #clothing {
-          position:relative;
-          left: 160px;
-          top: 29px;
-          img {
-            height:90px;
-          }
-        }
-        #provisioning {
-          position:relative;
-          left: 215px;
-          top: 29px;
-          img {
-            height:90px;
-          }
-        }
-        #alchemy {
-          position:relative;
-          top: 124px;
-          left: 30px;      
-          img {
-            height:87px;
-          }
-        }
-        #enchanting {
-          position:relative;
-          top:124px;
-          left: 80px;          
-          img {
-            height:87px;
-          }
-        }
-        #quests {
-          position:relative;
-          top: 124px;
-          left: 140px;          
-          img {
-            height:87px;
-          }
-        }                                              
-      }     
+    #blacksmithing {
+      position:relative;
+      left: 85px;
+      top: 29px;          
+      img {
+        height:90px;
+      }
     }
+    #woodworking {
+      position:relative;
+      left: 115px;
+      top: 29px;
+      img {
+        height:90px;
+      }
+    }       
+    #clothing {
+      position:relative;
+      left: 160px;
+      top: 29px;
+      img {
+        height:90px;
+      }
+    }
+    #provisioning {
+      position:relative;
+      left: 215px;
+      top: 29px;
+      img {
+        height:90px;
+      }
+    }
+    #alchemy {
+      position:relative;
+      top: 124px;
+      left: 30px;      
+      img {
+        height:87px;
+      }
+    }
+    #enchanting {
+      position:relative;
+      top:124px;
+      left: 80px;          
+      img {
+        height:87px;
+      }
+    }
+    #quests {
+      position:relative;
+      top: 124px;
+      left: 140px;          
+      img {
+        width:20px;
+        height:87px;
+      }
+    }                                              
+  }
+}
+
+.book_title {
+  background-image: url(image_path('scroll.png'));
+  background-color: black;
+  width: 100px;
+  padding: 10px;
+  background-size: 120px 40px;
+  background-repeat: no-repeat;
+  position: absolute;
+  z-index: 50;
+  text-align:center;
+  color: black;
+  text-shadow: 1px 1px 2px white;
+  font-size: 14px;
+}
+
+.hall_label {
+  background-image: url(image_path('scroll.png'));
+  background-color: black;
+  width: 100px;
+  padding: 10px;
+  background-size: 100% 40px;
+  background-repeat: no-repeat;
+  position: absolute;
+  z-index: 50;
+  text-align:center;
+  color: black;
+  text-shadow: 1px 1px 2px white;
+  font-size: 14px;
 }
 
 .text_box {
