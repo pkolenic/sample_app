@@ -372,12 +372,13 @@ input {
 
 /* TeamSpeak */
 #teamspeak_box {
-  width: 155px;
+  width: 165px;
   background-color: white;
   position: fixed;
   padding: 5px 0px 0px 5px;
   top: 82px;
   left: 0;
+  margin=left: 10px
   #teamspeak_server {
 
   }
