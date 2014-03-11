@@ -29,6 +29,7 @@ class ApplicationController < ActionController::Base
       file_name = file.gsub('app/assets/images/ts/', '')
       raw.gsub! "http://static.tsviewer.com/images/teamspeak3/standard/#{file_name}", view_context.image_url("ts/#{file_name}")
     end
+    raw.gsub! 'http://static.tsviewer.com//images/teamspeak3/default/tsv20100409.png', view_context.image_url('ts/tsv20100409.png')
         
     @ts_status = raw.html_safe
   end
