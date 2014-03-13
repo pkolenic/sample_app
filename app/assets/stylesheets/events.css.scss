@@ -65,7 +65,7 @@
 }
 
 #new-event-form-wrapper {
-    background-image: url(/assets/scroll.png);
+    background-image: url(image_path('scroll.png'));
     background-repeat: no-repeat;
     background-size: 720px 500px;
     position: absolute;
@@ -106,7 +106,7 @@
 #event_scroll {
   width: 700px;
   margin: 0 auto;
-  background-image: url(/assets/scroll.png);
+  background-image: url(image_path('scroll.png'));
   background-repeat: no-repeat;
   background-size: 700px 500px;
   height: 500px;
