@@ -1,5 +1,5 @@
 class EventsController < ApplicationController
-  before_action :signed_in_user, only: [:create, :destroy]
+  before_action :has_event_creation_rights, only: [:create, :destroy]
   before_action :correct_user,   only: :destroy
   
   def index
@@ -41,4 +41,16 @@ class EventsController < ApplicationController
       @event = current_user.events.find_by(id: params[:id])
       redirect_to current_user if @event.nil?
     end
+    
+    def has_event_creation_rights
+      if signed_in?
+        unless current_user.rank >= UserGuildMaster
+          flash[:error] = "You don't have permissions to create an Event!"
+          redirect_to calendar_url        
+        end        
+      else
+        store_location
+        redirect_to signin_url, notice: "Please sign in."        
+      end
+    end    
 end

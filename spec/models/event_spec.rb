@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Event do
-  let(:user) { FactoryGirl.create(:user) }
+  let(:user) { FactoryGirl.create(:user, email: "eventTest@fearthefallen.com") }
   
   before { @event = user.events.build(title: "Test Event", deck: "This is a test event to test events", start_time: "2014-03-10 10:00:00", end_time: "2014-03-10 10:00:05", public: true) }
   

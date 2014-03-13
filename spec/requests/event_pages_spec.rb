@@ -4,7 +4,7 @@ describe "Event pages" do
 
   subject { page }
 
-  let(:user) { FactoryGirl.create(:user) }
+  let(:user) { FactoryGirl.create(:user, rank: UserGuildMaster) }
   before { sign_in user }
 
   describe "event creation" do
@@ -35,11 +35,25 @@ describe "Event pages" do
       it "should create a event" do
         expect { find("#event-submit",:visible=>false).click }.to change(Event, :count).by(1)
       end
+      
+      describe "without proper rank" do
+          let!(:user3) { FactoryGirl.create(:user, email: "user3@fearthefallen.com") }
+          before do
+            sign_in user3
+            visit calendar_path
+          end
+          
+          it "should not create an event" do
+            expect { find("#event-submit",:visible=>false).click }.not_to change(Event, :count)
+          end
+          
+          it { should_not have_selector('#add-event') }
+      end
     end
   end
 
   describe "event destruction" do
-    let!(:user2) { FactoryGirl.create(:user) }
+    let!(:user2) { FactoryGirl.create(:user, rank: UserGuildMaster, email: "user2@fearthefallen.com") }
     before do
        FactoryGirl.create(:event, user: user)
        FactoryGirl.create(:event, user: user2)

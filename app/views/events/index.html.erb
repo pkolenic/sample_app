@@ -8,7 +8,7 @@
 			<%= link_to ">", :month => (@date.end_of_month+1).strftime("%Y-%m") %>
 		</h1>
 		<br>
-		<% if current_user %>
+		<% if current_user && current_user.rank >= UserGuildMaster %>
 			<%= link_to "Add Event", "javascript:void(0);", class: "btn btn-large btn-primary", id: "add-event" %>
 		<% end %>
 		<%= calendar_for @events, :today => Time.current, :year => @date.year, :month => @date.month do |calendar| %>
