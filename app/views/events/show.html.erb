@@ -1,0 +1,25 @@
+<% provide(:title, @event.title) %>
+<div id="event_scroll"> 
+	<div class="event-inner">
+		<span class="event_title"><%= @event.title %></span><br>
+		<p>
+			<span class="event_label">Starts at: </span><span class="event_date"><%= @event.start_time.strftime('%b %d %Y, %l:%M%p')%></span><br>
+			<span class="event_label">Ends at: </span><span class="event_date"><%=@event.end_time.strftime('%b %d %Y, %l:%M%p')%></span><br>
+			<span class="event_date">(<%= distance_of_time_in_words(@event.start_time, @event.end_time) %>)</span><br>		
+		</p>
+		<div class="event_body">
+			<%= @event.deck.html_safe %>
+		</div>
+	</div>
+	<div class="event-links">
+		<%= link_to "<Back to the Calendar>", calendar_path, class:"left-side" %>
+		<% if current_user?(@event.user) %>
+	    	<%= link_to "<delete>", @event, method: :delete,
+	                                     data: { confirm: "You sure?" },
+	                                     title: @event.title,
+	                                     class: "right-side" %>
+		<% end %>
+	</div> 			
+</div>
+
+

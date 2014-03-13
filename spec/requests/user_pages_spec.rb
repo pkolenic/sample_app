@@ -1,4 +1,5 @@
 require 'spec_helper'
+include ActionView::Helpers::DateHelper
 
 describe "User pages" do
 
@@ -60,12 +61,24 @@ describe "User pages" do
 
   describe "profile page" do
     let(:user) { FactoryGirl.create(:user) }
+    let!(:e1) { FactoryGirl.create(:event, user: user, title: "Foo") }
+    let!(:e2) { FactoryGirl.create(:event, user: user, title: "Bar") }
     let(:heading)    { user.name }
     let(:page_title) { user.name }
     
     before { visit user_path(user) }
     
     it_should_behave_like "all user pages"
+    
+    describe "events" do
+      it { should have_content(e1.title) }
+      it { should have_content(e1.start_time.strftime('%b %d %Y, %l:%M%p')) }
+      it { should have_content(distance_of_time_in_words(e1.start_time, e1.end_time)) }
+      it { should have_content(e2.title) }
+      it { should have_content(e2.start_time.strftime('%b %d %Y, %l:%M%p')) }
+      it { should have_content(distance_of_time_in_words(e2.start_time, e2.end_time)) }
+      it { should have_content(user.events.count) }
+    end
   end
 
   describe "signup page" do

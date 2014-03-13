@@ -1,16 +1,31 @@
 <% provide(:title, @user.name) %>
 <div class="row">
-  <aside class="span4">
-    <section>
-      <h1>
-        <%= gravatar_for @user, size: 80 %>
-        <%= @user.name %>
-      </h1>
-    </section>
-  </aside>
-</div>
+	<aside class="span4">
+		<section>
+			<h1><%= @user.name %></h1>
+			<div class="gravatar">
+				<% if @user == current_user %>
+					<%= link_to gravatar_for(@user, size: 160), 'http://gravatar.com', target: "_blank", title: "Change your avatar at Gravatar." %>
+					</br>
+					<%= link_to 'powered by gravatar', 'http://gravatar.com', target: "_blank", class: "gravatar_link" %>
+				<% else %>
+					<%= gravatar_for @user, size: 160 %>
+				<% end %>
+				</br>
+			</div>
+		</section>
+	</aside>
 
-<%-# render 'statbox' -%>
+  
+  <div class="events_wrapper">
+    <% if @user.events.any? %>
+      <h3>Events (<%= @user.events.count %>)</h3>
+      <ol class="events">
+        <%= render @events %>
+      </ol>
+      <%= will_paginate @events %>
+    <% end %>
+  </div>
 </div>
 <% if signed_in? %>
 	<%= render 'shared/disqus' %>

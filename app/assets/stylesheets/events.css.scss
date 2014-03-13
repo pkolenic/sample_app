@@ -1,0 +1,146 @@
+// Place all the styles related to the Events controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+#calendar {
+  margin-bottom: 20px;
+  table {
+    border-collapse: collapse;
+    width: 100%;    
+  }
+  td, th {
+    font-family: "Lucida Grande",arial,helvetica,sans-serif;
+    font-size: 10px;
+    padding: 6px;
+    border: 1px solid #999;    
+  }
+  th {
+    background: #DDD;
+    color: #666;
+    text-align: center;
+    width: 14.2857142857143%;    
+  }
+  td {
+    background: #FFF;
+    color: #777;
+    height: 80px;
+    vertical-align: top;
+    font-size: 16px;    
+  }
+  .notmonth {
+    color: #CCC;
+  }
+  #month {
+    margin: 0;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    text-align: center;    
+    a, a:hover {
+      text-decoration: none;
+      padding: 0 10px;
+      color: black;
+      text-shadow: 1px 1px 2px white;      
+    }
+  }
+  .today {
+    background-color: #D7F2FF; 
+  }
+  ul {
+    margin: 0;
+    margin-top: 5px;
+    padding: 0;
+    list-style: none;
+  }
+  li {
+    margin: 0;
+    padding: 0;
+    font-size: 11px;
+    text-align: center;
+  }    
+}
+
+#add-event {
+  position: absolute;
+  top: 110px;
+  left: 160px;
+}
+
+#new-event-form-wrapper {
+    background-image: url(/assets/scroll.png);
+    background-repeat: no-repeat;
+    background-size: 720px 500px;
+    position: absolute;
+    top: 200px;
+    width: 720px;
+    height: 500px;
+    left: 270px;
+
+    form {
+      padding: 40px 65px;
+      margin-left: 20px;
+      label {
+        font-size: 16px;
+        text-shadow: 1px 1px 1px black;
+        letter-spacing: 3px;
+      }
+      
+      .mce-tinymce.mce-container.mce-panel {
+        margin-bottom: 10px;
+        width: 550px;
+      }
+      
+      .btn {
+        width: 130px;
+        padding: 5px;
+        margin-top: 15px;
+        float: right;
+      }
+    }
+}
+
+#event-close {
+  float: right;
+  margin: 5px 20px 0 0;
+}
+
+/* Show */
+#event_scroll {
+  width: 700px;
+  margin: 0 auto;
+  background-image: url(/assets/scroll.png);
+  background-repeat: no-repeat;
+  background-size: 700px 500px;
+  height: 500px;
+  padding: 40px 0 0 70px;
+  
+  .event-inner {
+    width: 560px;
+    .event_title {
+      font-size: 2.8em;
+      text-shadow: 1px 1px 1px black;
+      line-height: 36px;
+    }
+    
+    .event_label {
+      font-weight:bold;
+    }
+    
+    .event_date {
+      font-style:italic;
+    }
+    
+    .event_body {
+      height: 240px;
+      width: 550px;
+      overflow: auto;
+    }
+  }
+  .event-links {
+    width: 560px;
+    .left-side {
+      float: left;
+    }
+    .right-side {
+      float: right;
+    }
+  }
+}

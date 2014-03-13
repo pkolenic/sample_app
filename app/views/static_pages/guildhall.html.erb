@@ -1,4 +1,5 @@
-<% provide(:title, 'Guild Hall') %> <h1 class="banner">Guild Hall</h1>
+<% provide(:title, 'Guild Hall') %> 
+<h1 class="banner">Guild Hall</h1>
 <div id="wall">
 	<div id="wall_items">
 		<%= link_to "#", id:"maps", class:"guildhall_label" do %>
@@ -15,7 +16,7 @@
 			<span>Mods</span>
 		</div>
 
-		<%= link_to "#", id:"calendar", class:"guildhall_label" do %>
+		<%= link_to calendar_path, id:"calendar", class:"guildhall_label" do %>
 			<%= image_tag('calendar.png', alt: "Calendar") %>
 		<% end %>
 		<div class="hall_label" id="calendar_label" style="display:none;">

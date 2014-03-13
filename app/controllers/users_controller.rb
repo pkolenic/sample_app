@@ -10,6 +10,7 @@ class UsersController < ApplicationController
   def show
     @user = User.find(params[:id])
     @disqus = "user:#{ params[:id] }"
+    @events = @user.events.paginate(page: params[:page], :per_page => 10)    
   end
 
   def new

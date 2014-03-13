@@ -1,8 +1,9 @@
 //Released under MIT license: http://www.opensource.org/licenses/mit-license.php
 (function ($) {
     'use strict';
-    $(function () {
-        $('[placeholder]')
+	$(function () {
+		// Handles showing Placeholder text in Form Fields
+    	$('[placeholder]')
           .focus(function () {
               var input = $(this);
               if (input.val() === input.attr('placeholder')) {
@@ -23,8 +24,9 @@
                       input.val('');
                   }
               });
-          });
+		});
           
+        // Show Labels below Lore Library Books
         $('.book').hover(
         	function() {
         		var id = $(this).attr('id');
@@ -42,6 +44,7 @@
         	}
        	);   	
        	
+       	// Show Labels below Guildhall Items
        	$('.guildhall_label').hover(
        		function() {
        			var id = $(this).attr('id');
@@ -59,5 +62,33 @@
        			$('#' + id + "_label").hide();	
        		}
        	);
+       	
+       	// Show the Add Event Form
+       	$('#add-event').click( 
+       		function() {
+       			$('#new-event-form-wrapper').show();
+       			$('#add-event').hide();
+       		}
+       	);
+       	
+       	// Hide the Add Event Form
+       	$('#event-close').click(
+       		function() {
+       			// @TODO clear the Form
+       			$('#new-event-form-wrapper').hide();
+       			$('#add-event').show();    
+       			$('#new_event')[0].reset();   			
+       		}
+       	);
+       	
+       	// Hides and submits the form
+       	$('#event-submit').click(
+       		function() {
+       			// @TODO clear the Form
+       			$('#new-event-form-wrapper').hide();
+       			$('#add-event').show();       			
+       		}       		
+       	);
+       	
     });
 })(jQuery);

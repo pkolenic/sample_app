@@ -1,6 +1,7 @@
 // Place all the styles related to the Users controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+@import "bootstrap";
 
 .row {
   margin: 5px auto 25px;
@@ -23,4 +24,38 @@
 label span.note {
   font-size: 12px;
   font-style: italic;
+}
+
+/* Events */
+.events_wrapper {
+  width: 380px;
+  background: white;
+  padding: 10px 20px;
+  margin-right: 30px;
+  float: right;
+  -moz-box-shadow:    0px 0px 10px 1px #eee;
+  -webkit-box-shadow: 0px 0px 10px 1px #eee;
+  box-shadow:         0px 0px 10px 1px #eee;
+}
+
+/* events */
+
+.events {
+  list-style: none;
+  margin: 10px 0 0 0;
+
+  li {
+    padding: 10px 0;
+    border-top: 1px solid #e8e8e8;
+    width: 380px;
+    overflow: hidden;
+  }
+}
+.title {
+  display: block;
+  word-wrap:break-word;
+}
+
+.timestamp {
+  color: $grayLight;
 }

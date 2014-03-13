@@ -1,0 +1,84 @@
+<% provide(:title, 'Calendar') %> 
+<%= tinymce_assets %>
+<div class="center">
+	<div id="calendar">
+		<h1 class="mini_banner" id="month">
+			<%= link_to "<", :month => (@date.beginning_of_month-1).strftime("%Y-%m") %>
+			<span><%=h @date.strftime("%B %Y") %></span>
+			<%= link_to ">", :month => (@date.end_of_month+1).strftime("%Y-%m") %>
+		</h1>
+		<br>
+		<% if current_user %>
+			<%= link_to "Add Event", "javascript:void(0);", class: "btn btn-large btn-primary", id: "add-event" %>
+		<% end %>
+		<%= calendar_for @events, :today => Time.current, :year => @date.year, :month => @date.month do |calendar| %>
+			<%= calendar.head('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday')%>
+			<% calendar.day(:day_method => :start_time) do |date, events| %>
+				<%= date.day %>
+				<ul>
+					<% for event in events %>
+						<li>
+							<%= link_to event do %>
+								<span><%= event.title %></span><br>
+								<span><%= event.start_time.strftime('%l:%M%p') %></span><br> 
+								<span>(<%= distance_of_time_in_words(event.start_time, event.end_time) %>)</span>
+							<% end %> 								
+						</li>
+					<% end %>
+				</ul>
+			<% end %>
+		<% end %>
+	</div>
+</div>
+
+<% if current_user %>
+	<div id="new-event-form-wrapper" style="<% if @show_form %>height: 700px; background-size: 700px 700px;<% else %>display:none;<% end %>">
+		<%= link_to "javascript:void(0)", id:"event-close" do %>
+			<i class="icon-remove-circle"></i>
+		<% end %>
+		
+		<%= form_for(@event) do |f| %>
+	  		<%= render 'shared/error_messages', object: f.object %>
+	
+			<div class = "form_block">
+				<%= f.label :title, "Title" %>
+				<%= f.text_field :title, class: "width200", placeholder: "Title" %>
+			</div>
+	  		
+	  		<div class = "form_block">
+	  			<%= f.label :deck, "Description" %>
+				<%= f.text_area :deck, class: "tinymce", ros: 40, cols: 120 %>	
+	  		</div>
+	  		
+	  		<div class = "form_block">
+				<div class="input-append form_block datetimepicker">
+					<%= f.label :start_time, "Start Time"%>
+					<%= f.text_field :start_time, value: (f.object.start_time.strftime('%b %d %Y %l:%M%p') if f.object.start_time), class: "width200" %>
+				</div>
+			</div>
+			
+			<div class = "form_block">
+				<div class="input-append form_block datetimepicker">
+					<%= f.label :end_time, "End Time"%>
+					<%= f.text_field :end_time, value: (f.object.end_time.strftime('%b %d %Y %l:%M%p') if f.object.end_time), class: "width200" %>
+				</div>
+		 		  		
+				<script type="text/javascript">
+				  $(function() {
+				    $('#event_start_time').datetimepicker({
+						dateFormat: "M dd yy",
+						timeFormat: "h:mmTT"
+					});
+				    $('#event_end_time').datetimepicker({
+						dateFormat: "M dd yy",
+						timeFormat: "h:mmTT"
+					});
+				  });
+				</script>
+				
+				<%= f.submit "Post", class: "btn btn-large btn-primary", id: "event-submit"%>	 		  		
+	 		</div>	 		  			  		
+		<% end %>	
+	</div>
+<% end %>
+<%= tinymce %>

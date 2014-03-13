@@ -17,6 +17,7 @@ describe User do
   it { should respond_to(:remember_token) }
   it { should respond_to(:authenticate) }
   it { should respond_to(:admin) }
+  it { should respond_to(:events) }
 
   it { should be_valid }
   it { should_not be_admin }
@@ -134,5 +135,32 @@ describe User do
   describe "with a password that's too short" do
     before { @user.password = @user.password_confirmation = "a" * 5 }
     it { should be_invalid }
+  end
+  
+  describe "event associations" do
+
+    before { @user.save }
+    let!(:older_event) do
+      FactoryGirl.create(:event, user: @user, start_time: 26.hour.ago, end_time: 24.hour.ago)
+    end
+    let!(:newer_event) do
+      FactoryGirl.create(:event, user: @user, start_time: 12.hour.ago, end_time: 4.hour.ago)
+    end
+    let!(:oldest_event) do
+      FactoryGirl.create(:event, user: @user, start_time: 72.hour.ago, end_time: 70.hour.ago)
+    end
+
+    it "should have the right event in the right order" do
+      expect(@user.events.to_a).to eq [newer_event, older_event, oldest_event]
+    end
+
+    it "should destroy associated events" do
+      events = @user.events.to_a
+      @user.destroy
+      expect(events).not_to be_empty
+      events.each do |event|
+        expect(Event.where(id: event.id)).to be_empty
+      end
+    end
   end
 end

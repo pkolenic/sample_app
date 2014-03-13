@@ -85,6 +85,11 @@ p {
   float: none;
 }
 
+.hero-unit {
+  width: 760px;
+  margin: 0 auto 30px;
+}
+
 /* header */
 
 #logo {
@@ -124,7 +129,8 @@ footer {
     float: right;
     list-style: none;
     background: rgba(255,255,255,0.25);
-    padding-right: 10px;    
+    padding: 0 10px 0 0;
+    margin-right: 30px;  
     li {
       float: left;
       margin-left: 10px;
@@ -177,11 +183,16 @@ aside {
       line-height: 1;
     }
     h1 {
-      font-size: 1.4em;
+      font-size: 1.8em;
       text-align: left;
-      letter-spacing: -1px;
-      margin-bottom: 3px;
+      letter-spacing: 2px;
+      margin-bottom: 0px;
       margin-top: 0px;
+      text-shadow: 1px 1px 25px white;
+      font-weight: normal;
+      color: black;
+      background-color: rgba(255,255,255,0.2);
+      padding: 5px;
     }
   }
 }
@@ -217,6 +228,7 @@ input {
   @extend .control-group;
   @extend .error;
 }
+
 /* miscellaneous */
 
 .debug_dump {
@@ -228,6 +240,21 @@ input {
 }
 
 /* Banners */
+.mini_banner {
+  background-image: url(image_path('banner.png'));
+  background-repeat: no-repeat;
+  background-size: 520px 90px;
+  width: 520px;
+  height: 84px;
+  font-size: 1.8em;
+  display: inline-block;
+  color: goldenrod;
+  text-shadow: 2px 2px 1px black;
+  padding: 1px 0 0; 
+  line-height: 22px;
+  letter-spacing: 0px;
+}
+
 .banner {
   background-image: url(image_path('banner.png'));
   background-repeat: no-repeat;
@@ -319,7 +346,7 @@ aside {
   padding: 15px;
   height: 300px;
   overflow: auto;
-  width: 910px;
+  width: 850px;
   margin: 0 auto;
 }
 

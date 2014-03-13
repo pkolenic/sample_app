@@ -1,0 +1,11 @@
+<li>
+  <span class="title"><%= link_to event.title, event %></span>
+  <span class="timestamp">
+    <%= event.start_time.strftime('%b %d %Y, %l:%M%p') %> (<%= distance_of_time_in_words(event.start_time, event.end_time) %>).
+  </span>	
+  <% if current_user?(event.user) %>
+    <%= link_to "delete", event, method: :delete,
+                                     data: { confirm: "You sure?" },
+                                     title: event.title %>
+  <% end %>  
+</li>
