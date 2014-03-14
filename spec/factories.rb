@@ -18,4 +18,9 @@ FactoryGirl.define do
     public true
     user
   end
+  
+  factory :title do
+    name "SkyShards"
+    region "The Daggerfall Covenant"
+  end
 end

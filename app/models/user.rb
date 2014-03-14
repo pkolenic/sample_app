@@ -1,6 +1,8 @@
 class User < ActiveRecord::Base
   # Associations
   has_many :events, dependent: :destroy
+  has_many :appointments, dependent: :destroy
+  has_many :titles, through: :appointments
   
   has_secure_password
   before_save { email.downcase! }
@@ -22,6 +24,31 @@ class User < ActiveRecord::Base
 
   def User.encrypt(token)
     Digest::SHA1.hexdigest(token.to_s)
+  end
+
+  # Checks to see if the User has a title
+  def has_title?(title)
+    appointments.find_by(title_id: title.id)
+  end
+  
+  # Checks to see if the User has a title with a given name
+  def has_title_with_name?(name)
+    titles.each do |title|
+      if title.name = name
+        return true
+      end
+    end
+    return false
+  end
+
+  # Adds title to User
+  def appoint_title!(title)
+    appointments.create!(title_id: title.id)
+  end
+  
+  # Removes title from User
+  def unappoint_title!(title)
+    appointments.find_by(title_id: title.id).destroy
   end
 
   private

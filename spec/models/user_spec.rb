@@ -18,6 +18,8 @@ describe User do
   it { should respond_to(:authenticate) }
   it { should respond_to(:admin) }
   it { should respond_to(:events) }
+  it { should respond_to(:appointments) }
+  it { should respond_to(:titles) }
 
   it { should be_valid }
   it { should_not be_admin }
@@ -138,14 +140,16 @@ describe User do
   end
   
   describe "event associations" do
-
     before { @user.save }
+    
     let!(:older_event) do
       FactoryGirl.create(:event, user: @user, start_time: 26.hour.ago, end_time: 24.hour.ago)
     end
+    
     let!(:newer_event) do
       FactoryGirl.create(:event, user: @user, start_time: 12.hour.ago, end_time: 4.hour.ago)
     end
+    
     let!(:oldest_event) do
       FactoryGirl.create(:event, user: @user, start_time: 72.hour.ago, end_time: 70.hour.ago)
     end
@@ -162,5 +166,45 @@ describe User do
         expect(Event.where(id: event.id)).to be_empty
       end
     end
+  end
+  
+  describe "title appointment associations" do
+    before { @user.save }
+    
+    let!(:title)       { FactoryGirl.create(:title) }
+    let!(:appointment) { @user.appointments.build(title_id: title.id) }
+    
+    it "should have title appointments" do
+      expect(@user.appointments.to_a).to eq [appointment]
+    end
+    
+    it "should destory associated title appointments" do
+      appointments = @user.appointments.to_a
+      @user.destroy
+      expect(appointments).not_to be_empty
+      appointments.each do |appt|
+        expect(Appointment.where(id: appt.id)).to be_empty
+      end
+    end
+  end
+  
+  describe "appointing titles" do
+    let(:title) { FactoryGirl.create(:title) }
+    before do
+      @user.save
+      @user.appoint_title!(title)
+    end
+      
+    it { should have_title(title) } 
+    it { should have_title_with_name(title.name) }
+    its(:titles) { should include(title) }
+    
+    describe "and unappointing titles" do
+      before { @user.unappoint_title!(title) }
+        
+      it { should_not have_title(title) }
+      it { should_not have_title_with_name(title.name) }
+      its(:titles) { should_not include(title) }  
+    end    
   end
 end
