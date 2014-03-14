@@ -19,7 +19,7 @@
   
   <div class="events_wrapper">
     <% if @user.events.any? %>
-      <h3>Events (<%= @user.events.count %>)</h3>
+      <h3>Events (<% if current_user && current_user.rank > UserPending %><%= @user.events.count %><% else %><%= @user.events.public.count %><% end %>)</h3>
       <ol class="events">
         <%= render @events %>
       </ol>

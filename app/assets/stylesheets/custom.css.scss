@@ -216,6 +216,11 @@ input {
   height: auto !important;
 }
 
+.checkbox_label {
+  margin-left: 10px;
+  display: inline;
+}
+
 #error_explanation {
   color: #f00;
   ul {

@@ -44,6 +44,11 @@
 				<%= f.label :title, "Title" %>
 				<%= f.text_field :title, class: "width200", placeholder: "Title" %>
 			</div>
+			
+			<div id = "public_block">				
+				<%= f.check_box :public, checked: "checked" %>
+				<%= f.label :public, "Public", class: "checkbox_label"%>
+			</div>
 	  		
 	  		<div class = "form_block">
 	  			<%= f.label :deck, "Description" %>

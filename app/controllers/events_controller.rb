@@ -3,13 +3,21 @@ class EventsController < ApplicationController
   before_action :correct_user,   only: :destroy
   
   def index
-    @events = Event.all
+    if current_user && current_user.rank > UserPending
+      @events = Event.all
+    else
+      @events = Event.public.all
+    end
     @date = params[:month] ? DateTime.strptime(params[:month], '%Y-%m') : Date.today
     @event = current_user.events.build if signed_in?
   end
 
   def show
     @event = Event.find(params[:id])
+    if !@event.public? && !current_user
+      flash[:error] = "Only full guild members can view that event!"
+      redirect_to calendar_url
+    end
   end
 
   def create    
@@ -34,7 +42,7 @@ class EventsController < ApplicationController
   private
 
     def event_params
-      params.require(:event).permit(:title, :deck, :start_time, :end_time)
+      params.require(:event).permit(:title, :deck, :start_time, :end_time, :public)
     end  
     
     def correct_user

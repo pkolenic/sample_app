@@ -60,9 +60,10 @@ describe "User pages" do
   end
 
   describe "profile page" do
-    let(:user) { FactoryGirl.create(:user) }
+    let(:user) { FactoryGirl.create(:user, rank: UserGuildMaster) }
     let!(:e1) { FactoryGirl.create(:event, user: user, title: "Foo") }
     let!(:e2) { FactoryGirl.create(:event, user: user, title: "Bar") }
+    let!(:e3) { FactoryGirl.create(:event, user: user, title: "Private Bar", public: false) }
     let(:heading)    { user.name }
     let(:page_title) { user.name }
     
@@ -77,7 +78,13 @@ describe "User pages" do
       it { should have_content(e2.title) }
       it { should have_content(e2.start_time.strftime('%b %d %Y, %l:%M%p')) }
       it { should have_content(distance_of_time_in_words(e2.start_time, e2.end_time)) }
-      it { should have_content(user.events.count) }
+      it { should_not have_content(e3.title) }      
+      it { should have_content("Events (2)") }
+    end
+    
+    describe "events for signed in user" do
+      before { sign_in user }
+      it { should have_content("Events (3)") }
     end
   end
 

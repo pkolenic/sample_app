@@ -20,4 +20,7 @@ class Event < ActiveRecord::Base
   validates :deck, presence: true
   validates :start_time, presence: true
   validates :end_time, presence: true, end_time: true
+  
+  # Scopes
+  scope :public, -> { where(public: true) }
 end

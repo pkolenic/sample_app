@@ -10,7 +10,11 @@ class UsersController < ApplicationController
   def show
     @user = User.find(params[:id])
     @disqus = "user:#{ params[:id] }"
-    @events = @user.events.paginate(page: params[:page], :per_page => 10)    
+    if current_user && current_user.rank > UserPending
+      @events = @user.events.paginate(page: params[:page], :per_page => 10)
+    else
+      @events = @user.events.public.paginate(page: params[:page], :per_page => 10)      
+    end        
   end
 
   def new
