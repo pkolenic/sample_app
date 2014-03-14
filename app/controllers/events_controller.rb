@@ -6,7 +6,7 @@ class EventsController < ApplicationController
     if current_user && current_user.rank > UserPending
       @events = Event.all
     else
-      @events = Event.public.all
+      @events = Event.all.public
     end
     @date = params[:month] ? DateTime.strptime(params[:month], '%Y-%m') : Date.today
     @event = current_user.events.build if signed_in?
@@ -14,7 +14,7 @@ class EventsController < ApplicationController
 
   def show
     @event = Event.find(params[:id])
-    if !@event.public? && !current_user
+    unless signed_in? && current_user.rank > UserPending    
       flash[:error] = "Only full guild members can view that event!"
       redirect_to calendar_url
     end

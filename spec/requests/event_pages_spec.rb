@@ -1,4 +1,5 @@
 require 'spec_helper'
+include ActionView::Helpers::DateHelper
 
 describe "Event pages" do
 
@@ -6,6 +7,39 @@ describe "Event pages" do
 
   let(:user) { FactoryGirl.create(:user, rank: UserGuildMaster) }
   before { sign_in user }
+
+  describe "visit event page" do
+    let!(:e1) { FactoryGirl.create(:event, user: user, title: "Private Bar", public: false) }    
+    
+    before { visit event_path(e1.id) }
+    
+    it { should have_title(full_title(e1.title)) }
+    it { should have_content(e1.title) }
+    it { should have_content(e1.deck) }
+    it { should have_content(e1.start_time.strftime('%b %d %Y, %l:%M%p')) }
+    it { should have_content(e1.end_time.strftime('%b %d %Y, %l:%M%p')) }
+    it { should have_content(distance_of_time_in_words(e1.start_time, e1.end_time)) }
+    it { should have_link('<Back to the Calendar>') }
+    it { should have_link('<delete>') }
+    
+    describe "as private event" do
+      let(:user2) { FactoryGirl.create(:user, rank: UserPending) }
+      
+      before do
+        sign_in user2
+        visit event_path(e1.id)
+      end
+      
+      it { should have_title(full_title('Calendar')) }
+      it { should have_error_message("Only full guild members can view that event!") }      
+      end
+  end
+  
+  describe "visit calendar" do
+    before { visit calendar_path }
+    
+    it { should have_title(full_title('Calendar')) }
+  end
 
   describe "event creation" do
     before { visit calendar_path }

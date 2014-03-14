@@ -16,9 +16,8 @@ CLAN_GOOGLE_PLUS_ID           = 103259274594875534773
 # ROLE VALUES
 UserPending           = 0
 UserRecruit           = 100
-UserSoldier           = 200
-UserA                 = 300
-UserB                 = 400
+UserMember            = 200
+UserOfficer           = 300
 UserGuildMaster       = 900
 
 if Rails.env.development?
