@@ -16,6 +16,17 @@ ActiveRecord::Schema.define(version: 20140314183340) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "appointments", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "title_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "appointments", ["title_id"], name: "index_appointments_on_title_id", using: :btree
+  add_index "appointments", ["user_id", "title_id"], name: "index_appointments_on_user_id_and_title_id", unique: true, using: :btree
+  add_index "appointments", ["user_id"], name: "index_appointments_on_user_id", using: :btree
+
   create_table "events", force: true do |t|
     t.string   "title"
     t.string   "deck"
@@ -28,17 +39,6 @@ ActiveRecord::Schema.define(version: 20140314183340) do
   end
 
   add_index "events", ["user_id", "start_time"], name: "index_events_on_user_id_and_start_time", using: :btree
-
-  create_table "title_appointments", force: true do |t|
-    t.integer  "user_id"
-    t.integer  "title_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "title_appointments", ["title_id"], name: "index_title_appointments_on_title_id", using: :btree
-  add_index "title_appointments", ["user_id", "title_id"], name: "index_title_appointments_on_user_id_and_title_id", unique: true, using: :btree
-  add_index "title_appointments", ["user_id"], name: "index_title_appointments_on_user_id", using: :btree
 
   create_table "titles", force: true do |t|
     t.string   "name"
