@@ -2,17 +2,21 @@ require 'spec_helper'
 include ActionView::Helpers::DateHelper
 
 describe "Event pages" do
-
   subject { page }
 
-  let(:user) { FactoryGirl.create(:user, rank: UserGuildMaster) }
-  before { sign_in user }
+  let(:rank) { FactoryGirl.create(:rank, id: UserGuildMaster, title: "Guild Master") }
+  let(:user) { FactoryGirl.create(:user) }
 
-  describe "visit event page" do
-    let!(:e1) { FactoryGirl.create(:event, user: user, title: "Private Bar", public: false) }    
-    
-    before { visit event_path(e1.id) }
-    
+  before do
+    user.setRank!(rank)
+    sign_in user
+  end
+
+  describe "visit event page" do    
+    let!(:e1)  { FactoryGirl.create(:event, user: user, title: "Private Bar", public: false) }    
+        
+    before { visit event_path(e1.id) }    
+        
     it { should have_title(full_title(e1.title)) }
     it { should have_content(e1.title) }
     it { should have_content(e1.deck) }
@@ -23,16 +27,17 @@ describe "Event pages" do
     it { should have_link('<delete>') }
     
     describe "as private event" do
-      let(:user2) { FactoryGirl.create(:user, rank: UserPending) }
+      let(:user2) { FactoryGirl.create(:user) }
       
       before do
         sign_in user2
         visit event_path(e1.id)
       end
       
+      specify { expect(user2.rank_id).to eq UserPending }
       it { should have_title(full_title('Calendar')) }
       it { should have_error_message("Only full guild members can view that event!") }      
-      end
+    end
   end
   
   describe "visit calendar" do
@@ -53,7 +58,7 @@ describe "Event pages" do
       describe "error messages" do
         before { find("#event-submit", :visible=>false).click }
 
-        it { should have_selector('#error_explanation', :visible=>false) }
+        it { should have_selector('#error_explanation') }
       end
     end
 
@@ -76,18 +81,15 @@ describe "Event pages" do
             sign_in user3
             visit calendar_path
           end
-          
-          it "should not create an event" do
-            expect { find("#event-submit",:visible=>false).click }.not_to change(Event, :count)
-          end
-          
+
+          it { should_not have_selector("#event-submit", :visible=>false) }
           it { should_not have_selector('#add-event') }
       end
     end
   end
 
   describe "event destruction" do
-    let!(:user2) { FactoryGirl.create(:user, rank: UserGuildMaster, email: "user2@fearthefallen.com") }
+    let!(:user2) { FactoryGirl.create(:user, email: "user2@fearthefallen.com") }
     before do
        FactoryGirl.create(:event, user: user)
        FactoryGirl.create(:event, user: user2)
@@ -110,14 +112,16 @@ describe "Event pages" do
         expect { click_link "delete" }.to change(Event, :count).by(-1)
       end
       
-      it { should_not have_link('delete', href: event_path(user2.events.first)) }
-      
       describe "it should redirect to user page" do
         before { click_link "delete" }
         
         it { should have_content(user.name) }
-      end
-      
+      end      
+    end
+    
+    describe "as other user" do
+      before { visit user_path(user2.id) }
+      it { should_not have_link('delete', href: event_path(user2.events.first)) }
     end
   end
 end

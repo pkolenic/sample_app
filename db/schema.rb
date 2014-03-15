@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140314183340) do
+ActiveRecord::Schema.define(version: 20140315021050) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -40,6 +40,12 @@ ActiveRecord::Schema.define(version: 20140314183340) do
 
   add_index "events", ["user_id", "start_time"], name: "index_events_on_user_id_and_start_time", using: :btree
 
+  create_table "ranks", force: true do |t|
+    t.string   "title"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "titles", force: true do |t|
     t.string   "name"
     t.string   "region"
@@ -57,8 +63,8 @@ ActiveRecord::Schema.define(version: 20140314183340) do
     t.string   "password_digest"
     t.string   "remember_token"
     t.boolean  "admin",           default: false
-    t.integer  "rank",            default: 0
     t.string   "time_zone",       default: "Pacific Time (US & Canada)"
+    t.integer  "rank_id",         default: 0
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree

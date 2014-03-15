@@ -8,7 +8,7 @@
 			<%= link_to ">", :month => (@date.end_of_month+1).strftime("%Y-%m") %>
 		</h1>
 		<br>
-		<% if current_user && current_user.rank >= UserGuildMaster %>
+		<% if current_user && current_user.rank_id >= UserGuildMaster %>
 			<%= link_to "Add Event", "javascript:void(0);", class: "btn btn-large btn-primary", id: "add-event" %>
 		<% end %>
 		<%= calendar_for @events, :today => Time.current, :year => @date.year, :month => @date.month do |calendar| %>
@@ -31,7 +31,7 @@
 	</div>
 </div>
 
-<% if current_user %>
+<% if current_user  && current_user.rank_id >= UserGuildMaster %>
 	<div id="new-event-form-wrapper" style="<% if @show_form %>height: 700px; background-size: 700px 700px;<% else %>display:none;<% end %>">
 		<%= link_to "javascript:void(0)", id:"event-close" do %>
 			<i class="icon-remove-circle"></i>

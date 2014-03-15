@@ -3,6 +3,7 @@ class User < ActiveRecord::Base
   has_many :events, dependent: :destroy
   has_many :appointments, dependent: :destroy
   has_many :titles, through: :appointments
+  belongs_to :rank
   
   has_secure_password
   before_save { email.downcase! }
@@ -51,8 +52,15 @@ class User < ActiveRecord::Base
     appointments.find_by(title_id: title.id).destroy
   end
 
+  # Sets the Users rank
+  def setRank!(rank)
+    self.update_attribute(:rank_id, rank.id)
+    self.reload.rank_id
+  end
+  
   private
     def create_remember_token
       self.remember_token = User.encrypt(User.new_remember_token)
+      self.rank_id = UserPending
     end
 end

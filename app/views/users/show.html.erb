@@ -1,30 +1,50 @@
 <% provide(:title, @user.name) %>
 <div class="row">
-	<aside class="span4">
-		<section>
-			<h1><%= @user.name %></h1>
-			<div class="gravatar">
-				<% if @user == current_user %>
-					<%= link_to gravatar_for(@user, size: 160), 'http://gravatar.com', target: "_blank", title: "Change your avatar at Gravatar." %>
+	<div class="left_col">
+		<aside>
+			<section>
+				<p>
+					<span class="user_name"><%= @user.name %></span>
+					<span class="user_rank"><%= @user.rank.title %></span>				
+				</p>
+				<div class="gravatar">
+					<% if @user == current_user %>
+						<%= link_to gravatar_for(@user, size: 160), 'http://gravatar.com', target: "_blank", title: "Change your avatar at Gravatar." %>
+						</br>
+						<%= link_to 'powered by gravatar', 'http://gravatar.com', target: "_blank", class: "gravatar_link" %>
+					<% else %>
+						<%= gravatar_for @user, size: 160 %>
+					<% end %>
 					</br>
-					<%= link_to 'powered by gravatar', 'http://gravatar.com', target: "_blank", class: "gravatar_link" %>
-				<% else %>
-					<%= gravatar_for @user, size: 160 %>
-				<% end %>
-				</br>
+				</div>
+			</section>
+		</aside>
+		
+		<% if !@user.titles.empty? %>
+		<section>
+			<div class="title_wrapper">
+				<span class="user_titles">Titles</span>
+				<ul>
+					<% for title in @user.titles %>
+					<li>
+						<span><%= title.name %><% if !title.region.blank? %> - <%= title.region %><% end %> Lore Master</span>
+					</li>
+					<% end %>
+				</ul>
 			</div>
 		</section>
-	</aside>
-
-  
-  <div class="events_wrapper">
-    <% if @user.events.any? %>
-      <h3>Events (<% if current_user && current_user.rank > UserPending %><%= @user.events.count %><% else %><%= @user.events.public.count %><% end %>)</h3>
-      <ol class="events">
-        <%= render @events %>
-      </ol>
-      <%= will_paginate @events %>
-    <% end %>
+		<% end %>
+	</div>
+	<div class="right_col">	
+	  <div class="events_wrapper">
+	    <% if @user.events.any? %>
+	      <h3>Events (<% if current_user && current_user.rank_id > UserPending %><%= @user.events.count %><% else %><%= @user.events.public.count %><% end %>)</h3>
+	      <ol class="events">
+	        <%= render @events %>
+	      </ol>
+	      <%= will_paginate @events %>
+	    <% end %>
+	  </div>
   </div>
 </div>
 <% if signed_in? %>

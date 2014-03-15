@@ -3,7 +3,7 @@ class EventsController < ApplicationController
   before_action :correct_user,   only: :destroy
   
   def index
-    if current_user && current_user.rank > UserPending
+    if current_user && current_user.rank_id > UserPending
       @events = Event.all
     else
       @events = Event.all.public
@@ -14,9 +14,11 @@ class EventsController < ApplicationController
 
   def show
     @event = Event.find(params[:id])
-    unless signed_in? && current_user.rank > UserPending    
-      flash[:error] = "Only full guild members can view that event!"
-      redirect_to calendar_url
+    unless @event.public 
+      unless signed_in? && current_user.rank_id > UserPending    
+        flash[:error] = "Only full guild members can view that event!"
+        redirect_to calendar_url
+      end      
     end
   end
 
@@ -52,7 +54,7 @@ class EventsController < ApplicationController
     
     def has_event_creation_rights
       if signed_in?
-        unless current_user.rank >= UserGuildMaster
+        unless current_user.rank_id >= UserGuildMaster
           flash[:error] = "You don't have permissions to create an Event!"
           redirect_to calendar_url        
         end        

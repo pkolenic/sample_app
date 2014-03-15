@@ -1,8 +1,7 @@
 require 'spec_helper'
 include ActionView::Helpers::DateHelper
 
-describe "User pages" do
-
+describe "User pages" do  
   subject { page }
 
   shared_examples_for "all user pages" do
@@ -59,17 +58,35 @@ describe "User pages" do
     end    
   end
 
-  describe "profile page" do
-    let(:user) { FactoryGirl.create(:user, rank: UserGuildMaster) }
+  describe "profile page" do    
+    let(:user) { FactoryGirl.create(:user) }
     let!(:e1) { FactoryGirl.create(:event, user: user, title: "Foo") }
     let!(:e2) { FactoryGirl.create(:event, user: user, title: "Bar") }
     let!(:e3) { FactoryGirl.create(:event, user: user, title: "Private Bar", public: false) }
-    let(:heading)    { user.name }
-    let(:page_title) { user.name }
+    let!(:t1) { FactoryGirl.create(:title, name: "BlackSmithing", region: "") }
+    let!(:t2) { FactoryGirl.create(:title) }
+        
+    before do
+      user.setRank!(Rank.new(id: UserMember, title: "Member"))            
+      visit user_path(user)
+    end
     
-    before { visit user_path(user) }
+    it { should have_content(user.name) }
+    it { should have_title(full_title(user.name)) }
+    it { should have_content(user.rank.title) }
+    it { should_not have_content("Titles") }
     
-    it_should_behave_like "all user pages"
+    describe "with titles" do      
+      before do
+        user.appoint_title!(t1)
+        user.appoint_title!(t2)
+        visit user_path(user)
+      end
+      
+      it { should have_content("Titles") }
+      it { should have_content("#{t1.name} Lore Master") }
+      it { should have_content("#{t2.name} - #{t2.region} Lore Master") }
+    end
     
     describe "events" do
       it { should have_content(e1.title) }
@@ -84,6 +101,7 @@ describe "User pages" do
     
     describe "events for signed in user" do
       before { sign_in user }
+      
       it { should have_content("Events (3)") }
     end
   end

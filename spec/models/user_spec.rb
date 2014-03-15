@@ -34,10 +34,17 @@ describe User do
   end
 
   describe "remember token" do
-    before { @user.save }
+    before do
+       @user.save
+    end
     its(:remember_token) { should_not be_blank }
     its(:rank) { should_not be_blank }
-    its(:rank) { should eq UserPending }
+    its("rank.title") { should eq "Pending" }
+    
+    it "should have a Pending rank" do
+      rank = @user.rank
+      expect(rank.id).to eq UserPending
+    end
   end
 
   describe "when name is not present" do
@@ -206,5 +213,14 @@ describe User do
       it { should_not have_title_with_name(title.name) }
       its(:titles) { should_not include(title) }  
     end    
+  end
+  
+  describe "setting rank" do
+    before do
+      @user.save
+      @user.setRank!(Rank.new(id: UserMember, title: "Member"))
+    end
+    
+    its(:rank_id) { should eq UserMember }
   end
 end

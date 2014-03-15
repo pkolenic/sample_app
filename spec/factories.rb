@@ -23,4 +23,8 @@ FactoryGirl.define do
     name "SkyShards"
     region "The Daggerfall Covenant"
   end
+  
+  factory :rank do
+    title "Pending"
+  end
 end
