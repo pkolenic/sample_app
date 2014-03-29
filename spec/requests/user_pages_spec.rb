@@ -60,6 +60,7 @@ describe "User pages" do
 
   describe "profile page" do    
     let(:user) { FactoryGirl.create(:user) }
+    let!(:rank) { FactoryGirl.create(:rank, id: UserMember, title: "Member") }
     let!(:e1) { FactoryGirl.create(:event, user: user, title: "Foo") }
     let!(:e2) { FactoryGirl.create(:event, user: user, title: "Bar") }
     let!(:e3) { FactoryGirl.create(:event, user: user, title: "Private Bar", public: false) }
@@ -67,7 +68,7 @@ describe "User pages" do
     let!(:t2) { FactoryGirl.create(:title) }
         
     before do
-      user.setRank!(Rank.new(id: UserMember, title: "Member"))            
+      user.setRank!(rank)            
       visit user_path(user)
     end
     

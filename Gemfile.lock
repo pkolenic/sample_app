@@ -215,6 +215,8 @@ GEM
       ffi (>= 1.0.7)
       json_pure
       rubyzip
+    sextant (0.2.4)
+      rails (>= 3.2)
     sinatra (1.4.3)
       rack (~> 1.4)
       rack-protection (~> 1.4)
@@ -291,6 +293,7 @@ DEPENDENCIES
   sass-rails (= 4.0.0)
   sdoc (= 0.3.20)
   selenium-webdriver (= 2.0.0)
+  sextant
   spork-rails!
   tinymce-rails
   turbolinks (= 1.1.1)

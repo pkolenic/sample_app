@@ -122,7 +122,7 @@ describe "Authentication" do
         end
       end
       
-      describe "when attempting to visit a protected page" do
+      describe "when attempting to visit a user protected page" do
         before do
           visit edit_user_path(user)
           valid_signin(user)
@@ -148,6 +148,18 @@ describe "Authentication" do
         end
         
       end
+ 
+      describe "in the Runes controller" do
+        describe "submitting to the create action" do
+          before { post runes_path }
+          specify { expect(response).to redirect_to(signin_path) }
+        end
+        
+        describe "submitting to the destroy action" do
+          before { delete rune_path(FactoryGirl.create(:rune)) }
+          specify { expect(response).to redirect_to(signin_path) }
+        end
+      end
     
       describe "in the Events controller" do
         describe "submitting to the create action" do
@@ -162,7 +174,7 @@ describe "Authentication" do
       end
     end
     
-    describe "as wrong user" do
+    describe "as wrong user editing another user" do
       let(:user) { FactoryGirl.create(:user) }
       let(:wrong_user) { FactoryGirl.create(:user, email: "wrong@example.com") }
       before { sign_in user, no_capybara: true }
@@ -178,7 +190,7 @@ describe "Authentication" do
       end
     end
     
-    describe "as non-admin user" do
+    describe "as non-admin user deleting a user" do
       let(:user) { FactoryGirl.create(:user) }
       let(:non_admin) { FactoryGirl.create(:user) }
 
@@ -189,5 +201,29 @@ describe "Authentication" do
         specify { expect(response).to redirect_to(root_url) }
       end
     end    
+
+    describe "rune pages" do
+      let(:user) { FactoryGirl.create(:user) }
+      before do 
+        user.setRank!(Rank.new(id: UserMember, title: "Member"))
+        sign_in user
+      end
+              
+      describe "without enchanting loremaster title" do
+        before { visit new_rune_path }
+        it { should_not have_title(full_title('Add New Rune')) }
+      end
+      
+      describe "with enchanting loremaster title" do
+        let!(:title) { FactoryGirl.create(:title, name: "Enchanting") }
+        before do
+          user.appoint_title!(title)
+          visit new_rune_path          
+        end
+        
+        it { should have_title(full_title('Add New Rune')) }
+      end
+    end
+
   end
 end

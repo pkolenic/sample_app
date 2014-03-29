@@ -1,0 +1,13 @@
+<tr class="rune_row">
+	<td><%= potency_rune.name %></td>
+	<td><%= potency_rune.translation %></td>
+	<td><%= potency_rune.level %></td>
+	<td> &nbsp; </td>
+	<td> Potency </td>
+	<td><% if potency_rune.glyph_prefix %><%= potency_rune.glyph_prefix.name %><% else %>&nbsp;<% end %></td>
+	<td><% if potency_rune.gear_level %><%= potency_rune.gear_level.name %><% else %>&nbsp;<% end %></td>	
+	<% if current_user && current_user.has_title_with_name?('Enchanting') %>
+		<td><%= link_to "edit", edit_potency_rune_path(potency_rune) %></td>
+		<td><%= link_to "delete", potency_rune, method: :delete, data: { confirm: "You sure?" } %></td>
+	<% end %>
+</tr>

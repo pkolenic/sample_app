@@ -1,0 +1,55 @@
+<%= render 'shared/error_messages', object: f.object %>
+
+<%= f.label :name %>
+<%= f.text_field :name %>
+
+<%= f.label :translation %>
+<%= f.text_field :translation %>
+
+<div class="rune_selectors">
+	<table>
+		<tr>
+			<td>
+				<%= f.label :rune_type_id, "Rune Type" %>
+			</td>			
+		</tr>
+		<tr>
+			<td>
+				<%= collection_select(:rune, :rune_type_id, RuneType.all.order(:id), :id, :name, {}, { :class=>'width120' }) %>				
+			</td>
+		</tr>		
+		<tr id="AspectTitles" style="display:none;" class="runeTitles">			
+			<td>
+				<%= f.label :level %>
+			</td>
+			<td>
+				<%= f.label :quality_id, "Quality" %>
+			</td>
+		</tr>
+		<tr id="PotencyTitles" style="display:none;" class="runeTitles">
+			<td>
+				<%= f.label :level %>
+			</td>
+			<td>
+				<%= f.label :gear_level_id, "Gear Level" %>
+			</td>
+			<td>
+				<%= f.label :glyph_prefix_id, "Glyph Prefix" %>
+			</td>									
+		</tr>
+		<tr>
+			<td class ="runeFields Potency Aspect" style="display:none;">
+				<%= f.select :level, [['1', 1], ['2', 2], ['3',3], ['4',4], ['5',5], ['6',6], ['7',7], ['8',8], ['9',9]], {}, class: "width120" %>				
+			</td>
+			<td class="runeFields Aspect" style="display:none;">
+				<%= collection_select(:rune, :quality_id, Quality.all.order(:id), :id, :name, {:include_blank => true}, { :class=>'width120' }) %>				
+			</td>
+			<td class="runeFields Potency" style="display:none;">
+				<%= collection_select(:rune, :gear_level_id, GearLevel.all.order(:id), :id, :name, {:include_blank => true}, { :class=>'width120' }) %>				
+			</td>
+			<td class="runeFields Potency" style="display:none;">
+				<%= collection_select(:rune, :glyph_prefix_id, GlyphPrefix.all.order(:id), :id, :name, {:include_blank => true}, { :class=>'width120' }) %>				
+			</td>						
+		</tr>
+	</table>
+</div>

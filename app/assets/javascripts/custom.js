@@ -89,6 +89,5 @@
        			$('#add-event').show();       			
        		}       		
        	);
-       	
     });
 })(jQuery);

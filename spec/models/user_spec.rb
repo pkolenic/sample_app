@@ -34,6 +34,7 @@ describe User do
   end
 
   describe "remember token" do
+    let!(:rank) { FactoryGirl.create(:rank, id:UserPending, title:"Pending") }
     before do
        @user.save
     end

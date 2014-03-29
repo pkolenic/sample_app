@@ -19,6 +19,7 @@ group :development, :test do
   gem 'rspec-rails', '2.13.1'
   gem 'guard-rspec', '2.5.0'
   gem 'mailcatcher'
+  gem 'sextant'
 end
 
 group :test do

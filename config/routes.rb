@@ -1,6 +1,10 @@
 FTFESO::Application.routes.draw do
   # Resource Paths
   resources :users
+  resources :runes, except: [:show]
+  resources :essence_runes, only: [:edit, :update, :destroy]
+  resources :aspect_runes, only: [:edit, :update, :destroy]
+  resources :potency_runes, only: [:edit, :update, :destroy]
   
   resources :sessions, only: [:new, :create, :destroy]
   resources :events, only: [:create, :destroy, :index, :show]

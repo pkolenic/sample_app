@@ -5,7 +5,9 @@
 			<section>
 				<p>
 					<span class="user_name"><%= @user.name %></span>
-					<span class="user_rank"><%= @user.rank.title %></span>				
+					<% if @user.rank %>
+						<span class="user_rank"><%= @user.rank.title %></span>
+					<% end %>										
 				</p>
 				<div class="gravatar">
 					<% if @user == current_user %>

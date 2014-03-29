@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140315021050) do
+ActiveRecord::Schema.define(version: 20140325203634) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,6 +27,22 @@ ActiveRecord::Schema.define(version: 20140315021050) do
   add_index "appointments", ["user_id", "title_id"], name: "index_appointments_on_user_id_and_title_id", unique: true, using: :btree
   add_index "appointments", ["user_id"], name: "index_appointments_on_user_id", using: :btree
 
+  create_table "aspect_runes", force: true do |t|
+    t.string   "name"
+    t.string   "translation"
+    t.integer  "level"
+    t.integer  "quality_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "essence_runes", force: true do |t|
+    t.string   "name"
+    t.string   "translation"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "events", force: true do |t|
     t.string   "title"
     t.string   "deck"
@@ -40,11 +56,62 @@ ActiveRecord::Schema.define(version: 20140315021050) do
 
   add_index "events", ["user_id", "start_time"], name: "index_events_on_user_id_and_start_time", using: :btree
 
+  create_table "gear_levels", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "glyph_prefixes", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "potency_runes", force: true do |t|
+    t.string   "name"
+    t.string   "translation"
+    t.integer  "level"
+    t.integer  "glyph_prefix_id"
+    t.integer  "gear_level_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "qualities", force: true do |t|
+    t.string   "name"
+    t.string   "color"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "ranks", force: true do |t|
     t.string   "title"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "rune_types", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "runes", force: true do |t|
+    t.string   "name"
+    t.string   "translation"
+    t.integer  "rune_type_id"
+    t.integer  "level"
+    t.integer  "quality_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "glyph_prefix_id"
+    t.integer  "gear_level_id"
+  end
+
+  add_index "runes", ["level"], name: "index_runes_on_level", using: :btree
+  add_index "runes", ["quality_id"], name: "index_runes_on_quality_id", using: :btree
+  add_index "runes", ["rune_type_id"], name: "index_runes_on_rune_type_id", using: :btree
 
   create_table "titles", force: true do |t|
     t.string   "name"

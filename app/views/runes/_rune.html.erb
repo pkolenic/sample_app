@@ -1,0 +1,14 @@
+<tr class="rune_row">
+	<td><%= rune.name %></td>
+	<td><%= rune.translation %></td>
+	<td><%= rune.level %></td>
+	<td><%= rune.quality.name %></td>
+	<td><%= rune.rune_type.name %></td>
+	<td> &nbsp; </td>
+	<td> &nbsp; </td>
+	<% if current_user && current_user.has_title_with_name?('Enchanting') %>
+		<td><%= link_to "edit", edit_rune_path(rune) %></td>
+		<td><%= link_to "delete", rune, method: :delete,
+                                  data: { confirm: "You sure?" } %></td>			
+	<% end %>
+</tr>

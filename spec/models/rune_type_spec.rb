@@ -1,24 +1,24 @@
 require 'spec_helper'
 
-describe Rank do
+describe RuneType do
   before do
-    @rank = Rank.new(title: "Pending")
+    @type = RuneType.new(name: "Aspect")
   end
 
-  subject { @rank }
+  subject { @type }
   
   it { should be_valid }
 
-  it { should respond_to(:title) }
-  it { should respond_to(:users) }
+  it { should respond_to(:name) }
+  it { should respond_to(:runes) }
   
   describe "when name is too long" do
-    before { @rank.title = "a" * 51 }
+    before { @type.name = "a" * 17 }
     it { should_not be_valid }
   end
   
   describe "when name id is not present" do
-    before { @rank.title = nil }
+    before { @type.name = nil }
     it { should_not be_valid }
-  end
+  end  
 end

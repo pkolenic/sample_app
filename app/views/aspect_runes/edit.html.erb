@@ -1,0 +1,37 @@
+<% provide(:title, "Edit Rune") %> 
+<h1 class="banner">Edit Rune</h1>
+<div class="row">
+	<div class="span6 offset3">
+		<%= form_for(@rune) do |f| %>
+		<%= render 'shared/error_messages', object: f.object %>
+
+		<%= f.label :name %>
+		<%= f.text_field :name %>
+
+		<%= f.label :translation %>
+		<%= f.text_field :translation %>
+		
+<div class="rune_selectors">
+	<table>		
+		<tr>			
+			<td>
+				<%= f.label :level %>
+			</td>
+			<td>
+				<%= f.label :quality_id, "Quality" %>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<%= f.select :level, [['1', 1], ['2', 2], ['3',3], ['4',4], ['5',5], ['6',6], ['7',7], ['8',8], ['9',9]], {}, class: "width120" %>				
+			</td>
+			<td>
+				<%= collection_select(:aspect_rune, :quality_id, Quality.all.order(:id), :id, :name, {:include_blank => true, :selected => @rune.quality_id}, { :class=>'width120' }) %>				
+			</td>					
+		</tr>
+	</table>
+			
+		<%= f.submit "Save changes", class: "btn btn-large btn-primary" %>
+		<% end %>
+	</div>
+</div>

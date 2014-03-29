@@ -1,0 +1,10 @@
+<% provide(:title, 'Add New Rune') %>
+<h1 class="banner">Add New Rune</h1>
+<div class="row">
+  <div class="span6 offset3">
+    <%= form_for(@rune) do |f| %>
+	  <%= render 'shared/rune_fields', f: f %>
+      <%= f.submit "Create Rune", class: "btn btn-large btn-primary" %>
+    <% end %>
+  </div>
+</div>

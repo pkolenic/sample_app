@@ -1,0 +1,13 @@
+<tr class="rune_row">
+	<td><%= aspect_rune.name %></td>
+	<td><%= aspect_rune.translation %></td>
+	<td><%= aspect_rune.level %></td>
+	<td><% if aspect_rune.quality %><%= aspect_rune.quality.name %><% else %>&nbsp;<% end %></td>
+	<td> Aspect </td>
+	<td> &nbsp; </td>
+	<td> &nbsp; </td>
+	<% if current_user && current_user.has_title_with_name?('Enchanting') %>
+		<td><%= link_to "edit", edit_aspect_rune_path(aspect_rune) %></td>
+		<td><%= link_to "delete", aspect_rune, method: :delete, data: { confirm: "You sure?" } %></td>
+	<% end %>
+</tr>

@@ -1,0 +1,29 @@
+<% provide(:title, 'Runes') %>
+<h1 class="banner">Runes</h1>
+<br>
+<% if current_user && current_user.has_title_with_name?('Enchanting') %>
+	<%= link_to "Add Rune", new_rune_path, class: "btn btn-large btn-primary", id: "add-rune" %>		
+<% end %>
+		
+<%= will_paginate %>
+
+<div class="runes_wrapper">
+	<table class="runes">
+		<tr>
+		  <th class="name">Rune</th>
+		  <th class="translation">Translation</th>
+		  <th class="level">Level</th>
+		  <th class="quality">Quality</th>
+		  <th class="type">Type</th>
+		  <th class="glyphPrefix">Glyph Prefix</th>
+		  <th class="gearLevel">Gear Level</th>
+		<% if current_user && current_user.has_title_with_name?('Enchanting') %>
+		  <th class="link">&nbsp;</th>
+		  <th class="link">&nbsp;</th>
+		<% end %>
+		</tr>
+	  <%= render @runes %>
+	</table>
+</div>
+
+<%= will_paginate %>
