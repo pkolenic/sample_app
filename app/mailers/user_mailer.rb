@@ -1,6 +1,12 @@
 class UserMailer < ActionMailer::Base
   default :from => CLAN_NO_REPLAY
   
+  def approved(user)
+    @user = user
+    @url = "#{CLAN_WEBSITE}/signin"
+    mail to: user.email, subject: 'Guild Status Approved'
+  end  
+  
   def request_password_reset(user, token)
     @user = user
     @clan = CLAN_NAME

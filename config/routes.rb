@@ -16,6 +16,7 @@ FTFESO::Application.routes.draw do
   
   match '/signin',            to: 'sessions#new',               via: 'get'
   match '/signout',           to: 'sessions#destroy',           via: 'delete'
+  match '/users/:id/approve', to: 'users#approve', as: 'approve', via: 'patch'
   
   root  'static_pages#home'
   match '/signup',            to: 'users#new',                  via: 'get'

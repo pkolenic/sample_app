@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h1>Welcome to <%= CLAN_NAME %>, <%= @user.name %></h1>
+    <p>
+      You account on <a href="<%= CLAN_WEBSITE %>"><%= CLAN_WEBSITE %></a> has been approved, <br/>
+      you now have an active status and all the privileges that entitles. <br />
+      Please explore the Guild Site and feel free to leave comments and suggestions.
+    </p>
+    <p>
+    	If you don't already have teamspeak, please download and install it. <br/>
+    	<a href="http://www.instantteamspeak.com//teamspeak-download.php" target='_blank'> TeamSpeak Download </a> <br/>
+    	Even if you don't have a microphone teamspeak will be valuable in conducting guild operations and you can at least listen in.<br/>
+    </p>
+    <p>	
+    	The Guild TeamSpeak Server Address: <%= CLAN_TEAMSPEAK_SERVER %> <br/ >
+		Password: <%= CLAN_TEAMSPEAK_PASSWORD %><br />
+    </p>
+    <p>
+      To login to the site, just follow this link: <a href="<%= @url %>">signin</a>
+    </p>
+    <p>
+		If you have not already received an invite in game you will shortly, please check your in game notifications. 
+    </p>
+    <p>
+    	Certain areas of the site might not be accessible to guild members of certain rank or without certain titles.    	
+    </p>
+    <p>
+    	Thanks for joining and have a great day!
+    </p>
+  </body>
+</html>

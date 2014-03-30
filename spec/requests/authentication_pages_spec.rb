@@ -202,6 +202,18 @@ describe "Authentication" do
       end
     end    
 
+    describe "as non Guild Officer" do
+      let(:user) { FactoryGirl.create(:user) }
+      let(:non_leader) { FactoryGirl.create(:user) }
+      
+      before { sign_in non_leader, no_capybara: true }
+      
+      describe "submitting an Approve to the Users#approve action" do
+        before { patch approve_path(user) }
+        specify { expect(response).to redirect_to(root_url) }
+      end
+    end
+
     describe "rune pages" do
       let(:user) { FactoryGirl.create(:user) }
       before do 

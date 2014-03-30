@@ -55,8 +55,47 @@ describe "User pages" do
         
         it { should_not have_link('delete', href: user_path(admin)) }
       end
-    end    
+    end      
   end
+
+  describe "approve links" do
+    describe "as non leadership" do
+      let(:user) { FactoryGirl.create(:user) }
+      let!(:user2) { FactoryGirl.create(:user) }
+      
+      before do
+        sign_in user
+        visit users_path
+      end
+    
+      it { should_not have_link('approve') }  
+    end
+      
+    describe "as clan leadership" do
+      let!(:rank) { FactoryGirl.create(:rank, id: UserOfficer, title: "Officer") }
+      let!(:member_rank) { FactoryGirl.create(:rank, id: UserMember, title: "Member") }
+      let(:leadership) { FactoryGirl.create(:user) }
+      let(:member) { FactoryGirl.create(:user) }
+      let!(:pending) { FactoryGirl.create(:user, email: "pending@email.net") }
+      
+      before do
+        leadership.setRank!(rank)
+        member.setRank!(member_rank)
+        sign_in leadership
+        visit users_path
+      end
+
+      it { should have_link('approve') }
+      it { should_not have_link('approve', href: approve_path(leadership)) }
+      it { should_not have_link('approve', href: approve_path(member)) }
+        
+      describe "should be able to approve another user" do
+        before { click_link('approve', match: :first) }
+        specify { expect(pending.reload.rank_id).to eq UserRecruit }
+        specify { expect(ActionMailer::Base.deliveries.last.to).to eq [pending.email] }
+      end
+    end # describe "as clan leadership"
+  end # describe "approve links"  
 
   describe "profile page" do    
     let(:user) { FactoryGirl.create(:user) }

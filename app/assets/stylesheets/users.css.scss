@@ -4,6 +4,21 @@
 $grayLighter: #eeeeee;
 $grayLight: #999999;
 
+.pagination ul > .disabled > a {
+  background-color: white;
+  &:hover {
+    background-color: white;
+  }
+}
+
+/* Action Buttons */
+.action_buttons {
+  padding: 10px 0 5px;
+  .btn {
+    margin-right: 10px;
+  }
+}
+
 .row {
   margin: 5px auto 25px;
 }

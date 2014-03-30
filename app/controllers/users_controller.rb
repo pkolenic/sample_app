@@ -3,6 +3,7 @@ class UsersController < ApplicationController
   before_action :correct_user,   only: [:edit, :update]
   before_action :admin_user,     only: :destroy
   before_action :no_user,        only: [:new, :create]
+  before_action :approval_user,  only: :approve
   
   def index
     @users = User.paginate(page: params[:page], :per_page => 10).order(:id)
@@ -103,24 +104,41 @@ class UsersController < ApplicationController
     redirect_to(root_url)
   end
 
+  def approve
+    @user = User.find(params[:id]);
+    if @user.update_attribute(:rank_id, UserRecruit)
+      UserMailer.approved(@user).deliver
+      flash[:success] = "User approved."
+      redirect_to request.referer
+    else
+      flash[:error] = "Unable to approve user."
+      redirect_to request.referer
+    end
+  end
+
+  # PRIVATE METHODS
   private
 
-  def user_params
-    params.require(:user).permit(:name, :email, :password,
-    :password_confirmation, :time_zone)
-  end
-
-  # Before filters
-  def correct_user
-    @user = User.find(params[:id])
-    redirect_to(root_url) unless current_user?(@user)
-  end
-
-  def admin_user
-    redirect_to(root_url) unless current_user.admin?
-  end
-
-  def no_user
-    redirect_to root_path if signed_in?
-  end
+    def user_params
+      params.require(:user).permit(:name, :email, :password,
+      :password_confirmation, :time_zone)
+    end
+  
+    # Before filters
+    def correct_user
+      @user = User.find(params[:id])
+      redirect_to(root_url) unless current_user?(@user)
+    end
+  
+    def admin_user
+      redirect_to(root_url) unless current_user.admin?
+    end
+  
+    def no_user
+      redirect_to root_path if signed_in?
+    end
+    
+    def approval_user
+      redirect_to(root_url) unless current_user.rank_id >= UserOfficer
+    end
 end
