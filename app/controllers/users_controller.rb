@@ -1,4 +1,6 @@
 class UsersController < ApplicationController
+  require 'will_paginate/array'
+  
   before_action :signed_in_user, only: [:index, :edit, :update, :destroy]
   before_action :correct_user,   only: [:edit, :update]
   before_action :admin_user,     only: :destroy
@@ -6,7 +8,14 @@ class UsersController < ApplicationController
   before_action :approval_user,  only: :approve
   
   def index
-    @users = User.paginate(page: params[:page], :per_page => 10).order(:id)
+    if current_user && current_user.rank_id >= UserOfficer
+      @users = User.paginate(page: params[:page], :per_page => 10).order(:id)
+    elsif current_user && current_user.rank_id == UserPending
+      @users = [current_user] + User.approved.order(:id) 
+      @users = @users.paginate(page: params[:page], :per_page => 10)
+    else 
+      @users = User.paginate(page: params[:page], :per_page => 10).approved.order(:id)
+    end
   end
 
   def show

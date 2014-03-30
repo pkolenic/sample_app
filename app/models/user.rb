@@ -18,6 +18,9 @@ class User < ActiveRecord::Base
 
   validates :password, length: { minimum: 6 }
     
+  # Scopes
+  scope :approved, -> { where("rank_id >= ?", UserRecruit) }    
+    
   # Session Token Creation
   def User.new_remember_token
     SecureRandom.urlsafe_base64
