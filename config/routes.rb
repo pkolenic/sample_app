@@ -9,6 +9,11 @@ FTFESO::Application.routes.draw do
   resources :sessions, only: [:new, :create, :destroy]
   resources :events, only: [:create, :destroy, :index, :show]
   
+  match 'users/:id/reset_password', to: 'users#reset_password', as:'reset_password', via: 'get'
+  match 'users/:id/reset_password', to: 'users#update_password', as:'update_password', via: 'patch'
+  match '/reset_password', to: 'users#request_password', as:'request_password', via: 'get'
+  match '/reset_password', to: 'users#send_reset_request', as:'send_reset_request', via: 'patch'
+  
   match '/signin',            to: 'sessions#new',               via: 'get'
   match '/signout',           to: 'sessions#destroy',           via: 'delete'
   
