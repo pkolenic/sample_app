@@ -12,7 +12,12 @@
 				background-image: url(<%= random_image %>);
 				background-position-y: 40px;
 			}	
-		</style>		
+		</style>	
+		<meta property="og:type"            content="website" /> 	
+		<meta property="og:url"             content="<%= "#{request.protocol}#{request.host_with_port}#{request.fullpath}" %>" />
+		<meta property="og:title"           content="<%= full_title(yield(:title)) %>" /> 
+		<meta property="og:image"           content="<%= image_path('logo.png') %>" />
+		<meta property="og:image"           content="<%= image_path('elderscrolls_logo.png') %>" />
 	</head>
 	<body>
 		<%= render 'layouts/header' %>
