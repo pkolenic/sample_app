@@ -14,6 +14,7 @@ gem 'httparty'
 gem 'bootstrap-datetimepicker-rails'
 gem "watu_table_builder", :require => "table_builder"
 gem 'quiet_assets', '~> 1.0.2'
+gem 'time_diff', '~> 0.3.0'
 
 group :development, :test do
   gem 'rspec-rails', '2.13.1'
