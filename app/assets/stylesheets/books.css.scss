@@ -1,0 +1,43 @@
+#book {
+  background-image: url(image_path('open_book.png'));
+  width: 940px;
+  height: 625px;
+  background-size: 940px;
+  background-repeat: no-repeat;
+  
+  h2.banner {
+    background-image: url("/assets/banner.png");
+    background-repeat: no-repeat;
+    background-size: 680px 86px;
+    width: 680px;
+    height: 84px;
+    margin: 0 auto 5px;
+    font-size: 2.2em;
+    color: goldenrod;
+    text-shadow: 2px 2px 1px black;
+    position: relative;
+    top: 70px;
+    left: -10px;
+    padding-top: 3px;   
+  }
+  
+  ul.chapters {
+    list-style: none;
+    padding: 0 10px 0 0;
+    position: relative;
+    left: 100px;
+    top: 90px;
+    li {
+      line-height: 36px;
+      margin-left: 10px;
+      font-size: 2.2em;
+    }
+  }
+  
+  #library_link {
+    position: absolute;
+    top: 590px;
+    font-size: 1.2em;
+    left: 880px;
+  }
+}

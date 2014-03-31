@@ -18,6 +18,14 @@ FTFESO::Application.routes.draw do
   match '/signout',           to: 'sessions#destroy',           via: 'delete'
   match '/users/:id/approve', to: 'users#approve', as: 'approve', via: 'patch'
   
+  match '/alchemy_book',      to: 'books#alchemy_book',         via: 'get'
+  match '/blacksmithing_book',to: 'books#blacksmithing_book',   via: 'get'
+  match '/clothing_book',     to: 'books#clothing_book',        via: 'get'
+  match '/enchanting_book',   to: 'books#enchanting_book',      via: 'get'
+  match '/provisioning_book', to: 'books#provisioning_book',    via: 'get'
+  match '/quests_book',       to: 'books#quests_book',          via: 'get'
+  match '/woodworking_book',  to: 'books#woodworking_book',     via: 'get'
+  
   root  'static_pages#home'
   match '/signup',            to: 'users#new',                  via: 'get'
   match '/about',             to: 'static_pages#about',         via: 'get'
