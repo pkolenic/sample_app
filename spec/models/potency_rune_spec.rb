@@ -17,6 +17,7 @@ describe PotencyRune do
   it { should respond_to(:gear_level) }
   it { should respond_to(:glyph_prefix_id) }
   it { should respond_to(:glyph_prefix) }
+  it { should respond_to(:rune_glyphs) }
 
   it { should be_valid }
 
@@ -25,7 +26,7 @@ describe PotencyRune do
     it { should_not be_valid }
   end
 
-  describe "when name id is not present" do
+  describe "when name is not present" do
     before { @rune.name = nil }
     it { should_not be_valid }
   end

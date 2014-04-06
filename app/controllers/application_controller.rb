@@ -4,6 +4,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   include SessionsHelper
   include HTTParty
+  default_timeout 5
 
   before_filter :set_user_time_zone
   before_filter :get_teamspeak_status

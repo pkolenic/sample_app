@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140330003712) do
+ActiveRecord::Schema.define(version: 20140405170322) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -68,6 +68,12 @@ ActiveRecord::Schema.define(version: 20140330003712) do
     t.datetime "updated_at"
   end
 
+  create_table "item_types", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "potency_runes", force: true do |t|
     t.string   "name"
     t.string   "translation"
@@ -87,6 +93,19 @@ ActiveRecord::Schema.define(version: 20140330003712) do
 
   create_table "ranks", force: true do |t|
     t.string   "title"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "rune_glyphs", force: true do |t|
+    t.string   "name"
+    t.integer  "essence_rune_id"
+    t.integer  "aspect_rune_id"
+    t.string   "potency_rune_id"
+    t.string   "item_type_id"
+    t.string   "description"
+    t.integer  "x_value"
+    t.integer  "y_value"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

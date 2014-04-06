@@ -72,4 +72,18 @@ FactoryGirl.define do
   factory :rune_type do
     name "Aspect"
   end
+  
+  factory :item_type do
+    name "Weapon"
+  end
+  
+  factory :rune_glyph do
+    name "Trifling Glyph of Frost"
+    essence_rune_id 1
+    aspect_rune_id 1
+    potency_rune_id 1
+    item_type_id 1
+    description "Deals (x) Frost Damage"
+    x_value 5
+  end
 end

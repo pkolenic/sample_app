@@ -14,6 +14,7 @@ describe AspectRune do
   it { should respond_to(:level) }
   it { should respond_to(:quality_id) }
   it { should respond_to(:quality) }
+  it { should respond_to(:rune_glyphs) }
 
   it { should be_valid }
 

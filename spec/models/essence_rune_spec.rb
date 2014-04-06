@@ -9,6 +9,7 @@ describe EssenceRune do
 
   it { should respond_to(:name) }
   it { should respond_to(:translation) }
+  it { should respond_to(:rune_glyphs) }  
 
   it { should be_valid }
 
