@@ -10,11 +10,13 @@ describe "User pages" do
   end
 
   describe "index" do
-    
     let(:heading) { 'Guild Roster' }
     let(:page_title) { 'Guild Roster' }
     let(:user) { FactoryGirl.create(:user) }
+    
     before(:each) do
+      rank = Rank.new(id: UserRecruit, title: "Recruit")
+      user.setRank!(rank)
       sign_in user
       visit users_path
     end
@@ -23,13 +25,20 @@ describe "User pages" do
     
     describe "pagination" do
 
-      before(:all) { 15.times { FactoryGirl.create(:user) } }
+      before(:all) do
+         recruit_rank = Rank.new(id: UserRecruit, title: "Recruit")
+         15.times { FactoryGirl.create(:user) }
+         User.all.each do |user|
+           user.setRank!(recruit_rank)
+         end
+      end
+      
       after(:all)  { User.delete_all }
 
       it { should have_selector('div.pagination') }
 
-      it "should list each user" do
-        User.paginate(page: 1, :per_page => 10).each do |user|
+      it "should list each user" do     
+        User.paginate(page: 1, :per_page => 10).order(:id).each do |user|
           expect(page).to have_selector('li', text: user.name)
         end
       end
@@ -72,19 +81,19 @@ describe "User pages" do
     end
       
     describe "as clan leadership" do
-      let!(:rank) { FactoryGirl.create(:rank, id: UserOfficer, title: "Officer") }
-      let!(:member_rank) { FactoryGirl.create(:rank, id: UserMember, title: "Member") }
       let(:leadership) { FactoryGirl.create(:user) }
       let(:member) { FactoryGirl.create(:user) }
       let!(:pending) { FactoryGirl.create(:user, email: "pending@email.net") }
       
       before do
+        rank = Rank.new(id: UserOfficer, title: "Officer")
+        member_rank = Rank.new(id: UserMember, title: "Member")
         leadership.setRank!(rank)
         member.setRank!(member_rank)
         sign_in leadership
         visit users_path
       end
-
+      
       it { should have_link('approve') }
       it { should_not have_link('approve', href: approve_path(leadership)) }
       it { should_not have_link('approve', href: approve_path(member)) }
@@ -99,7 +108,6 @@ describe "User pages" do
 
   describe "profile page" do    
     let(:user) { FactoryGirl.create(:user) }
-    let!(:rank) { FactoryGirl.create(:rank, id: UserMember, title: "Member") }
     let!(:e1) { FactoryGirl.create(:event, user: user, title: "Foo") }
     let!(:e2) { FactoryGirl.create(:event, user: user, title: "Bar") }
     let!(:e3) { FactoryGirl.create(:event, user: user, title: "Private Bar", public: false) }
@@ -107,6 +115,7 @@ describe "User pages" do
     let!(:t2) { FactoryGirl.create(:title) }
         
     before do
+      rank = rank = Rank.new(id: UserRecruit, title: "Recruit")
       user.setRank!(rank)            
       visit user_path(user)
     end
