@@ -37,6 +37,14 @@ class StaticPagesController < ApplicationController
     render 'videos'
   end
   
+  def ftfvideos
+    @title ="Fear The Fallen Videos"
+    @youtube = "fearthefallenclan"
+    @disqus = "ftfvideos"
+    @header = "Fear The Fallen YouTube Videos"
+    render 'videos'
+  end
+  
   def wotvideos
     @title = "World of Tank Videos"
     @youtube = "WorldOfTanksCom"

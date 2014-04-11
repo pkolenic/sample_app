@@ -34,12 +34,14 @@ SampleApp::Application.routes.draw do
   match '/about',               to: 'static_pages#about',                   via: 'get'
   match '/contact',             to: 'static_pages#contact',                 via: 'get'
   match '/schedule',            to: 'static_pages#schedule',                via: 'get'
+  
   match '/riisingsun',          to: 'static_pages#riisingsun',              via: 'get'
   match '/wotvideos',           to: 'static_pages#wotvideos',               via: 'get'
   match '/wgnavideos',          to: 'static_pages#wgnavideos',              via: 'get'
   match '/mapvideos',           to: 'static_pages#mapvideos',               via: 'get'
   match '/teamtrainingvideos',  to: 'static_pages#teamtrainingvideos',      via: 'get'
   match '/tankvideos',          to: 'static_pages#tankvideos',              via: 'get'
+  match '/ftfvideos',           to: 'static_pages#ftfvideos',               via: 'get'
   
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
