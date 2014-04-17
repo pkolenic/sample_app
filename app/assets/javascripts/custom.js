@@ -41,4 +41,25 @@ jQuery(document).ready(function(){
 			switchHomePageTab(jQuery(this).attr("data-id"));
 		});
 	}
+	
+	// Grab all the TS divs and Hide them
+	var ts_id_base = "ts3_h_s1004";
+	var ts_user = "cl";
+	var ts_elements = jQuery('div[id^="' + ts_id_base + '"]');
+	if(!ts_channels) {
+		ts_channels = new Array();
+	}
+	ts_elements.hide();
+	
+	// Now show only the ones for this Site
+	jQuery('#' + ts_id_base).show();
+	jQuery.each(ts_channels, function( index, value ) {
+		var channel = jQuery('#' + ts_id_base + '_' + value);
+		channel.show();
+		var next_element = channel.next();
+		while (next_element && next_element.attr('id') && next_element.attr('id').indexOf(ts_id_base + "_cl") >= 0) {
+			next_element.show();
+			next_element = next_element.next();
+		}
+	});
 });

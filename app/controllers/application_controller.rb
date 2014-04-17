@@ -34,6 +34,7 @@ class ApplicationController < ActionController::Base
       raw.gsub! 'http://static.tsviewer.com//images/teamspeak3/default/tsv20100409.png', view_context.image_url('ts/tsv20100409.png')
           
       @ts_status = raw.html_safe
+      @ts_channels = 'new Array("ch30074","ch28859","ch29486", "ch29487", "ch44995", "ch37162", "ch29488", "ch44991", "ch30587")'.html_safe
     rescue
       @ts_status = ""
     end          
