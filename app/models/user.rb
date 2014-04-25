@@ -69,61 +69,71 @@ class User < ActiveRecord::Base
     Digest::SHA1.hexdigest(token.to_s)
   end
 
- def update_stats    
-    if self.wot_id.blank?
-      request_wot_id
-    end
-    if self.wot_id
-      if Rails.env.test?
-        require 'testResponses'
-        json_response = { "status" => 'ok', "data" => TestResponses::sample_wot_user(self.clan_id) }    
-      else       
-        url = "https://api.worldoftanks.com/wot/account/info/?application_id=#{ENV['WOT_API_KEY']}&account_id=#{self.wot_id}"     
-        json_response = clean_response(self.class.get url)
+ def update_stats
+    if !Rails.env.test?
+      if self.wot_id.blank?
+        request_wot_id
       end
- 
-      if json_response["status"] == 'ok'
-        total = json_response["data"]["#{self.wot_id}"]
-        if !total.blank? 
-          # Last Online
-          self.last_online = DateTime.strptime("#{total['updated_at']}", '%s')
- 
-          # Clan Details      
-          if !total["clan"].blank?    
-            update_clan(total["clan"]["clan_id"], total["clan"]["role"])
-          else
-            # Check if was in clan first
-            if self.clan_id || self.role == UserAmbassador
-              self.role = UserAmbassador              
-            end
-            self.clan_id = nil
-          end
-        
-          # Total Stats
-          if total["statistics"]
-            #Rails.logger.info "Updating Statistics For #{self.wot_name}"
-            self.battles_count = total["statistics"]["all"]["battles"]
-            self.wins = total["statistics"]["all"]["wins"]
-            self.losses = total["statistics"]["all"]["losses"] 
-            self.survived = total["statistics"]["all"]["survived_battles"]
-            self.experiance = total["statistics"]["all"]["xp"]
-            self.max_experiance = total["statistics"]["max_xp"]
-            self.spotted = total["statistics"]["all"]["spotted"]
-            self.frags = total["statistics"]["all"]["frags"]
-            self.damage_dealt = total["statistics"]["all"]["damage_dealt"]
-            self.hit_percentage = total["statistics"]["all"]["hits_percents"]
-            self.capture_points = total["statistics"]["all"]["capture_points"]
-            self.defense_points = total["statistics"]["all"]["dropped_capture_points"]
-            # self.avg_tier = calculate_avg_tier(total["vehicles"])
-          end
-                      
-          self.save validate: false
-        end
-      end
-    end
+      
+      if self.wot_id        
+        updateCoreStats()
+        updateClan()                              
+        self.save validate: false
+      end            
+    end    
   end
 
   private
+    def updateCoreStats()
+      url = "https://api.worldoftanks.com/wot/account/info/?application_id=#{ENV['WOT_API_KEY']}&account_id=#{self.wot_id}"     
+      json_response = clean_response(self.class.get url)
+      
+      if json_response["status"] == 'ok'
+        data = json_response["data"]["#{self.wot_id}"]
+        if !data.blank? 
+          # Last Online
+          self.last_online = DateTime.strptime("#{data['updated_at']}", '%s')
+          
+          # Total Stats
+          if data["statistics"]
+            #Rails.logger.info "Updating Statistics For #{self.wot_name}"
+            self.battles_count = data["statistics"]["all"]["battles"]
+            self.wins = data["statistics"]["all"]["wins"]
+            self.losses = data["statistics"]["all"]["losses"] 
+            self.survived = data["statistics"]["all"]["survived_battles"]
+            self.experiance = data["statistics"]["all"]["xp"]
+            self.max_experiance = data["statistics"]["max_xp"]
+            self.spotted = data["statistics"]["all"]["spotted"]
+            self.frags = data["statistics"]["all"]["frags"]
+            self.damage_dealt = data["statistics"]["all"]["damage_dealt"]
+            self.hit_percentage = data["statistics"]["all"]["hits_percents"]
+            self.capture_points = data["statistics"]["all"]["capture_points"]
+            self.defense_points = data["statistics"]["all"]["dropped_capture_points"]
+            # self.avg_tier = calculate_avg_tier(total["vehicles"])
+          end                    
+        end
+      end
+    end
+    
+    def updateClan()
+      url = "https://api.worldoftanks.com/wot/clan/membersinfo/?application_id=#{ENV['WOT_API_KEY']}&member_id=#{self.wot_id}"
+      json_response = clean_response(self.class.get url)
+      
+      if json_response["status"] == 'ok'
+        data = json_response["data"]["#{self.wot_id}"]
+        if !data.blank?          
+          # Clan Details      
+          update_clan(data["clan_id"], data["role"])
+        else
+          # Check if was in clan first
+          if self.clan_id || self.role == UserAmbassador
+            self.role = UserAmbassador              
+          end
+          self.clan_id = nil            
+        end
+      end
+    end
+  
     def calculate_avg_tier(tanks)
       total_tiers = 0
       battle_count = 0
