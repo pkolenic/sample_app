@@ -92,7 +92,7 @@ class User < ActiveRecord::Base
         data = json_response["data"]["#{self.wot_id}"]
         if !data.blank? 
           # Last Online
-          self.last_online = DateTime.strptime("#{data['updated_at']}", '%s')
+          self.last_online = DateTime.strptime("#{data['last_battle_time']}", '%s')
           
           # Total Stats
           if data["statistics"]

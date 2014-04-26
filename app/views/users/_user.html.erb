@@ -15,7 +15,7 @@
   	<%= link_to user.wot_name, user %>
   	<% if !user.last_online.blank? %>
 		<div class="LastOnline">
-			<span class="stat_label">Last Online:</span>
+			<span class="stat_label">Last Battle:</span>
 			<span class="stat_value"><%= user.last_online.strftime("%b %d %Y %l:%M%p %Z") %></span>			
 		</div>
 	<% end %>
