@@ -93,13 +93,13 @@ class UsersController < ApplicationController
   end
 
   def destroy
-    User.find(params[:id]).destroy
+    User.friendly.find(params[:id]).destroy
     flash[:success] = "User destroyed."
     redirect_to users_url
   end
 
   def approve
-    @user = User.find(params[:id]);
+    @user = User.friendly.find(params[:id])
     if @user.update_attribute(:role, UserRecruit)
       UserMailer.approved(@user).deliver
       flash[:success] = "User approved."
@@ -111,7 +111,7 @@ class UsersController < ApplicationController
   end
 
   def add_clanwar
-    @user = User.find(params[:id]);
+    @user = User.friendly.find(params[:id])
     if @user.toggle!(:clan_war_team)
       UserMailer.clanwar_added(@user).deliver
       flash[:success] = "User added to clanwar team."
@@ -123,7 +123,7 @@ class UsersController < ApplicationController
   end
 
   def remove_clanwar
-    @user = User.find(params[:id]);
+    @user = User.friendly.find(params[:id])
     if @user.toggle!(:clan_war_team)
       UserMailer.clanwar_removed(@user).deliver
       flash[:success] = "User removed from clanwar team."
@@ -193,7 +193,7 @@ class UsersController < ApplicationController
   end
 
   def fetch_user_stats
-    @user = User.find(params[:id])
+    @user = User.friendly.find(params[:id])
     if Rails.env.test?
       @user.update_stats
     else
@@ -278,7 +278,7 @@ class UsersController < ApplicationController
 
   # Before filters
   def correct_user
-    @user = User.find(params[:id])
+    @user = User.friendly.find(params[:id])
     redirect_to(root_url) unless current_user?(@user)
   end
 

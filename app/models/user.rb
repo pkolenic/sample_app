@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base
-  include HTTParty
+  include HTTParty  
   
   has_secure_password
   before_save { email.downcase! }
@@ -31,6 +31,14 @@ class User < ActiveRecord::Base
 
   validates :password, length: { minimum: 6 }
   
+  def forem_name
+    name
+  end   
+  
+  # Friendly ID
+  extend FriendlyId
+  friendly_id :wot_name, use: :slugged
+
   # User Role Checks
   def clanwar_member?
     self.clan_war_team
@@ -77,7 +85,8 @@ class User < ActiveRecord::Base
       
       if self.wot_id        
         updateCoreStats()
-        updateClan()                              
+        updateClan()      
+        self.slug = self.wot_name                        
         self.save validate: false
       end            
     end    

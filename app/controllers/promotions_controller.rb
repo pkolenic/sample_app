@@ -2,11 +2,11 @@ class PromotionsController < ApplicationController
   before_action :authorized_user
 
   def edit
-    @user = User.find(params[:id])
+    @user = User.friendly.find(params[:id])
   end
 
   def update
-    @user = User.find(params[:id])
+    @user = User.friendly.find(params[:id])
     @promotion = promotion_params
     role = @promotion[:role_id]
     reason = @promotion[:reason]

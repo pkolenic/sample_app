@@ -15,4 +15,5 @@
 //= require bootstrap
 //= require turbolinks
 //= require tinymce
+//= require forem
 //= require_tree .

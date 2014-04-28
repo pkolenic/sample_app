@@ -1,0 +1,33 @@
+#forums_container {
+  .category {
+    background: white;
+    padding: 10px;
+    margin-bottom: 20px;
+  }
+  h2 {
+    font-size: 2.0em;    
+    margin-bottom: 0px;
+  }
+}
+
+#forums {
+  background: white;
+}
+
+#new_topic,
+#description,
+#posts,
+#new_post {
+  background: white;
+  padding: 10px;
+}
+
+#posts {
+  .btn-group {
+    float: right;
+  }
+}
+
+.topics.table-striped.table {
+  background: white;
+}

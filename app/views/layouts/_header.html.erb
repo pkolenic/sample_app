@@ -1,20 +1,21 @@
 <header class="navbar navbar-fixed-top navbar-inverse">
   <div class="navbar-inner">
     <div class="container">
-      <%= link_to image_tag('logo.png', alt: CLAN_NAME) + CLAN_NAME, root_path, id: "logo" %>
+      <%= link_to image_tag('logo.png', alt: CLAN_NAME) + CLAN_NAME, main_app.root_path, id: "logo" %>
       <nav>
         <ul class="nav pull-right">
-          <li><%= link_to "Home", root_path %></li>
+          <li><%= link_to "Home", main_app.root_path %></li>
           <%= render 'layouts/locker' %>
           <%= render 'layouts/videos' %>
-          <li><%= link_to "Battle Roster", users_path %></li>   
+          <li><%= link_to "Forums", forem.root_path %></li>
+          <li><%= link_to "Battle Roster", main_app.users_path %></li>   
           <%= render 'layouts/tournaments' %>
           <% if signed_in? %>          	      
           	<% if current_user.role >= UserSoldier %>
 		  	<% end %>            
 			<%= render 'layouts/profile' %>
           <% else %>
-            <li><%= link_to "Sign in", signin_path %></li>
+            <li><%= link_to "Sign in", main_app.signin_path %></li>
           <% end %>
         </ul>
       </nav>

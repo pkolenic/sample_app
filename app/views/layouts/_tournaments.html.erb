@@ -2,8 +2,13 @@
 	<a href="#" class="dropdown-toggle" data-toggle="dropdown"> Tournaments <b class="caret"></b> </a>
 	<ul class="dropdown-menu" data-no-turbolink>
 		<li>
-			<%= link_to "<Create New Tournament>", new_tournament_path, class: 'new_tournament' %>
+			<%= link_to "<Create New Tournament>", main_app.new_tournament_path, class: 'new_tournament' %>
 		</li>
-		<%= render @tournaments %>
+		<%#= render @tournaments #%>
+		<% @tournaments.each do |tournament| %>
+			<li>
+				<%= link_to tournament.name, main_app.tournament_path(tournament) %>
+			</li>
+		<% end %>
 	</ul>
 </li>
