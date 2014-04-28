@@ -32,7 +32,7 @@ class User < ActiveRecord::Base
   validates :password, length: { minimum: 6 }
   
   def forem_name
-    name
+    wot_name
   end   
   
   # Friendly ID
