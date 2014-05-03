@@ -25,6 +25,9 @@ body {
   background-attachment: fixed;
   background-position: top center;
   background-size: 100%;
+  > div.container {
+    position: relative;
+  }
 }
 
 section {

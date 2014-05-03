@@ -18,6 +18,7 @@ gem 'quiet_assets', '~> 1.0.2'
 gem 'forem', :github => "radar/forem", :branch => "rails4"
 gem 'friendly_id', '~> 5.0.0'
 gem 'forem-textile_formatter'
+gem 'RedCloth', '~> 4.2.9'
 
 group :development, :test do
   gem 'rspec-rails', '2.13.1'
