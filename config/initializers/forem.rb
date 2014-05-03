@@ -3,6 +3,7 @@ Forem.email_from_address = "fearthefallenclan@gmail.com"
 Forem.sign_in_path = "/signin"
 Forem.moderate_first_post = false
 Forem.user_profile_links = true
+Forem.formatter = Forem::Formatters::RedCloth 
 # If you do not want to use gravatar for avatars then specify the method to use here:
 # Forem.avatar_user_method = :custom_avatar_url
 Forem.per_page = 20

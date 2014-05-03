@@ -17,7 +17,7 @@ gem "watu_table_builder", :require => "table_builder"
 gem 'quiet_assets', '~> 1.0.2'
 gem 'forem', :github => "radar/forem", :branch => "rails4"
 gem 'friendly_id', '~> 5.0.0'
-gem 'forem-kramdown'
+gem 'forem-textile_formatter'
 
 group :development, :test do
   gem 'rspec-rails', '2.13.1'
