@@ -1,18 +1,13 @@
 <li>
-  <% if current_user.can_approve? && user.pending_approval? %>
-  	<% if user.wot_id.blank? %>
-  		(<%=user.wot_name%> is not a valid World of Tanks user)
-  	<% end %>
-  	<br>
-  <% end %>
   <div class="gravatar">
   	<%= gravatar_for user, size: 52 %>
-  	<% if user.clan_id != CLAN_ID %>
-  		<span><%= user.clan_abbr %></span>
-  	<% end %>
   </div>
   <div class="user_summary">
-  	<%= link_to user.wot_name, user %>
+  	<% if user.clan %>
+  		<%= link_to user.name, clan_user_path(@clan,user) %>
+	<% else %>  		
+		<%= link_to user.name, user_path(user) %>
+	<% end %>
   	<% if !user.last_online.blank? %>
 		<div class="LastOnline">
 			<span class="stat_label">Last Battle:</span>
@@ -34,16 +29,13 @@
 		</div>
 	<% end %>	
   </div>
-  <%= image_tag("http://wotlabs.net/sig/na/#{user.wot_name}/signature.png", alt: 'win7 data') %>
+  <%= image_tag("http://wotlabs.net/sig/na/#{user.name}/signature.png", alt: 'win7 data') %>
    
 
   <div class="action_buttons">
 	  <% if current_user.admin? && !current_user?(user) %>
 	    <%= link_to "delete", user, method: :delete,
 	                            data: { confirm: "You sure?" }, class: 'btn btn-danger' %>
-	  <% end %>
-	  <% if current_user.can_approve? && user.pending_approval? %>
-	  	<%= link_to "approve", approve_path(user), method: :patch, class: 'btn btn-warning' %>
 	  <% end %>
 	  
 	  <% if current_user.can_appoint_clanwar?(user) %>

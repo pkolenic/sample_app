@@ -11,6 +11,8 @@ class StaticPagesController < ApplicationController
   end
   
   def contact
+    # @TODO replace with check for clan paramater
+    @clan = Clan.first
   end
   
   def links    
@@ -175,5 +177,5 @@ class StaticPagesController < ApplicationController
         store_location
         redirect_to signin_url, notice: "Please sign in."
       end
-    end  
+    end 
 end

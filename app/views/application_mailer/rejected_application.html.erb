@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h1><%= @user.name %></h1>
+    <p>
+      	Unfortunately your application for <%= @clan.name %> has been rejected. <br/>
+		There are many reasons this might have happened, and you should contact a member of <%= @clan.name%>'s leadership if you have questions.
+    </p>
+    <p>
+      	Your account on <%= ALLIANCE_NAME %> is still valid and you can continue to login using this link: <%= link_to @user.name, @url %> 
+    </p>
+    <p>
+    	If you are still interested in joining a clan with <%= ALLIANCE_NAME %> then feel free to apply to another clan.   	
+    </p>
+  </body>
+</html>

@@ -1,12 +1,7 @@
 <div class="center hero-unit">
-	<h1> <%= link_to "[#{CLAN_SHORT_NAME}]", "http://worldoftanks.com/community/clans/#{CLAN_ID}-#{CLAN_SHORT_NAME}/", id: "clan_link", target: "_blank" %>
-	<%= CLAN_NAME %> </h1>
-
-	<h2><%= CLAN_MOTTO %></h2>
-	<!-- <div class="announcement">
-		<h3>Holiday 3Day Premium Code</h3><span>WGNY2014</span>
-	</div> -->
+	<h1><%= ALLIANCE_NAME %> </h1>
 	<% unless signed_in? %>
-	<%= render 'static_pages/default_home' %>	
+	<!-- @TODO put in some copy about the site -->
+	<%= link_to "Join #{ALLIANCE_NAME}", signup_path, class: "btn btn-large btn-primary" %>	
 	<% end %>
 </div>

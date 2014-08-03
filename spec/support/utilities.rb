@@ -19,11 +19,20 @@ def valid_signin(user)
 end
 
 def fill_in_user_form
-  fill_in "Name",             with: "Example User"
-  fill_in "user_wot_name",    with: "Tanker"
+  fill_in "user_name",        with: "Tanker"
   fill_in "Email",            with: "user@example.com"
   fill_in "Password",         with: "foobar"
   fill_in "Confirm Password", with: "foobar"
+end
+
+def fill_in_user_form_with_user(user, clan)
+  fill_in "user_name",         with: user.name
+  fill_in "Email",             with: user.email
+  fill_in "Password",          with: user.password
+  fill_in "Confirm Password",  with: user.password
+  if clan
+    select clan.name,          from: "user[clan_id]", :match => :first
+  end
 end
 
 def fill_in_tournament_form

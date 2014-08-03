@@ -11,10 +11,39 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140428004459) do
+ActiveRecord::Schema.define(version: 20140530162102) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "applications", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "clan_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "applications", ["clan_id"], name: "index_applications_on_clan_id", using: :btree
+  add_index "applications", ["user_id"], name: "index_applications_on_user_id", unique: true, using: :btree
+
+  create_table "clans", force: true do |t|
+    t.string   "name"
+    t.string   "wot_clanId"
+    t.string   "clan_short_name"
+    t.string   "clan_email"
+    t.string   "clan_motto"
+    t.string   "clan_google_plus_id"
+    t.text     "clan_requirements"
+    t.text     "clan_about"
+    t.string   "clan_logo"
+    t.string   "slug"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "clans", ["id"], name: "index_clans_on_id", using: :btree
+  add_index "clans", ["slug"], name: "index_clans_on_slug", unique: true, using: :btree
+  add_index "clans", ["wot_clanId"], name: "index_clans_on_wot_clanId", using: :btree
 
   create_table "events", force: true do |t|
     t.string   "name"
@@ -179,14 +208,13 @@ ActiveRecord::Schema.define(version: 20140428004459) do
   end
 
   create_table "users", force: true do |t|
-    t.string   "name"
     t.string   "email"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "password_digest"
     t.string   "remember_token"
     t.boolean  "admin",                          default: false
-    t.string   "wot_name"
+    t.string   "name"
     t.integer  "role",                           default: 0
     t.boolean  "clan_war_team",                  default: false
     t.string   "wot_id"
@@ -202,10 +230,7 @@ ActiveRecord::Schema.define(version: 20140428004459) do
     t.integer  "defense_points",       limit: 8
     t.integer  "damage_dealt",         limit: 8
     t.integer  "hit_percentage",       limit: 8
-    t.string   "clan_id"
-    t.string   "clan_name"
-    t.string   "clan_abbr"
-    t.string   "clan_logo"
+    t.integer  "clan_id"
     t.float    "avg_tier"
     t.integer  "wins_24hr",            limit: 8
     t.integer  "losses_24hr",          limit: 8

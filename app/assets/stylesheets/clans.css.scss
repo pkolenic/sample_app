@@ -1,0 +1,43 @@
+// Place all the styles related to the Clans controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+#default_home_body {
+  .tabs {
+    .tab {
+        float: left;
+        list-style: none;
+        padding: 10px 15px 10px;
+        background: silver;
+        font-weight: normal;
+        border-radius: 10px 10px 0 0;
+        margin-right: 5px;
+        cursor: pointer;
+    }
+    
+    .tab.active {
+        background: white;
+        font-weight: bold;
+    }
+  }
+  
+  #requirements {
+    list-style: square;
+    text-align: left;
+    padding: 10px 0;
+  }
+  
+  .tabs_wrapper {
+    clear: both;
+    width: 770px;
+    margin: 0 auto 10px;
+    background: white;
+    border-radius: 0 5px 5px 0;
+    
+    p {
+      text-align: left;
+      padding: 10px;
+      font-size: 18px;
+    }
+  }
+}

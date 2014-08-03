@@ -1,0 +1,10 @@
+<li id="clan-menu" class="dropdown">
+	<a href="#" class="dropdown-toggle" data-toggle="dropdown"> Clans <b class="caret"></b> </a>
+	<ul class="dropdown-menu" data-no-turbolink>
+		<% Clan.all.each do |clan| %>
+			<li>
+				<%= link_to clan.name, main_app.clan_path(clan) %>
+			</li>
+		<% end %>
+	</ul>
+</li>

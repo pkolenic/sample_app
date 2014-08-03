@@ -1,0 +1,16 @@
+<div class="filter_bar">
+	<%= link_to "All Tankers", clan_users_path, class: "btn btn-small btn-primary" %>
+	<%= link_to "Clan War Team", clan_users_path(:type => 'clan_war'), class: "btn btn-small btn-primary" %>
+	<%= link_to "Leadership", clan_users_path(:type => 'leadership'), class: "btn btn-small btn-primary" %>
+<% if current_user.can_approve? %>
+	<%= link_to "Applications", clan_applications_path(), class: "btn btn-small btn-primary" %>
+<% end %>	
+<% if current_user.role > UserCompanyCommander %>
+	<%= link_to "Registered", clan_users_path(:type => 'registered'), class: "btn btn-small btn-primary" %>
+	<%= link_to "UnRegistered", clan_users_path(:type => 'unregisterd'), class: "btn btn-small btn-primary" %>
+	<%= link_to "InActive", clan_users_path(:type => 'inactive'), class: "btn btn-small btn-primary" %>		
+<% end %>	
+<% if current_user.admin? %>
+	<%= link_to "Ambassadors", clan_users_path(:type => 'ambassadors'), class: "btn btn-small btn-primary" %>
+<% end %>
+</div>

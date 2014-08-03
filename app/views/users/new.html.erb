@@ -1,15 +1,40 @@
-<% provide(:title, 'Sign up') %>
-<h1>Sign up</h1>
+<% if @clan %>
+	<% provide(:title, "Apply | #{@clan.name}") %>
+	<h1>Apply to <%= @clan.name %></h1>
+<% else %>
+	<% provide(:title, "Signup") %>
+	<h1>Signup to <%= ALLIANCE_NAME %></h1>
+<% end %>
 <div class="note">
-	<span class="warning">
-		As a security measure, it is advised that you do not use the same password as your World of Tanks account.
-	</span>
+	<% if !current_user %>
+		<span class="warning">
+			As a security measure, it is advised that you do not use the same password as your World of Tanks account.
+		</span>
+	<% end %>
 </div>
 <div class="row">
   <div class="span6">
+  	<% if current_user %>
+  		<div class="clan_application">
+			<h2>
+				Clicking on Apply will create an application for joining<br/>
+				<%= @clan.name %><br/>
+				You will be notified when the application has been processed
+			</h2>
+		</div>
+	<% end %>
     <%= form_for(@user) do |f| %>
-	  <%= render 'fields', f: f %>
-      <%= f.submit "Create my account", class: "btn btn-large btn-primary" %>
+      <% if !current_user %>
+      	<%= render 'fields', f: f %>
+	  <% elsif @clan %>
+	  	<%= hidden_field_tag :clan_id, @clan.id %>
+	  	<%= f.hidden_field :clan_id, value: @clan.id %>      	
+      <% end %>      
+	  <% if @clan %>
+      	<%= f.submit "Apply to Clan", class: "btn btn-large btn-primary" %>
+      <% else %>
+      	<%= f.submit "Join Alliance", class: "btn btn-large btn-primary" %>
+      <% end %>
     <% end %>
   </div>
 </div>

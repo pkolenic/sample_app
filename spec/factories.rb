@@ -1,11 +1,10 @@
 FactoryGirl.define do
   factory :user do
-    sequence(:name)     { |n| "Person #{n}" }
     sequence(:email)    { |n| "person_#{n}@example.com"}
-    sequence(:wot_name) { |n| "tanker_#{n}"}
+    sequence(:name) { |n| "tanker_#{n}"}
     role  UserPending
     active  true
-    clan_id CLAN_ID
+    clan_id 1
     clan_war_team false
     password "foobar"
     password_confirmation "foobar"
@@ -43,5 +42,18 @@ FactoryGirl.define do
     start_date "2099-08-20 18:30:00".to_datetime
     end_date "2099-12-26 18:30:00".to_datetime
     user
+  end
+  
+  factory :clan do
+    sequence(:name)                 { |n| "Clan #{n}" }
+    sequence(:clan_short_name)      { |n| "-#{n}-" }
+    sequence(:clan_email)           { |n| "clan_#{n}@clans.com" }
+    sequence(:wot_clanId)           { |n| "11111#{n}" }
+    sequence(:clan_logo)            { |n| "logo-#{n}.png" }
+  end
+  
+  factory :application do
+    sequence(:user_id)          { |n| }
+    sequence(:clan_id)          { |n| }
   end
 end

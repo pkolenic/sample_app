@@ -4,9 +4,9 @@
     <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
   </head>
   <body>
-  	<h1><%= @user.wot_name %> has left the tournament: <%= @tournament.name %></h1>
+  	<h1><%= @user.name %> has left the tournament: <%= @tournament.name %></h1>
     <p>
-   	  <%= @owner.wot_name%>,<br/><br/>
+   	  <%= @owner.name%>,<br/><br/>
    	  
    	  <%= @tournament.name %> now has <%= @tournament.team.split(',').length %> members on the team.
     </p>

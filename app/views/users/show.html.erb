@@ -1,4 +1,4 @@
-<% provide(:title, @user.wot_name) %>
+<% provide(:title, @user.name) %>
 <% if @user.wins %>
 	<% @wins = (@user.wins.to_f / @user.battles_count * 100).round(2) %>
 <% end %>
@@ -18,7 +18,10 @@
 <div class="row">
 	<aside class="span4">
 		<section>
-			<h1><%= @user.wot_name %></h1>
+			<h1><%= @user.name %></h1>
+			<% if !@clan && @user.clan %>
+				<span class="role"><%= @user.clan.name %></span>
+			<% end %>
 			<span class="role"><%= role_for(@user) %></span>
 			<div class="gravatar">
 				<% if @user == current_user %>
@@ -30,7 +33,7 @@
 				<% end %>
 				</br>
 				<% if !@user.wot_id.blank? %>
-					<%= link_to 'Official World of Tanks Profile', "http://worldoftanks.com/community/accounts/#{@user.wot_id}-#{@user.wot_name}/", target: "_blank" %>
+					<%= link_to 'Official World of Tanks Profile', "http://worldoftanks.com/community/accounts/#{@user.wot_id}-#{@user.name}/", target: "_blank" %>
 				<% end %>
 			</div> 
 			<% if !@user.last_online.blank? %>

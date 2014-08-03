@@ -2,23 +2,8 @@
 <h1>Battle Roster</h1>
 
 <%= will_paginate %>
+<%= render 'shared/filter' %>
 
-<div class="filter_bar">
-	<%= link_to "All Tankers", users_path, class: "btn btn-small btn-primary" %>
-	<%= link_to "Active", users_path(:type => 'active'), class: "btn btn-small btn-primary" %>
-	<%= link_to "Clan War Team", users_path(:type => 'clan_war'), class: "btn btn-small btn-primary" %>
-	<%= link_to "Leadership", users_path(:type => 'leadership'), class: "btn btn-small btn-primary" %>
-<% if current_user.role > UserSoldier %>
-	<%= link_to "Ambassadors & Alumni", users_path(:type => 'ambassadors'), class: "btn btn-small btn-primary" %>
-<% end %>	
-<% if current_user.can_approve? %>
-	<%= link_to "Provisional", users_path(:type => 'provisional'), class: "btn btn-small btn-primary" %>
-	<%= link_to "Pending", users_path(:type => 'pending'), class: "btn btn-small btn-primary" %>
-<% end %>	
-<% if current_user.role > UserCompanyCommander %>
-	<%= link_to "InActive", users_path(:type => 'inactive'), class: "btn btn-small btn-primary" %>		
-<% end %>	
-</div>
 
 <ul class="users">
   <%= render @users %>

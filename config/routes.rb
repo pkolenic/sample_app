@@ -1,5 +1,4 @@
 SampleApp::Application.routes.draw do
-
   # This line mounts Forem's routes at /forums by default.
   # This means, any requests to the /forums URL of your application will go to Forem::ForumsController#index.
   # If you would like to change where this extension is mounted, simply change the :at option to something different.
@@ -9,15 +8,18 @@ SampleApp::Application.routes.draw do
 
   get "events/new"
   # Resource Paths
-  resources :users
+  resources :users, except: [:index]
+  resources :clans, only: [:show] do
+    resources :users
+    resources :applications, only: [:index]
+  end
+  resources :applications, only: [:destroy]
   resources :events, only: [:new, :create, :destroy]
   resources :sessions, only: [:new, :create, :destroy]
-  resources :promotions, only: [:edit, :update]
   resources :tournaments, except: :index
   
   match '/signin',  to: 'sessions#new',         via: 'get'
   match '/signout', to: 'sessions#destroy',     via: 'delete'
-  match '/users/:id/approve', to: 'users#approve', as: 'approve', via: 'patch'
   match '/users/:id/add_clanwar', to: 'users#add_clanwar', as:'add_clanwar', via: 'patch'
   match '/users/:id/remove_clanwar', to: 'users#remove_clanwar', as:'remove_clanwar', via: 'patch'
   

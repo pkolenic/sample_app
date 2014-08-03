@@ -1,9 +1,9 @@
-<%= @user.wot_name %> has joined the tournament: <%= @tournament.name %>
+<%= @user.name %> has joined the tournament: <%= @tournament.name %>
 ===============================================
-<%= @owner.wot_name%>,
+<%= @owner.name%>,
 
 
 	<%= @tournament.name %> now has <%= @tournament.team.split(',').length %> members on the team.
 
     Please visit the official team page for '<%= @tournament.team_name %>' <%= @tournament.wot_team_link %>
-    to verify that it reflects the same team as listed on <%= tournament_url @tournament, host: CLAN_WEBSITE %>
+    to verify that it reflects the same team as listed on <%= tournament_url @tournament, host: ALLIANCE_WEBSITE %>

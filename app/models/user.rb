@@ -8,36 +8,48 @@ class User < ActiveRecord::Base
 
   # Associations
   has_many :tournaments, dependent: :destroy
+  belongs_to  :clan
+  has_one     :application
 
   # Validation Classes
   class WotNameValidator < ActiveModel::EachValidator
     def validate_each(record, attribute, value)
       if (!value.nil?)
         if record.id.nil?
-          existing_user = User.find_by(wot_name: record.wot_name)
+          existing_user = User.find_by(name: record.name)
           record.errors['World'] << 'of Tanks Name already in use' if existing_user && existing_user.active?
         end
       end
     end
   end
+  
+  class OptionalValueValidator < ActiveModel::EachValidator
+    def validate_each(record, attribute, value)
+      if (!value.nil?)
+        if (value < 1)
+          record.errors[attribute] << 'must be blank or greater than 0'
+        end
+      end
+    end
+  end 
 
   # Validations
-  validates :name, presence: true, length: { maximum: 50 }
-  validates :wot_name, presence: true, length: { maximum: 50 }, wot_name: true
+  validates :name, presence: true, length: { maximum: 50 }, wotName: true
 
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i
   validates :email, presence: true, format: { with: VALID_EMAIL_REGEX },
                     uniqueness: { case_sensitive: false }
 
   validates :password, length: { minimum: 6 }
+  validates :clan_id, optional_value: true 
   
   def forem_name
-    wot_name
+    name
   end   
   
   # Friendly ID
   extend FriendlyId
-  friendly_id :wot_name, use: :slugged
+  friendly_id :name, use: :slugged
 
   # User Role Checks
   def clanwar_member?
@@ -57,14 +69,10 @@ class User < ActiveRecord::Base
   end
   
   def can_appoint_clanwar?(user)
-    if self.role >= UserDeputyCommander
-      if user.role >= UserSoldier
-        true
-      else 
-        false
-      end
-      else
-        false
+    if self.role >= UserDeputyCommander && user.clan && user.clan == self.clan
+      return true
+    else
+      return false
     end
   end
   
@@ -83,10 +91,11 @@ class User < ActiveRecord::Base
         request_wot_id
       end
       
-      if self.wot_id        
+      if self.wot_id          
         updateCoreStats()
-        updateClan()      
-        self.slug = self.wot_name                        
+        updateClan()       
+        clearApplications()       
+        self.slug = self.name                        
         self.save validate: false
       end            
     end    
@@ -105,7 +114,7 @@ class User < ActiveRecord::Base
           
           # Total Stats
           if data["statistics"]
-            #Rails.logger.info "Updating Statistics For #{self.wot_name}"
+            #Rails.logger.info "Updating Statistics For #{self.name}"
             self.battles_count = data["statistics"]["all"]["battles"]
             self.wins = data["statistics"]["all"]["wins"]
             self.losses = data["statistics"]["all"]["losses"] 
@@ -134,11 +143,15 @@ class User < ActiveRecord::Base
           # Clan Details      
           update_clan(data["clan_id"], data["role"])
         else
-          # Check if was in clan first
-          if self.clan_id || self.role == UserAmbassador
-            self.role = UserAmbassador              
-          end
-          self.clan_id = nil            
+          check_ambassador()           
+        end
+      end
+    end
+  
+    def clearApplications()
+      if self.clan_id
+        Application.where("clan_id = #{self.clan_id} AND user_id = ?", self.id).each do |application|
+          application.destroy
         end
       end
     end
@@ -162,64 +175,54 @@ class User < ActiveRecord::Base
       win7 -= ((5 - [avg_tier, 5].min * 125) / (1 + Math::E**(( avg_tier - (games_played/220)**(3/avg_tier) )*1.5)))       
     end
   
-    def update_clan(clan_id, role)            
-      if self.clan_id != clan_id || self.clan_name.blank?           
-        self.clan_id = clan_id
-        clan_url = "https://api.worldoftanks.com/wot/clan/info/?application_id=#{ENV['WOT_API_KEY']}&clan_id=#{clan_id}"
-        clan = clean_response(User.get(clan_url))
-
-        if clan && clan['status'] == 'ok'
-          #Rails.logger.info "Received Clan Data for #{self.wot_name}"
-          data = clan['data']["#{clan_id}"]
-          if data                         
-            self.clan_name = data["name"]
-            self.clan_abbr = data["abbreviation"]
-            clan_url = data["emblems"]["large"]  
-            self.clan_logo = clan_url.sub! 'http:', 'https:'
-          else
-            Rails.logger.info "\n---> #{self.wot_name}(#{self.id}) :> Unable to lookup Clan Data\n"            
-          end                                             
-        end
+    def check_ambassador
+      # Check if was in clan first
+      if self.clan_id || self.role == UserAmbassador
+        self.role = UserAmbassador              
       end
-      
-      if self.role > UserPending || !self.active?     
-        previous_role = self.role
-        self.role = convert_role(clan_id, role)        
-        if previous_role != self.role 
-          if self.role == UserAmbassador && self.active?
-            UserMailer.made_ambassador(self).deliver
-          elsif self.role > previous_role && self.active?
-            UserMailer.promoted(self, user_role(self.role), '').deliver
-          elsif self.active?
-            UserMailer.demoted(self, user_role(self.role), 'Auto Sent based on action taken on the Official World of Tank Clan page.').deliver
+      self.clan_id = nil       
+    end
+    
+    def update_clan(clan_id, role)   
+      # Lookup the clan 
+      clan = Clan.find_by(wot_clanId: "#{clan_id}")      
+      if clan
+        self.clan_id = clan.id        
+        if self.role > UserPending || !self.active?
+          previous_role = self.role
+          self.role = convert_role(role)          
+          if previous_role != self.role       
+            if self.role > previous_role && self.active?
+              UserMailer.promoted(self, user_role(self.role), '').deliver
+            elsif self.active?
+              UserMailer.demoted(self, user_role(self.role), 'Auto Sent based on action taken on the Official World of Tank Clan page.').deliver
+            end            
           end
         end
-      end      
+      else
+        check_ambassador()
+      end
     end
   
-    def convert_role(clan_id, role)                     
-      if clan_id.to_i == CLAN_ID.to_i          
-        case role
-        when 'recruit'
-          role_id = UserRecruit
-        when 'private'
-          role_id = UserSoldier
-        when 'treasurer'
-          role_id =UserTreasurer
-        when 'recruiter'
-          role_id = UserRecruiter
-        when 'diplomat'
-          role_id = UserDiplomat
-        when 'commander'
-          role_id= UserCompanyCommander
-        when 'vice_leader'
-          role_id = UserDeputyCommander
-        when 'leader'
-          role_id =UserCommander
-        end
-      else            
-        role_id = UserAmbassador
-      end  
+   def convert_role(role)
+      case role
+      when 'recruit'
+        role_id = UserRecruit
+      when 'private'
+        role_id = UserSoldier
+      when 'treasurer'
+        role_id =UserTreasurer
+      when 'recruiter'
+        role_id = UserRecruiter
+      when 'diplomat'
+        role_id = UserDiplomat
+      when 'commander'
+        role_id= UserCompanyCommander
+      when 'vice_leader'
+        role_id = UserDeputyCommander
+      when 'leader'
+        role_id =UserCommander
+      end
       role_id
     end
     
@@ -260,21 +263,21 @@ class User < ActiveRecord::Base
     end
         
     def request_wot_id
-      url = "https://api.worldoftanks.com/wot/account/list/?application_id=#{ENV['WOT_API_KEY']}&search=#{CGI.escape self.wot_name}&limit=1"
+      url = "https://api.worldoftanks.com/wot/account/list/?application_id=#{ENV['WOT_API_KEY']}&search=#{CGI.escape self.name}&limit=1"
       response = self.class.get url     
       if response["status"] == 'ok'
-        data = response["data"]    
+        data = response["data"]            
         if data && data.count > 0 && !data[0].empty?
-          self.update_attribute(:wot_id, data[0]["id"])
+          self.update_attribute(:wot_id, data[0]["account_id"])
         else 
-          Rails.logger.info "\n---> #{self.wot_name}(#{self.id}) :> Unable to lookup WOT ID\n"
+          Rails.logger.info "\n---> #{self.name}(#{self.id}) :> Unable to lookup WOT ID\n"
         end
       end
     end    
         
     def lookup_wot_id
       if Rails.env.test?
-        if self.wot_name == 'valid'
+        if self.name == 'valid'
           self.update_attribute(:wot_id, '1001261893')
         end
       else

@@ -1,8 +1,14 @@
 require 'spec_helper'
 
 describe User do
+  let!(:clan)   { FactoryGirl.create(:clan) }
   before do
-    @user = User.new(name: "Example User", wot_name: "Tanker", email: "user@example.com", password: "foobar", password_confirmation: "foobar")
+    @clan = Clan.new(name: "Fear the Fallen", wot_clanId: "1000001", clan_short_name:"FTF", clan_email: "fearthefallenclan@gmail.com",
+                     clan_motto: "Don't Fear Death As It Is Only The Beginning", clan_google_plus_id: "103259274594875534773",
+                     clan_requirements: "Play the Game", 
+                     clan_about: "A Clan of Tankers", 
+                     clan_logo: "FTF.png", slug: "fear-the-fallen")
+    @user = User.new(name: "Tanker", email: "user@example.com", password: "foobar", password_confirmation: "foobar", clan_id: clan.id)
   end
 
   subject { @user }
@@ -14,7 +20,6 @@ describe User do
   it { should respond_to(:password_confirmation) }
   it { should respond_to(:remember_token) }
   it { should respond_to(:authenticate) }
-  it { should respond_to(:wot_name) }
   it { should respond_to(:role) }
   it { should respond_to(:clan_war_team) }
   it { should respond_to(:admin) }
@@ -24,12 +29,13 @@ describe User do
   it { should respond_to(:active) }
   it { should respond_to(:time_zone) }
   it { should respond_to(:last_online) }
+  
+  # Application
+  it { should respond_to(:application) }
 
   # Clan Details
+  it { should respond_to(:clan) }
   it { should respond_to(:clan_id) }
-  it { should respond_to(:clan_name) }
-  it { should respond_to(:clan_abbr) }
-  it { should respond_to(:clan_logo) }
 
   # Overall Stats
   it { should respond_to(:wins) }
@@ -138,11 +144,6 @@ describe User do
     it { should_not be_valid }
   end
 
-  describe "when wot_name is not present" do
-    before { @user.wot_name = " " }
-    it { should_not be_valid }
-  end
-
   describe "when email is not present" do
     before { @user.email = " " }
     it { should_not be_valid }
@@ -150,11 +151,6 @@ describe User do
 
   describe "when name is too long" do
     before { @user.name = "a" * 51 }
-    it { should_not be_valid }
-  end
-
-  describe "when wot_name is too long" do
-    before { @user.wot_name = "a" * 51 }
     it { should_not be_valid }
   end
 
@@ -208,33 +204,26 @@ describe User do
     end
   end
 
-  describe "wot_name is already taken" do
+  describe "name is already taken" do
     before do
-      user_with_same_wot_name = @user.dup
-      user_with_same_wot_name.active = true
-      user_with_same_wot_name.email = "new-email@email.com"
-      user_with_same_wot_name.save
+      user_with_same_name = @user.dup
+      user_with_same_name.active = true
+      user_with_same_name.email = "new-email@email.com"
+      user_with_same_name.save
     end
     
     it { should_not be_valid }
   end
   
-  describe "wot_name is already taken by holder account" do
+  describe "name is already taken by holder account" do
     before do
-      user_with_same_wot_name = @user.dup
-      user_with_same_wot_name.active = false
-      user_with_same_wot_name.email = "new-email@email.com"
-      user_with_same_wot_name.save
+      user_with_same_name = @user.dup
+      user_with_same_name.active = false
+      user_with_same_name.email = "new-email@email.com"
+      user_with_same_name.save
     end
  
     it { should be_valid }
-    
-    it "should send approval email" do
-      @user.save
-      expect(ActionMailer::Base.deliveries.last.to).to eq [@user.email]
-      expect(ActionMailer::Base.deliveries.last.subject).to eq "Clan Status Approved"
-      #expect(@user.role).to eq UserRecruit #Not sure why role is showing as UserPending
-    end
   end
   
   describe "when password is not present" do
@@ -271,9 +260,9 @@ describe User do
     it { should be_invalid }
   end
 
-  it "sends a e-mail" do
-    UserMailer.approved(@user).deliver
-    ActionMailer::Base.deliveries.last.to.should == [@user.email]
+  describe "when clan_id is too low" do
+    before { @user.clan_id = 0 }
+    it { should_not be_valid }
   end
 
   describe "tournament associations" do

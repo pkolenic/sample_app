@@ -1,11 +1,8 @@
 <%= render 'shared/error_messages', object: f.object %>
 
-<%= f.label :name %>
-<%= f.text_field :name %>
-
 <% unless signed_in? %>
-<%= f.label :wot_name, "World of Tanks Name<span class='note'> *(used to verify clan membership) </span>".html_safe %>
-<%= f.text_field :wot_name, placeholder: "World of Tank Name" %>
+	<%= f.label :name, "World of Tanks Name<span class='note'> *(please provide exactly as in game) </span>".html_safe %>
+	<%= f.text_field :name, placeholder: "World of Tank Name" %>
 <% end %>
 
 <%= f.label :email %>
@@ -19,3 +16,12 @@
 
 <%= f.label :time_zone %>
 <%= f.time_zone_select :time_zone, ActiveSupport::TimeZone.us_zones, :default => "Pacific Time (US & Canada)" %>
+
+<% unless signed_in? %>
+	<% if @clan %>
+		<%= f.hidden_field :clan_id, value: @clan.id %>
+	<% else %>
+		<%= f.label :clan_id, "Clan applying for" %>
+		<%= collection_select(:user, :clan_id, Clan.all, :id, :name, include_blank: 'None (provisionally joining the alliance)') %>
+	<% end %>
+<% end %>

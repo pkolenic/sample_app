@@ -31,7 +31,11 @@ module SessionsHelper
   def signed_in_user
     unless signed_in?
       store_location
-      redirect_to main_app.signin_url, notice: "Please sign in."
+      if (params.has_key?(:clan_id))
+        redirect_to main_app.signin_url(:clan_id => params[:clan_id]), notice: "Please sign in."
+      else
+        redirect_to main_app.signin_url, notice: "Please sign in."
+      end
     end
   end
   
@@ -48,8 +52,8 @@ module SessionsHelper
   
   def clan_soldier
     if signed_in?
-      unless current_user.role >= UserSoldier
-        flash[:error] = "You need to be at least a Soldier in #{CLAN_NAME} to view Tournaments!"
+      unless current_user.clan && current_user.role >= UserSoldier
+        flash[:error] = "You need to be at least a Soldier in #{current_user.clan.name} to view Tournaments!"
         redirect_to(root_url)      
       end      
     else

@@ -1,0 +1,13 @@
+<% provide(:title, @clan.name) %> 
+<div class="center hero-unit">
+	<h1> <%= link_to "[#{@clan.clan_short_name}]", 
+			 "http://worldoftanks.com/community/clans/#{@clan.wot_clanId}-#{@clan.clan_short_name}/", id: "clan_link", target: "_blank" %>
+	<%= @clan.name %> </h1>
+
+	<% if @clan.clan_motto %>
+		<h2><%= @clan.clan_motto %></h2>
+	<% end %>
+	<% if !current_user or current_user.clan != @clan %>
+		<%= render 'clans/non_clan_member_home'%>
+	<% end %>
+</div>

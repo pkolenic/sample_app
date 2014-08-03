@@ -14,13 +14,9 @@
 				background-image: url(<%= random_image %>);
 			}	
 		</style>
-		<script type='text/javascript'>	
-			var ts_channels = <%= @ts_channels %>;
-		</script>
 	</head>
 	<body>
 		<%= render 'layouts/header' %>
-		<%= render 'layouts/teamspeak' %>
 		<div class="container">
 			<% flash.each do |key, value| %>
 			<%= content_tag(:div, value, class: "alert alert-#{key}") %>

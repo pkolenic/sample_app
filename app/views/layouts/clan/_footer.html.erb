@@ -1,0 +1,26 @@
+<footer class="footer">
+	<small> 
+		<%= link_to image_tag('04_WoT_logo_decor_colour.jpg', alt: "World of Tanks Logo"), "http://worldoftanks.com/", target: "_blank", id: "worldoftanks" %>
+		<%= link_to "https://support.worldoftanks.com/index.php?/Default", target: "_blank", id:"wot_support" do %> 
+			<%= image_tag('support_button_wot_na.jpg', alt: "North American Wargaming Support") %>
+			<span class="b-b4r_text_position"> 
+				<span class="b-b4r_header">North America Wargaming Support</span> 
+			</span> 
+		<% end %> 	
+	</small>
+	<nav>
+		<ul>
+			<li>
+				<%= link_to "Home", main_app.root_path %>
+			</li>
+			<li>
+				<%= link_to "Contact", main_app.contact_path %>
+			</li>
+			<% if @clan && @clan.clan_google_plus_id %>
+			<li>
+				<a href="https://plus.google.com/<%= @clan.clan_google_plus_id %>" rel="publisher" target="_blank">Google+</a>
+			</li>
+			<% end %>
+		</ul>
+	</nav>
+</footer>

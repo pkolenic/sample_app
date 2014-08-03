@@ -14,7 +14,13 @@
       <%= submit_tag "Sign in", class: "btn btn-large btn-primary" %>
     <% end %>
 
-    <p>New user? <%= link_to "Sign up now!", signup_path %></p>
+    <p>New user?
+    	<% if @clan %>
+    		<%= link_to "Sign up now!", signup_path(:clan_id => @clan.slug) %>
+    	<% else %>
+    		<%= link_to "Sign up now!", signup_path %>
+    	<% end %>
+    </p>
     <p>Forgot password? <%= link_to "Request Password Reset", request_password_path %></p>
   </div>
 </div>

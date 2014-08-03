@@ -4,9 +4,9 @@
     <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
   </head>
   <body>
-    <h1>Welcome to <%= CLAN_NAME %>, <%= @user.wot_name %></h1>
+    <h1>Welcome to <%= @user.clan.name %>, <%= @user.name %></h1>
     <p>
-      You account on <%= CLAN_WEBSITE %> has been approved, <br/>
+      You account on <%= @user.clan.name %> website has been activated, <br/>
       you now have an active status and all the privileges that entitles. <br />
       Please explore the Clan Site and feel free to leave comments and suggestions.
     </p>
@@ -20,15 +20,7 @@
 		Password: <%= CLAN_TEAMSPEAK_PASSWORD %><br />
     </p>
     <p>
-      To login to the site, just follow this link: <%= @url %>.
-    </p>
-    <p>
-    	If you are not currently in a clan you can expect an official invite to the clan soon. <br/>
-    	If you are already in a clan, or recently left one, after the cool period your invite will be sent. <br/>
-    	Make sure to keep an eye out for the invite and accept it as soon as possible.
-    </p>
-    <p>
-    	Certain areas of the site might not be accessible to members that are not official in the clan.    	
+      To login to the site, just follow this link: <%= link_to @user.name, @url %> 
     </p>
   </body>
 </html>

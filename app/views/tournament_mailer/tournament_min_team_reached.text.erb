@@ -1,14 +1,14 @@
 The tournament "<%= @tournament.name %>" now has the minimum team size
 ===============================================
-<%= @owner.wot_name%>,
+<%= @owner.name%>,
 
 
 	<%= @tournament.name %> now has the minimum team size of <%= @tournament.minimum_team_size %>
 	
 	The current Team is:
     <% @team.each do |member| %>
-        <%= member.wot_name %>
+        <%= member.name %>
     <% end %>
 
     Please visit the official team page for '<%= @tournament.team_name %>' <%= @tournament.wot_team_link %>
-    to verify that it reflects the same team as listed on <%= tournament_url @tournament, host: CLAN_WEBSITE %>
+    to verify that it reflects the same team as listed on <%= tournament_url @tournament, host: ALLIANCE_WEBSITE %>

@@ -1,0 +1,18 @@
+<% provide(:title, 'Battle Roster') %>
+<h1>Battle Roster</h1>
+
+<%= will_paginate %>
+<p class='info'>
+	Applications will auto clear after the user has accepted an offer through the World Of Tanks site or if the application is rejected
+</p>
+<%= render 'shared/filter' %>
+
+<ul class="users">
+  <%= render @applications %>
+</ul>
+
+<%= will_paginate %>
+
+<% if signed_in? %>
+	<%= render 'shared/disqus' %>
+<% end %>

@@ -6,7 +6,7 @@
   <body>
   	<h1>The tournament "<%= @tournament.name %>" has reach its full team size</h1>
     <p>
-   	  <%= @owner.wot_name%>,<br/><br/>
+   	  <%= @owner.name%>,<br/><br/>
    	  
    	  <%= @tournament.name %> has reach its full team size of <%= @tournament.maximum_team_size %>
     </p>
@@ -15,7 +15,7 @@
     	<ul>
     		<% @team.each do |member| %>
     			<li>
-    				<%= member.wot_name %>
+    				<%= member.name %>
     			</li>
     		<% end %>
     	</ul>

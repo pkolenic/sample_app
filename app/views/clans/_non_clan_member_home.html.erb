@@ -1,0 +1,28 @@
+	<div id="default_home_body">
+		<ul class="tabs">
+			<% if @clan.clan_about %>
+				<li data-id="about" id="about-tab" class="tab active">About</li>
+			<% end %>				
+			<% if @clan.clan_requirements %>
+				<li data-id="requirements" id="requirements-tab" class="tab">Requirements</li>
+			<% end %>
+		</ul>	
+		<div class="tabs_wrapper">
+			<% if @clan.clan_about %>
+				<div id="about-tab-body" class="tab_body">
+					<%= @clan.clan_about.html_safe %>
+				</div>
+			<% end %>
+			<% if @clan.clan_requirements %>				
+				<div id="requirements-tab-body" class="tab_body" style="display:none;">
+					<%= @clan.clan_requirements.html_safe %>
+				</div>
+			<% end %>
+		</div>
+			
+		<% if signed_in? %>
+			<%= link_to "Join the Clan", signup_path(:clan_id => @clan.slug), class: "btn btn-large btn-primary" %>
+		<% else %>
+			<%= link_to "Join the Clan", signup_path(:clan_id => @clan.slug), class: "btn btn-large btn-primary" %>	
+		<% end %>
+	</div>

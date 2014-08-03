@@ -46,7 +46,7 @@ jQuery(document).ready(function(){
 	var ts_id_base = "ts3_h_s1004";
 	var ts_user = "cl";
 	var ts_elements = jQuery('div[id^="' + ts_id_base + '"]');
-	if(!ts_channels) {
+	if (typeof ts_channels === 'undefined' || !ts_channels) {
 		ts_channels = new Array();
 	}
 	ts_elements.hide();

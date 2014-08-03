@@ -402,6 +402,21 @@ input {
   }
 }
 
+/* ROOT HEADER */
+#root-header {
+  ul.nav.pull-right {
+    padding: 0;
+  }
+  a#logo {
+    margin: 0 10px;
+  }
+}
+
+.info {
+  background: white;
+  padding: 5px;
+}
+
 /* Stats */
 
 .stat_label {

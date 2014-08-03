@@ -1,0 +1,22 @@
+<header class="navbar navbar-fixed-top navbar-inverse">
+  <div class="navbar-inner">
+    <div class="container">
+      <%= link_to image_tag('logo.png', alt: @clan.name) + @clan.name, main_app.clan_path(@clan), id: "logo" %>
+      <nav>
+        <ul class="nav pull-right">          
+          <%= render 'layouts/clan/locker' %>
+          <%= render 'layouts/clan/videos' %>
+          <li><%= link_to "Forums", forem.root_path %></li>
+          <li><%= link_to "Battle Roster", main_app.clan_users_path(@clan) %></li>   
+          <% if signed_in? %>          	      
+          	<% if current_user.role >= UserSoldier %>
+		  	<% end %>            
+			<%= render 'layouts/profile' %>
+          <% else %>
+            <li><%= link_to "Sign in", main_app.signin_path(:clan_id => @clan.slug) %></li>
+          <% end %>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</header>
