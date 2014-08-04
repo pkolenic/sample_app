@@ -16,7 +16,7 @@
 			<li>
 				<%= link_to "Contact", main_app.contact_path %>
 			</li>
-			<% if @clan && @clan.clan_google_plus_id %>
+			<% if @clan && @clan.clan_google_plus_id && !@clan.clan_google_plus_id.empty? %>
 			<li>
 				<a href="https://plus.google.com/<%= @clan.clan_google_plus_id %>" rel="publisher" target="_blank">Google+</a>
 			</li>
