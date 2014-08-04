@@ -1,7 +1,7 @@
 <header class="navbar navbar-fixed-top navbar-inverse">
   <div class="navbar-inner">
     <div class="container">
-      <%= link_to image_tag('logo.png', alt: @clan.name) + @clan.name, main_app.clan_path(@clan), id: "logo" %>
+      <%= link_to image_tag(@clan.clan_logo, alt: @clan.name) + @clan.name, main_app.clan_path(@clan), id: "logo" %>
       <nav>
         <ul class="nav pull-right">          
           <%= render 'layouts/clan/locker' %>
