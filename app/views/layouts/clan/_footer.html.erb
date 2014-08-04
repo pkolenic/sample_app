@@ -14,9 +14,9 @@
 				<%= link_to "Home", main_app.root_path %>
 			</li>
 			<li>
-				<%= link_to "Contact", main_app.contact_path %>
+				<%= link_to "Contact", main_app.clan_contact_path(@clan) %>
 			</li>
-			<% if @clan && @clan.clan_google_plus_id && !@clan.clan_google_plus_id.empty? %>
+			<% if @clan.clan_google_plus_id && !@clan.clan_google_plus_id.blank? %>
 			<li>
 				<a href="https://plus.google.com/<%= @clan.clan_google_plus_id %>" rel="publisher" target="_blank">Google+</a>
 			</li>

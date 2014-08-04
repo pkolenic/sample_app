@@ -5,8 +5,13 @@ class Clan < ActiveRecord::Base
   has_many    :users
   has_many    :applications
   
+  # Scopes
+  default_scope -> { order('name ASC') }
+  
+  # Befores
   before_save { clan_email.downcase! }
   
+  # Validates
   validates :clan_short_name, presence: true, length: { maximum: 6 }
   validates :name, presence: true, length: { maximum: 256 }
   

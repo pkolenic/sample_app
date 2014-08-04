@@ -3,7 +3,8 @@
     <div class="container">
       <%= link_to image_tag(@clan.clan_logo, alt: @clan.name) + @clan.name, main_app.clan_path(@clan), id: "logo" %>
       <nav>
-        <ul class="nav pull-right">          
+        <ul class="nav pull-right">      
+          <%= render 'layouts/clans' %>    
           <%= render 'layouts/clan/locker' %>
           <%= render 'layouts/clan/videos' %>
           <li><%= link_to "Forums", forem.root_path %></li>

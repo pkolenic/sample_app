@@ -18,6 +18,10 @@ SampleApp::Application.routes.draw do
   resources :sessions, only: [:new, :create, :destroy]
   resources :tournaments, except: :index
   
+  #Clan Paths
+  match '/clans/:clan_id/contact', to: 'static_pages#contact', as:'clan_contact', via: 'get'
+  
+  #Common Paths
   match '/signin',  to: 'sessions#new',         via: 'get'
   match '/signout', to: 'sessions#destroy',     via: 'delete'
   match '/users/:id/add_clanwar', to: 'users#add_clanwar', as:'add_clanwar', via: 'patch'

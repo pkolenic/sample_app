@@ -6,8 +6,10 @@
 	<span class="field">Password:</span> <span class="value"><%= CLAN_TEAMSPEAK_PASSWORD %></span><br/>
 	
 	<% if @clan %>
-		<h3>Official Clan Email Address</h3>
-		<%= mail_to @clan.clan_email %>
+		<% if @clan.clan_email && !@clan.clan_email.blank? %>
+			<h3>Official Clan Email Address</h3>
+			<%= mail_to @clan.clan_email %>
+		<% end %>
 		
 		<h3>Official World of Tanks Clan Page</h3>
 		<%= link_to "[#{@clan.clan_short_name}] #{@clan.name}", "http://worldoftanks.com/community/clans/#{@clan.wot_clanId}-#{@clan.clan_short_name}/", target: "_blank" %>

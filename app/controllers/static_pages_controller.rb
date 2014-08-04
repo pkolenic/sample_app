@@ -11,8 +11,10 @@ class StaticPagesController < ApplicationController
   end
   
   def contact
-    # @TODO replace with check for clan paramater
-    @clan = Clan.first
+    if (params.has_key?(:clan_id))
+      @clan = Clan.friendly.find(params[:clan_id])
+      render layout: "clans"
+    end  
   end
   
   def links    
