@@ -56,4 +56,8 @@ FactoryGirl.define do
     sequence(:user_id)          { |n| }
     sequence(:clan_id)          { |n| }
   end
+  
+  factory :privilege do
+    sequence(:name)             { |n| "Privilege #{n}" }
+  end
 end

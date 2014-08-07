@@ -10,6 +10,8 @@ class User < ActiveRecord::Base
   has_many :tournaments, dependent: :destroy
   belongs_to  :clan
   has_one     :application
+  has_many :user_privileges, dependent: :destroy
+  has_many :privileges, through: :user_privileges
 
   # Validation Classes
   class WotNameValidator < ActiveModel::EachValidator
@@ -46,6 +48,21 @@ class User < ActiveRecord::Base
   def forem_name
     name
   end   
+  
+  # Checks to see if the User has a privilege
+  def has_privilege?(privilege)
+    user_privileges.find_by(privilege_id: privilege.id)
+  end  
+  
+  # Checks to see if the User has a privilege with a given name
+  def has_privilege_with_name?(name)
+    privileges.each do |privilege|
+      if privilege.name = name
+        return true
+      end
+    end
+    return false
+  end  
   
   # Friendly ID
   extend FriendlyId

@@ -30,6 +30,10 @@ describe User do
   it { should respond_to(:time_zone) }
   it { should respond_to(:last_online) }
   
+  # Privileges
+  it { should respond_to(:user_privileges) }
+  it { should respond_to(:privileges) }
+  
   # Application
   it { should respond_to(:application) }
 
@@ -264,6 +268,36 @@ describe User do
     before { @user.clan_id = 0 }
     it { should_not be_valid }
   end
+
+  describe "privilege user_privilege associations" do
+    before { @user.save }
+    
+    let!(:privilege)        { FactoryGirl.create(:privilege) }
+    let!(:user_privilege)   { @user.user_privileges.build(privilege_id: privilege.id) }
+    
+    it "should have user privileges" do
+      expect(@user.user_privileges.to_a).to eq [user_privilege]
+    end
+    
+    it "should destory associated user privileges" do
+      user_privileges = @user.user_privileges.to_a
+      @user.destroy
+      expect(user_privileges).not_to be_empty
+      user_privileges.each do |privilege|
+        expect(UserPrivilege.where(id: privilege.id)).to be_empty
+      end
+    end
+  end
+
+  describe "privileges" do
+    let(:privilege) { FactoryGirl.create(:privilege) }
+    before do
+      @user.save
+      @user.user_privileges.create!(privilege_id: privilege.id)
+    end
+       
+    its(:privileges) { should include(privilege) }
+  end 
 
   describe "tournament associations" do
 

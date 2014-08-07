@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140530162102) do
+ActiveRecord::Schema.define(version: 20140804230046) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -172,6 +172,12 @@ ActiveRecord::Schema.define(version: 20140530162102) do
 
   add_index "microposts", ["user_id", "created_at"], name: "index_microposts_on_user_id_and_created_at", using: :btree
 
+  create_table "privileges", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "tournaments", force: true do |t|
     t.string   "name"
     t.integer  "user_id"
@@ -203,6 +209,13 @@ ActiveRecord::Schema.define(version: 20140530162102) do
   add_index "tournaments", ["end_date"], name: "index_tournaments_on_end_date", using: :btree
 
   create_table "updates", force: true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "user_privileges", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "privilege_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
