@@ -41,7 +41,7 @@ group :test do
   
   gem 'cucumber-rails', '1.4.0', :require => false
   gem 'database_cleaner', github: 'bmabey/database_cleaner'
-  gem 'ci_reporter', '1.8.0'
+  gem 'ci_reporter', '1.9.0'
 end
 
 gem 'sass-rails', '4.0.1'
