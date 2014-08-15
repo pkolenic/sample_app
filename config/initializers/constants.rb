@@ -34,6 +34,11 @@ CLAN_TEAMSPEAK_SERVER         = "199.167.19.50:9290"
 CLAN_TEAMSPEAK_PASSWORD       = "<ask in game>"
 CLAN_TSVIEW_ID                = 1033593
 
+# ACCESS TYPES
+PUBLIC                = "Public"
+ACCOUNT               = "Accout"
+CLAN                  = "Clan"
+
 # PRIVILEGES
 CLAN_ADMIN            = 1
 BRIGADE_COMMANDER     = 2

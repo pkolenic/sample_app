@@ -11,10 +11,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140804230046) do
+ActiveRecord::Schema.define(version: 20140815153604) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "access_types", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "applications", force: true do |t|
     t.integer  "user_id"
@@ -39,6 +45,8 @@ ActiveRecord::Schema.define(version: 20140804230046) do
     t.string   "slug"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "clan_youtube"
+    t.string   "clan_twitch"
   end
 
   add_index "clans", ["id"], name: "index_clans_on_id", using: :btree
@@ -309,5 +317,22 @@ ActiveRecord::Schema.define(version: 20140804230046) do
   add_index "users", ["reset_token"], name: "index_users_on_reset_token", using: :btree
   add_index "users", ["slug"], name: "index_users_on_slug", unique: true, using: :btree
   add_index "users", ["wot_id"], name: "index_users_on_wot_id", using: :btree
+
+  create_table "videos", force: true do |t|
+    t.string   "title"
+    t.string   "disqus"
+    t.string   "header"
+    t.string   "youtube_channel"
+    t.text     "video_list"
+    t.integer  "clan_id"
+    t.integer  "access_type_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "slug"
+    t.text     "filters"
+  end
+
+  add_index "videos", ["id"], name: "index_videos_on_id", unique: true, using: :btree
+  add_index "videos", ["slug"], name: "index_videos_on_slug", unique: true, using: :btree
 
 end

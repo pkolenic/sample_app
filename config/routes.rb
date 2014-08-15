@@ -1,4 +1,5 @@
 SampleApp::Application.routes.draw do
+  get "videos/new"
   # This line mounts Forem's routes at /forums by default.
   # This means, any requests to the /forums URL of your application will go to Forem::ForumsController#index.
   # If you would like to change where this extension is mounted, simply change the :at option to something different.
@@ -12,6 +13,7 @@ SampleApp::Application.routes.draw do
   resources :clans, only: [:show] do
     resources :users
     resources :applications, only: [:index]
+    resources :videos, except: [:index]
   end
   resources :applications, only: [:destroy]
   resources :events, only: [:new, :create, :destroy]

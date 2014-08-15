@@ -51,7 +51,7 @@ class User < ActiveRecord::Base
   
   # Checks to see if the User has a privilege
   def has_privilege?(privilege)
-    user_privileges.find_by(privilege_id: privilege.id)
+    user_privileges.find_by(privilege_id: privilege)
   end  
   
   # Checks to see if the User has a privilege with a given name

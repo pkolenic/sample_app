@@ -2,6 +2,14 @@ class StaticPagesController < ApplicationController
   before_action :signed_in_user, only: [:messageboard]
   
   def home
+    # Grab all the Clan YouTube Channels
+    clans = Clan.all
+    @youtube_channels = Array.new
+    clans.each do |clan|
+      if clan.clan_youtube
+        @youtube_channels.push clan.clan_youtube
+      end
+    end
   end
 
   def help
@@ -177,7 +185,7 @@ class StaticPagesController < ApplicationController
     def signed_in_user
       unless signed_in?
         store_location
-        redirect_to signin_url, notice: "Please sign in."
+        redirect_to signin_url, notice: "Please sign in"
       end
     end 
 end

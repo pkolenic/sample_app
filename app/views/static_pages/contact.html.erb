@@ -13,5 +13,16 @@
 		
 		<h3>Official World of Tanks Clan Page</h3>
 		<%= link_to "[#{@clan.clan_short_name}] #{@clan.name}", "http://worldoftanks.com/community/clans/#{@clan.wot_clanId}-#{@clan.clan_short_name}/", target: "_blank" %>
+		
+		<% if @clan.clan_youtube %>
+			<h3>Follow us on Youtube</h3>
+			<script src="https://apis.google.com/js/platform.js"></script>
+			<div class="g-ytsubscribe" data-channel="<%= @clan.clan_youtube %>" data-layout="full" data-theme="dark" data-count="default"></div>
+		<% end %>
+		
+		<% if @clan.clan_twitch %>
+			<h3>Watch us on Twitch</h3>
+			<%= link_to image_tag('twitch.png', alt: "Twitch") + "[#{@clan.clan_short_name}] #{@clan.name}", "http://www.twitch.tv/#{@clan.clan_twitch}", target:"_blank", id:"twitch_logo" %>
+		<% end %>
 	<% end %>
 </div>
