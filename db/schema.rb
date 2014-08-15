@@ -171,15 +171,6 @@ ActiveRecord::Schema.define(version: 20140815153604) do
   add_index "friendly_id_slugs", ["sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_id", using: :btree
   add_index "friendly_id_slugs", ["sluggable_type"], name: "index_friendly_id_slugs_on_sluggable_type", using: :btree
 
-  create_table "microposts", force: true do |t|
-    t.string   "content"
-    t.integer  "user_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "microposts", ["user_id", "created_at"], name: "index_microposts_on_user_id_and_created_at", using: :btree
-
   create_table "privileges", force: true do |t|
     t.string   "name"
     t.datetime "created_at"
@@ -234,9 +225,9 @@ ActiveRecord::Schema.define(version: 20140815153604) do
     t.datetime "updated_at"
     t.string   "password_digest"
     t.string   "remember_token"
-    t.boolean  "admin",                          default: false
     t.string   "name"
     t.integer  "role",                           default: 0
+    t.boolean  "admin",                          default: false
     t.boolean  "clan_war_team",                  default: false
     t.string   "wot_id"
     t.integer  "wins",                 limit: 8
