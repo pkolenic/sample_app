@@ -23,6 +23,7 @@ describe Clan do
   it { should respond_to(:slug) }
   it { should respond_to(:users) } 
   it { should respond_to(:applications) }
+  it { should respond_to(:videos) }
   
   describe "when name is not present" do
     before { @clan.name = " " }
@@ -121,6 +122,26 @@ describe Clan do
       paths.each do |valid_path|
         @clan.clan_logo = valid_path
         expect(@clan).to be_valid
+      end
+    end
+  end
+  
+  describe "clan deletion" do
+    before { @clan.save }
+    
+    let!(:access_type)  { FactoryGirl.create(:access_type) }
+    let!(:video)  { FactoryGirl.create(:video, clan_id: @clan.id, access_type_id: access_type.id) }
+    
+    it "should have videos" do
+      expect(@clan.videos.to_a).to eq [video]
+    end
+    
+    it "should destory associated videos" do
+      videos = @clan.videos.to_a
+      @clan.destroy
+      expect(videos).not_to be_empty
+      videos.each do |video|
+        expect(Video.where(id: video.id)).to be_empty
       end
     end
   end

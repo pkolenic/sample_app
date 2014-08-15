@@ -4,6 +4,7 @@ class Clan < ActiveRecord::Base
   # Associations
   has_many    :users
   has_many    :applications
+  has_many    :videos, dependent: :destroy
   
   # Scopes
   default_scope -> { order('name ASC') }

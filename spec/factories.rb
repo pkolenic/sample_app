@@ -60,4 +60,17 @@ FactoryGirl.define do
   factory :privilege do
     sequence(:name)             { |n| "Privilege #{n}" }
   end
+  
+  factory :access_type do
+    sequence(:name)             { |n| "Access #{n}" }
+  end
+  
+  factory :video do
+    sequence(:title)            { |n| "Video Title #{n}" }
+    sequence(:disqus)           { |n| "disqus#{n}" }
+    sequence(:header)           { |n| "header#{n}" }
+    sequence(:youtube_channel)  { |n| "channel#{n}" }
+    sequence(:video_list)       { |n| "[{\"id\": \"id#{n}\",\"title\": \"title#{n}\"}]" }
+    sequence(:filters)          { |n| "[{\"name#{n}\": \"nation\",\"values\":[\"Germany\", \"France\", \"US\", \"USSR\"]}]" }
+  end
 end

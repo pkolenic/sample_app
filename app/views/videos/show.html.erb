@@ -1,0 +1,168 @@
+<% provide(:title, @video.title) %> <h1><%= @video.header %></h1>
+
+<!-- 1. The <iframe> (and video player) will replace this <div> tag. -->
+<div id="player_wrapper">
+	<div id="player"></div>
+
+	<script>
+		<% if @video.youtube_channel.blank? %>
+			// 2. This code loads the IFrame Player API code asynchronously.
+			var tag = document.createElement('script');
+	
+			tag.src = "//www.youtube.com/iframe_api";
+			var firstScriptTag = document.getElementsByTagName('script')[0];
+			firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);					
+		<% else %>
+			var first_id = '';
+			$.getJSON('//gdata.youtube.com/feeds/api/videos?author=<%= @video.youtube_channel %>&orderby=published&max-results=32&alt=json&v=2', function(data) {
+				videos = data.feed.entry;
+				var items = [];
+				var video_count = 1;
+				var total_videos = videos.length;
+				$.each(videos, function(key, video) {
+					html = "";
+					if (video_count % 4 == 1) {
+						html = '<div class="video_thumbnail_row">'
+					}
+					html += '<div class="video_link" video-id="' + video.media$group.yt$videoid.$t + '">';
+					html += '<img src="' + video.media$group.media$thumbnail[0].url + '" alt="' + video.title.$t + '"/>';
+					html += '<br/><span class="video_title">' + video.title.$t + "</span></div>";
+	
+					if (video_count % 4 == 0 || video_count == total_videos) {
+						html += '</div>'
+					}
+					items.push(html);
+					video_count++;
+				});
+	
+				$('<div/>', {
+					'class' : 'video-list',
+					html : items.join('')
+				}).appendTo('#videos');
+	
+				$(".video_link").click(function() {
+					playVideo(this);
+				});
+	
+				first_video = videos[0];
+				first_id = first_video.media$group.yt$videoid.$t;
+	
+				// 2. This code loads the IFrame Player API code asynchronously.
+				var tag = document.createElement('script');
+	
+				tag.src = "//www.youtube.com/iframe_api";
+				var firstScriptTag = document.getElementsByTagName('script')[0];
+				firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+			});
+		<% end %>
+		
+		// 3. This function creates an <iframe> (and YouTube player)
+		//    after the API code downloads.
+		var player;
+		function onYouTubeIframeAPIReady() {
+			player = new YT.Player('player', {
+				height : '390',
+				width : '640',
+				<% if @video.youtube_channel.blank? %>
+					<% if @video.video_list %>
+						videoId : '<%= @video.video_list.first['id'] %>',
+					<% else %>
+						videoId : ''
+					<% end %>					
+				<% else %>
+					videoId : first_id,
+				<% end %>
+				events : {
+					'onReady' : onPlayerReady
+				}
+			});
+			
+			<% if @video.youtube_channel.blank? %>
+				// Add click events to each video
+				$(".video_link").click(function() {
+					playVideo(this);
+				});			
+			<% end %>
+		}
+
+		// 4. The API will call this function when the video player is ready.
+		function onPlayerReady(event) {
+			event.target.playVideo();
+		}
+
+		function playVideo(video_link) {
+			video = $(video_link);
+			player.loadVideoById(video.attr('video-id'), 0, "large")
+		}
+	</script>
+</div>
+
+<% if @video.filters %>
+<script>
+	function applyVideoFilter() {
+		<% @video.filters.each do |filter| %>
+		var <%= filter['name'].downcase %> = $('#tanks_<%= filter['name'] %>').val(); 
+		<% end %>
+		
+		if(<% @video.filters.each do |filter| %><%= filter['name'].downcase %> == 'All' <% if filter != @video.filters.last %> && <% end %><% end %>) {
+			// If All Filters set to All then Show All
+			$(".video_link").show();
+		} else {
+			// Hide All Videos
+			$(".video_link").hide();
+			
+			// Then Show those matching the filters
+			<% @video.filters.each do |filter| %>
+			var <%= filter['name'].downcase %>_filter = (<%= filter['name'].downcase %> == "All" ? "" : "[<%= filter['name'].downcase %>-id='" + <%= filter['name'].downcase %> + "']");
+			<% end %>
+			$(<% @video.filters.each do |filter| %><%= filter['name'].downcase %>_filter <% if filter != @video.filters.last %> + <% end %><% end %>).show();
+		}
+	}
+</script>
+
+<div id="video_filters">
+	<div class="wrapper">
+		<div class="filter_headers">
+			<% @video.filters.each do |filter| %>
+			<span><%= filter['name'] %></span>
+			<% end %>
+		</div>		
+		<div class="filters">
+			<% @video.filters.each do |filter| %>
+			<%= select("tanks", filter['name'], options_for_select(filter['values'].unshift('All')), 
+				{ :selected=> 'All' }, {:class => "video_filter", :onchange => "applyVideoFilter()"}) %>
+			<% end %>
+		</div>		
+	</div>
+</div>			
+<% end %>
+
+<% if @video.youtube_channel.blank? %>
+	<div id="videos">	
+		<div class="video-list">
+			<div class="video_thumbnail_row">
+				<% if @video.video_list %>
+					<% @video.video_list.each do |video| %>
+						<div class="video_link" video-id="<%= video['id'] %>"
+							<% if @video.filters %>
+								<% @video.filters.each do |filter| %>
+								    <% filter_name = filter['name'].downcase %>
+									<%= filter_name %>-id = '<%= video[filter_name] %>' 
+								<% end %>
+							<% end %>	
+						>
+							<img src="http://i.ytimg.com/vi/<%= video['id'] %>/default.jpg" alt="<%= video['title'].html_safe %>"><br>
+							<span class="video_title"><%= video['title'].html_safe %></span>
+						</div>			
+					<% end %>
+				<% end %>
+			</div>						
+		</div>	
+	</div>
+<% else %>
+	<div id="videos"></div>
+<% end %>
+
+<% if signed_in? %>
+	<%= render 'shared/disqus' %>
+<% end %>

@@ -2,7 +2,20 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+.clan_body {
+  min-height: 500px; 
+}
+
+.clan_body.guest {
+  #static_video {
+    margin-top: -25px;
+  } 
+}
+
 #default_home_body {
+  position: relative;
+  margin-bottom: -90px;
+  top: -50px;
   .tabs {
     .tab {
         float: left;
@@ -29,7 +42,7 @@
   
   .tabs_wrapper {
     clear: both;
-    width: 770px;
+    width: 890px;
     margin: 0 auto 10px;
     background: white;
     border-radius: 0 5px 5px 0;
@@ -40,4 +53,9 @@
       font-size: 18px;
     }
   }
+}
+
+#twitch_logo {
+  height: 32px;
+  margin-right: 10px;
 }
