@@ -20,6 +20,9 @@ gem 'friendly_id', '~> 5.0.0'
 gem 'forem-textile_formatter'
 gem 'RedCloth', '~> 4.2.9'
 
+# Not sure I want this always, but having trouble editing the Rakefile to do the require only for test
+gem 'ci_reporter', '1.9.0'
+  
 group :development, :test do
   gem 'rspec-rails', '2.13.1'
   gem 'guard-rspec', '2.5.0'
@@ -41,7 +44,6 @@ group :test do
   
   gem 'cucumber-rails', '1.4.0', :require => false
   gem 'database_cleaner', github: 'bmabey/database_cleaner'
-  gem 'ci_reporter', '1.9.0'
 end
 
 gem 'sass-rails', '4.0.1'
