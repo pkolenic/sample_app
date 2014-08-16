@@ -205,7 +205,7 @@ class User < ActiveRecord::Base
       clan = Clan.find_by(wot_clanId: "#{clan_id}")      
       if clan
         self.clan_id = clan.id        
-        if self.role > UserPending || !self.active?
+        if self.active?
           previous_role = self.role
           self.role = convert_role(role)          
           if previous_role != self.role       
