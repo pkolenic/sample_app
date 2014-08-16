@@ -71,6 +71,6 @@ FactoryGirl.define do
     sequence(:header)           { |n| "header#{n}" }
     sequence(:youtube_channel)  { |n| "channel#{n}" }
     sequence(:video_list)       { |n| "[{\"id\": \"id#{n}\",\"title\": \"title#{n}\"}]" }
-    sequence(:filters)          { |n| "[{\"name#{n}\": \"nation\",\"values\":[\"Germany\", \"France\", \"US\", \"USSR\"]}]" }
+    sequence(:filters)          { |n| "[{\"name\":\"name#{n}\",\"values\":[\"American\",\"British\"]},{\"name\":\"Type#{n}\",\"values\":[\"Light\",\"Medium\"]}]" }
   end
 end
