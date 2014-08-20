@@ -68,7 +68,13 @@ class UsersController < ApplicationController
 
   def create
     params = new_user_params    
-    @user = User.find_by(slug: params[:name].parameterize)
+    if params[:name]
+      name = params[:name].parameterize
+    else
+      name = nil
+    end
+    
+    @user = User.find_by(slug: name)
     # Current User applying to a Clan
     if current_user
       if params.has_key?(:clan_id)
