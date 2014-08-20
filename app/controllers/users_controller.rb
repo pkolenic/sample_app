@@ -68,7 +68,7 @@ class UsersController < ApplicationController
 
   def create
     params = new_user_params    
-    @user = User.find_by(name: params[:name])
+    @user = User.find_by(slug: params[:name].parameterize)
     # Current User applying to a Clan
     if current_user
       if params.has_key?(:clan_id)
@@ -316,10 +316,10 @@ class UsersController < ApplicationController
     if Rails.env.test?
       # @user.update_stats
     else
-      Thread.new do       
+      # Thread.new do       
         @user.update_stats
         ActiveRecord::Base.connection.close
-      end
+      # end
     end
   end
 

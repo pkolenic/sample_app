@@ -112,7 +112,7 @@ class User < ActiveRecord::Base
         updateCoreStats()
         updateClan()       
         clearApplications()       
-        self.slug = self.name                        
+        self.slug = self.name.parameterize                       
         self.save validate: false
       end            
     end    

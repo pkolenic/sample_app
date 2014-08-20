@@ -495,6 +495,30 @@ describe "User pages" do
           it_should_behave_like "all signups"             
         end
         
+        describe "as inactive clan user in same clan with different username cases" do
+          let(:message)             { "Welcome to #{clan.name}" }
+          let(:subject)             { "Welcome to #{clan.name}'s website" }
+          let(:test_clan)           { clan }
+          let(:application_clan)    { nil }
+          let(:url)                 { clan_user_url(clan, clan1_user) }
+          let(:user)                { clan1_user }
+          
+          before do
+            user.name = user.name.upcase
+            fill_in_user_form_with_user(user, clan)
+          end
+          
+          it "should not create a user" do
+            expect { click_button submit }.to_not change(User, :count)
+          end
+                
+          it "should not create an application" do
+            expect { click_button submit }.not_to change(Application, :count)
+          end  
+                         
+          it_should_behave_like "all signups"             
+        end
+                
         describe "as inactive clan user joining a different clan" do
           let(:message)             { "Welcome to #{clan.name}, your application to #{clan2.name} is pending" }
           let(:subject)             { "Application to #{clan2.name} pending" }
