@@ -1,28 +1,45 @@
 <% provide(:title, 'Contact') %>
 <h1>Contact</h1>
-<div>
-	<h3>Team Speak Server</h3>
-	<span class="field">Server Address:</span> <span class="value"><%= CLAN_TEAMSPEAK_SERVER %></span><br/>
-	<span class="field">Password:</span> <span class="value"><%= CLAN_TEAMSPEAK_PASSWORD %></span><br/>
+<div id="contact-block">
+	<div>
+		<h3>Team Speak Server</h3>
+		<span class="field">Server Address:</span> <span class="value"><%= CLAN_TEAMSPEAK_SERVER %></span><br/>
+		<span class="field">Password:</span> <span class="value"><%= CLAN_TEAMSPEAK_PASSWORD %></span><br/>
+		
+		<% if @clan %>
+			<% if @clan.clan_email && !@clan.clan_email.blank? %>
+				<h3>Official Clan Email Address</h3>
+				<%= mail_to @clan.clan_email %>
+			<% end %>
+			
+			<h3>Official World of Tanks Clan Page</h3>
+			<%= link_to "[#{@clan.clan_short_name}] #{@clan.name}", "http://worldoftanks.com/community/clans/#{@clan.wot_clanId}-#{@clan.clan_short_name}/", target: "_blank" %>
+			
+			<% if @clan.clan_youtube %>
+				<h3>Follow us on Youtube</h3>
+				<script src="https://apis.google.com/js/platform.js"></script>
+				<div class="g-ytsubscribe" data-channel="<%= @clan.clan_youtube %>" data-layout="full" data-theme="dark" data-count="default"></div>
+			<% end %>
+			
+			<% if @clan.clan_twitch %>
+				<h3>Watch us on Twitch</h3>
+				<%= link_to image_tag('twitch.png', alt: "Twitch") + "[#{@clan.clan_short_name}] #{@clan.name}", "http://www.twitch.tv/#{@clan.clan_twitch}", target:"_blank", id:"twitch_logo" %>
+			<% end %>
+		<% end %>
+	</div>
 	
 	<% if @clan %>
-		<% if @clan.clan_email && !@clan.clan_email.blank? %>
-			<h3>Official Clan Email Address</h3>
-			<%= mail_to @clan.clan_email %>
-		<% end %>
+	<div>
+		<h3>Recruiters</h3>
+		<ul><% @clan.users.where("role=?", UserRecruiter).each do |user| %>
+			<li><%= user.name %></li>
+		<% end %></ul>
 		
-		<h3>Official World of Tanks Clan Page</h3>
-		<%= link_to "[#{@clan.clan_short_name}] #{@clan.name}", "http://worldoftanks.com/community/clans/#{@clan.wot_clanId}-#{@clan.clan_short_name}/", target: "_blank" %>
-		
-		<% if @clan.clan_youtube %>
-			<h3>Follow us on Youtube</h3>
-			<script src="https://apis.google.com/js/platform.js"></script>
-			<div class="g-ytsubscribe" data-channel="<%= @clan.clan_youtube %>" data-layout="full" data-theme="dark" data-count="default"></div>
-		<% end %>
-		
-		<% if @clan.clan_twitch %>
-			<h3>Watch us on Twitch</h3>
-			<%= link_to image_tag('twitch.png', alt: "Twitch") + "[#{@clan.clan_short_name}] #{@clan.name}", "http://www.twitch.tv/#{@clan.clan_twitch}", target:"_blank", id:"twitch_logo" %>
-		<% end %>
+		<h3>Company Commanders</h3>
+		<ul><% @clan.users.where("role=?", UserCompanyCommander).each do |user| %>
+			<li><%= user.name %></li>
+		<% end %></ul>				
+	</div>
 	<% end %>
 </div>
+<div class="clear"></div>

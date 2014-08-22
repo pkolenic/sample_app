@@ -70,7 +70,7 @@ FactoryGirl.define do
     sequence(:disqus)           { |n| "disqus#{n}" }
     sequence(:header)           { |n| "header#{n}" }
     sequence(:youtube_channel)  { |n| "channel#{n}" }
-    sequence(:video_list)       { |n| "[{\"id\": \"id#{n}\",\"title\": \"title#{n}\"}]" }
+    sequence(:video_list)       { |n| "[{\"id\": \"id#{n}\",\"title\": \"title#{n}\", \"name#{n}\": \"American\", \"Type#{n}\": \"Light\"}]" }
     sequence(:filters)          { |n| "[{\"name\":\"name#{n}\",\"values\":[\"American\",\"British\"]},{\"name\":\"Type#{n}\",\"values\":[\"Light\",\"Medium\"]}]" }
   end
 end

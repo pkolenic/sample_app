@@ -445,3 +445,19 @@ input {
 .ui-timepicker-rtl dl { text-align: right; padding: 0 5px 0 0; }
 .ui-timepicker-rtl dl dt{ float: right; clear: right; }
 .ui-timepicker-rtl dl dd { margin: 0 45% 10px 10px; }
+
+/* Utiltities */
+.clear {
+  clear: both;
+}
+
+#contact-block {
+  width: 100%;
+  background: rgba(255,255,255,0.5);
+  padding: 0px 10px 10px;
+  div {
+    display: inline-block;
+    width: 48%;
+    vertical-align: top;
+  }
+}

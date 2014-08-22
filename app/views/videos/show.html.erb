@@ -138,31 +138,29 @@
 </div>			
 <% end %>
 
-<% if @video.youtube_channel.blank? %>
-	<div id="videos">	
-		<div class="video-list">
-			<div class="video_thumbnail_row">
-				<% if @video.video_list %>
-					<% @video.video_list.each do |video| %>
-						<div class="video_link" video-id="<%= video['id'] %>"
-							<% if @video.filters %>
-								<% @video.filters.each do |filter| %>
-								    <% filter_name = filter['name'].downcase %>
-									<%= filter_name %>-id = '<%= video[filter_name] %>' 
-								<% end %>
-							<% end %>	
-						>
-							<img src="http://i.ytimg.com/vi/<%= video['id'] %>/default.jpg" alt="<%= video['title'].html_safe %>"><br>
-							<span class="video_title"><%= video['title'].html_safe %></span>
-						</div>			
+	<div id="videos">
+		<% if @video.youtube_channel.blank? %>
+			<div class="video-list">
+				<div class="video_thumbnail_row">
+					<% if @video.video_list %>
+						<% @video.video_list.each do |video| %>
+							<div class="video_link" video-id="<%= video['id'] %>"
+								<% if @video.filters %>
+									<% @video.filters.each do |filter| %>
+									    <% filter_name = filter['name'].downcase %>
+										<%= filter_name %>-id = '<%= video[filter_name] %>' 
+									<% end %>
+								<% end %>	
+							>
+								<img src="http://i.ytimg.com/vi/<%= video['id'] %>/default.jpg" alt="<%= video['title'].html_safe %>"><br>
+								<span class="video_title"><%= video['title'].html_safe %></span>
+							</div>			
+						<% end %>
 					<% end %>
-				<% end %>
-			</div>						
-		</div>	
+				</div>						
+			</div>
+		<% end %>			
 	</div>
-<% else %>
-	<div id="videos"></div>
-<% end %>
 
 <% if signed_in? %>
 	<%= render 'shared/disqus' %>
