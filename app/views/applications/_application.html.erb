@@ -5,8 +5,8 @@
   </div>
   <div class="user_summary">
   	<% if user.clan %>
-  		<%= link_to user.name, clan_user_path(@clan,user) %><br/>
-  		<span><em>(current in <%= @clan.name %>)</em></span>
+  		<%= link_to user.name, clan_user_path(user.clan,user) %><br/>
+  		<span><em>(current in <%= user.clan.name %>)</em></span>
 	<% else %>  		
 		<%= link_to user.name, user_path(user) %>
 	<% end %>
