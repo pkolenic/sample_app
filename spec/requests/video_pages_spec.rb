@@ -127,6 +127,7 @@ describe "Video pages" do
     
     describe "for video list page" do
       let!(:video)          { FactoryGirl.create(:video, clan_id: clan.id, access_type_id: access_type.id, filters: nil, youtube_channel: nil, video_list: "[{\"id\":\"sP0uk76wuq8\",\"title\":\"World Of Tanks Mapguide - Sacred Valley\"},{\"id\":\"5cv4G59BY3c\",\"title\":\"World Of Tanks 8.7 Patch Review\"},{\"id\":\"k4DZau_l-EI\",\"title\":\"World Of Tanks 8.8 Maps Review\"}]") }
+      let!(:videos) { JSON.parse(video.video_list) }
       before { visit clan_video_path(clan, video) }
             
       it_should_behave_like "all pages with video player"
@@ -134,7 +135,12 @@ describe "Video pages" do
       it { should have_selector('div.video_thumbnail_row') }
       it { should_not have_selector('div.filter_headers') }
       it { should_not have_selector('div.filters') }
-      # @TODO check that each video is in the video list
+      
+      it "should list each video" do
+        videos.each do |video|
+          expect(page).to have_xpath(".//div[@video-id='#{video['id']}']")
+        end
+      end
     end
     
     describe "for page with filters" do
@@ -156,6 +162,7 @@ describe "Video pages" do
         filters.each do |filter|
           expect(page).to have_selector('span', text: filter['name'])
           expect(page).to have_select("tanks_#{filter['name']}", :options => filter['values'].unshift('All'))
+          expect(page).to have_xpath(".//div[@#{filter['name'].downcase}-id]")
         end
       end
     end
