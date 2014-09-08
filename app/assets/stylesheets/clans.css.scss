@@ -62,3 +62,31 @@
   }
   
 }
+
+.admin-section {
+  background-color: rgba(255,255,255,0.5);
+  min-height: 150px;
+  padding: 5px;
+  width: 750px;
+  margin: 0 auto 20px;
+  
+  h2 {
+    font-size: 1.6em;
+    letter-spacing: 0px;
+    color: ivory;  
+    margin: 10px 0 5px;  
+  }
+  
+  a {
+    font-size: 1.2em;
+    color: navy;
+  }
+  
+  .admin-stat-label {
+    font-size: 1.2em;
+  }
+  .admin-stat-value {
+    font-size: 1.2em;
+    font-weight: bold;
+  }
+}

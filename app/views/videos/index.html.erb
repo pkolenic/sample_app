@@ -1,0 +1,10 @@
+<% provide(:title, "Video Pages") %>
+<h1><%= @clan.name %> Video Pages</h1>
+
+<%= will_paginate %>
+
+<ul class="video-pages">
+  <%= render @videos %>
+</ul>
+
+<%= will_paginate %>

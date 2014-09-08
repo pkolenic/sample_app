@@ -40,6 +40,7 @@ ACCOUNT               = "Accout"
 CLAN                  = "Clan"
 
 # PRIVILEGES
-CLAN_ADMIN            = 1
-BRIGADE_COMMANDER     = 2
-CLAN_XO               = 3
+CLAN_ADMIN            = 'Clan Admin'
+BATTALION_COMMANDER   = 'Battalion Commander'
+BRIGADE_COMMANDER     = 'Brigade Commander'
+CLAN_XO               = 'Clan_XO'

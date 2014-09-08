@@ -2,9 +2,13 @@ require 'spec_helper'
 
 describe "Video pages" do
   let!(:clan)           { FactoryGirl.create(:clan) }
+  let!(:clan2)            { FactoryGirl.create(:clan) }
   let!(:user)           { FactoryGirl.create(:user) }
   let!(:clan_user)      { FactoryGirl.create(:user, clan_id:clan.id) }
-  
+  let!(:access_type)    { FactoryGirl.create(:access_type, name: PUBLIC) }
+  let!(:video)          { FactoryGirl.create(:video, clan_id: clan.id, access_type_id: access_type.id) }
+  let!(:admin_privilege)  { FactoryGirl.create(:privilege, name: CLAN_ADMIN) }
+        
   subject { page }
   
   shared_examples_for "all video pages" do
@@ -126,7 +130,7 @@ describe "Video pages" do
     end
     
     describe "for video list page" do
-      let!(:video)          { FactoryGirl.create(:video, clan_id: clan.id, access_type_id: access_type.id, filters: nil, youtube_channel: nil, video_list: "[{\"id\":\"sP0uk76wuq8\",\"title\":\"World Of Tanks Mapguide - Sacred Valley\"},{\"id\":\"5cv4G59BY3c\",\"title\":\"World Of Tanks 8.7 Patch Review\"},{\"id\":\"k4DZau_l-EI\",\"title\":\"World Of Tanks 8.8 Maps Review\"}]") }
+      let!(:video)  { FactoryGirl.create(:video, clan_id: clan.id, access_type_id: access_type.id, filters: nil, youtube_channel: nil, video_list: "[{\"id\":\"sP0uk76wuq8\",\"title\":\"World Of Tanks Mapguide - Sacred Valley\"},{\"id\":\"5cv4G59BY3c\",\"title\":\"World Of Tanks 8.7 Patch Review\"},{\"id\":\"k4DZau_l-EI\",\"title\":\"World Of Tanks 8.8 Maps Review\"}]") }
       let!(:videos) { JSON.parse(video.video_list) }
       before { visit clan_video_path(clan, video) }
             
@@ -168,4 +172,110 @@ describe "Video pages" do
     end
   end
 
+  describe "new page" do
+    
+  end
+  
+  describe "index page" do
+    let(:heading)         { "#{clan.name} Video Pages" }
+    let(:page_title)      { 'Video Pages' }
+        
+    describe "as non clan admin" do
+      before do
+        sign_in clan_user
+        visit clan_videos_path(clan)
+      end
+      
+      specify { current_url.should eq clan_url(clan) }
+      it { should have_error_message('Only clan admins can visit the videos list page!') }
+    end
+    
+    describe "as clan admin" do      
+      describe "for another clan" do
+        before do
+          clan_user.user_privileges.create!(privilege_id: admin_privilege.id)
+          sign_in clan_user
+          visit clan_videos_path(clan2)
+        end 
+               
+        specify { current_url.should eq clan_url(clan2) }
+        it { should have_error_message('You can only visit the videos list page for your clan!') }                
+      end
+      
+      describe "for the clan" do    
+        before do
+          clan_user.user_privileges.create!(privilege_id: admin_privilege.id)
+          sign_in clan_user
+          visit clan_videos_path(clan)
+        end 
+        
+        specify { current_url.should eq clan_videos_url(clan) }
+        it_should_behave_like "all video pages" 
+        
+        # @TODO test that each video in pagination shows
+        # @TODO test that there is a link to create a new video page
+        
+        describe "deleting a video" do
+          it { should have_link('delete', href: clan_video_path(clan, video)) }
+          
+          it "admin should be able to delete video" do
+            expect do
+              click_link('delete', match: :first)
+            end.to change(Video, :count).by(-1)
+          end
+        end
+      end
+    end
+  end
+  
+  describe "submitting a DELETE request to the Video#destroy action" do          
+    describe "as non clan admin" do
+      before { sign_in clan_user, no_capybara: true }
+      
+      it "should not delete the video" do
+          expect { delete clan_video_path(clan, video) }.not_to change(Video, :count)
+      end
+        
+      describe "should have error flash" do
+        before { delete clan_video_path(clan, video) }
+        
+        specify { expect(response).to redirect_to(clan_url(clan)) }
+        specify { expect(request.flash[:error]).to eq 'You do not have permission to delete video pages' }        
+      end
+    end
+    
+    describe "as clan admin" do
+      before do
+        clan_user.user_privileges.create!(privilege_id: admin_privilege.id)
+        sign_in clan_user, no_capybara: true
+      end
+      
+      describe "for another clan" do
+        let!(:video2)          { FactoryGirl.create(:video, clan_id: clan2.id, access_type_id: access_type.id) }
+        
+        it "should not delete the video" do
+          expect { delete clan_video_path(clan2, video2) }.not_to change(Video, :count)
+        end
+            
+        describe "should have error flash" do
+          before { delete clan_video_path(clan2, video2) }
+          
+          specify { expect(response).to redirect_to(clan_url(clan2)) }
+          specify { expect(request.flash[:error]).to eq 'You do not have permission to delete video pages from another clan' }
+        end                
+      end
+      
+      describe "for the clan" do
+        it "should delete the video" do
+          expect { delete clan_video_path(clan, video) }.to change(Video, :count).by(-1)
+        end
+    
+        describe "should have correct flash message" do
+          before { delete clan_video_path(clan, video) }
+          
+          specify { expect(request.flash[:success]).to eq 'Video Page has been deleted' }
+        end        
+      end
+    end
+  end
 end

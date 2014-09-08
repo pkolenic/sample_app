@@ -1,0 +1,9 @@
+<li>
+	<div>
+		<%= video.title %>
+	</div>   
+	<div class="action_buttons">
+	    <%= link_to "delete", clan_video_path(@clan, video), method: :delete, data: { confirm: "You sure?" }, class: 'btn btn-danger' %>	  
+		<%= link_to "edit", edit_clan_video_path(@clan, video), class: 'btn btn-warning' %>
+  	</div>
+</li>

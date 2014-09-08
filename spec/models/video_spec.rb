@@ -16,6 +16,7 @@ describe Video do
   it { should respond_to(:header) }
   it { should respond_to(:youtube_channel) }
   it { should respond_to(:video_list) }
+  it { should respond_to(:filters) }
   
   # Clan
   it { should respond_to(:clan_id) }

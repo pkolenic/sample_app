@@ -1,5 +1,4 @@
 SampleApp::Application.routes.draw do
-  get "videos/new"
   # This line mounts Forem's routes at /forums by default.
   # This means, any requests to the /forums URL of your application will go to Forem::ForumsController#index.
   # If you would like to change where this extension is mounted, simply change the :at option to something different.
@@ -7,14 +6,17 @@ SampleApp::Application.routes.draw do
   # We ask that you don't use the :as option here, as Forem relies on it being the default of "forem"
   mount Forem::Engine, :at => '/forums'
 
-  get "events/new"
+#  get "videos/new"
+#  get "events/new"
+  
   # Resource Paths
   resources :users, except: [:index]
   resources :clans, only: [:show] do
     resources :users
     resources :applications, only: [:index]
-    resources :videos, except: [:index]
+    resources :videos
   end
+  
   resources :applications, only: [:destroy]
   resources :events, only: [:new, :create, :destroy]
   resources :sessions, only: [:new, :create, :destroy]
@@ -22,10 +24,12 @@ SampleApp::Application.routes.draw do
   
   #Clan Paths
   match '/clans/:clan_id/contact', to: 'static_pages#contact', as:'clan_contact', via: 'get'
+  match '/clans/:clan_id/admin', to: 'clans#admin', as:'clan_admin', via: 'get'
   
   #Common Paths
   match '/signin',  to: 'sessions#new',         via: 'get'
   match '/signout', to: 'sessions#destroy',     via: 'delete'
+  
   match '/users/:id/add_clanwar', to: 'users#add_clanwar', as:'add_clanwar', via: 'patch'
   match '/users/:id/remove_clanwar', to: 'users#remove_clanwar', as:'remove_clanwar', via: 'patch'
   

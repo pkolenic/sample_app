@@ -1,0 +1,24 @@
+<% provide(:title, "Admin Panel") %> 
+<h1><%= @clan.name %> Admin Panel</h1>
+
+<div class="admin-section">
+	<h2>Clan Statistics</h2>
+	<span class="admin-stat-label">Total Tankers:</span>
+	<span class="admin-stat-value"><%= User.where('clan_id = ?', @clan.id).count %></span>
+	<br/>
+	
+	<span class="admin-stat-label">Registered Tankers:</span>
+	<span class="admin-stat-value"><%= User.where("active = ? AND clan_id = '#{@clan.id}'", true).count %></span>
+	<br/>
+	
+	<span class="admin-stat-label">Inactive Tankers:</span>
+	<span class="admin-stat-value"><%= User.where("clan_id = ? AND last_online < '#{Time.now - 30.days}'", @clan.id).count %></span>
+	<br/>	
+</div>
+
+<div class="admin-section">
+	<h2>Customizations</h2>
+	<%= link_to "Video Pages", main_app.clan_videos_path(@clan) %> <br/>
+	<%= link_to "Customize Clan Pages", "#" %> <br/>
+</div>
+

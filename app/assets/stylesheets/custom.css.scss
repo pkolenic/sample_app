@@ -461,3 +461,13 @@ input {
     vertical-align: top;
   }
 }
+
+/* Admin Links */
+.admin_links {
+  float: right;
+  width: 1000px;
+  height: 0px;
+  position: relative;
+  top: -25px;
+  z-index: 100;
+}

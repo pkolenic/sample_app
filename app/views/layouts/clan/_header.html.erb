@@ -1,23 +1,37 @@
 <header class="navbar navbar-fixed-top navbar-inverse">
-  <div class="navbar-inner">
+  <div class="navbar-inner"> 	
     <div class="container">
-      <%= link_to image_tag(@clan.clan_logo, alt: @clan.name) + @clan.name, main_app.clan_path(@clan), id: "logo" %>
-      <nav>
-        <ul class="nav pull-right">      
-          <%= render 'layouts/clans' %>    
-          <%= render 'layouts/clan/locker' %>
-          <%= render 'layouts/clan/videos' %>
-          <li><%= link_to "Forums", forem.root_path %></li>
-          <li><%= link_to "Battle Roster", main_app.clan_users_path(@clan) %></li>   
-          <% if signed_in? %>          	      
-          	<% if current_user.role >= UserSoldier %>
-		  	<% end %>            
-			<%= render 'layouts/profile' %>
-          <% else %>
-            <li><%= link_to "Sign in", main_app.signin_path(:clan_id => @clan.slug) %></li>
-          <% end %>
-        </ul>
-      </nav>
+      <div class="admin_links">
+      	<nav>
+			<% if signed_in? %>
+				<% if current_user.hasPrivilege?(CLAN_ADMIN) && current_user.clan == @clan %>
+					<ul class="nav pull-right">
+						<li><%= link_to "Admin Panel", main_app.clan_admin_path(@clan) %></li>
+					</ul>
+				<% end %>
+			<% end %>
+      	</nav> 
+      </div>
+      <div>
+	      <%= link_to image_tag(@clan.clan_logo, alt: @clan.name) + @clan.name, main_app.clan_path(@clan), id: "logo" %>
+	      <nav>
+		  	<ul class="nav pull-right">      
+		   		<%= render 'layouts/clans' %>    
+		        <%= render 'layouts/clan/locker' %>
+		        <%= render 'layouts/clan/videos' %>
+		        <li><%= link_to "Forums", forem.root_path %></li>
+		        <li><%= link_to "Battle Roster", main_app.clan_users_path(@clan) %></li>   
+		        <% if signed_in? %>          	      
+		        	<% if current_user.role >= UserSoldier %>
+		          	
+				  	<% end %>            
+					<%= render 'layouts/profile' %>
+				<% else %>
+					<li><%= link_to "Sign in", main_app.signin_path(:clan_id => @clan.slug) %></li>
+				<% end %>
+		  	</ul>
+	      </nav>
+		</div>
     </div>
   </div>
 </header>

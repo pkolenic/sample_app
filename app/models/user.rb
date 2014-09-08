@@ -93,6 +93,10 @@ class User < ActiveRecord::Base
     end
   end
   
+  def hasPrivilege?(name)
+    self.privileges.include?(Privilege.find_by(name: name))
+  end
+  
   # Session Token Creation
   def User.new_remember_token
     SecureRandom.urlsafe_base64
