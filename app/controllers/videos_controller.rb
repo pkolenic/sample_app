@@ -1,7 +1,8 @@
 class VideosController < ApplicationController
   before_action :proper_access_rights,      only: [:show]
-  before_action :clan_admin_rights,         only: [:index]
+  before_action :clan_admin_rights,         only: [:index, :new, :edit]
   before_action :delete_rights,             only: [:destroy]
+  before_action :edit_rights,               only: [:update]
    
   def index
     order = 'title'
@@ -10,6 +11,23 @@ class VideosController < ApplicationController
   end
   
   def new
+    @video = Video.new
+    @clan = Clan.friendly.find(params[:clan_id])
+    render layout: "clans"      
+  end
+  
+  def create
+    @video = buffalo
+  end
+  
+  def edit
+    @video = Video.friendly.find(params[:id])
+    @clan = Clan.friendly.find(params[:clan_id])
+    render layout: "clans"     
+  end
+  
+  def update
+    
   end
   
   def show
@@ -53,11 +71,11 @@ class VideosController < ApplicationController
     if signed_in?
       if current_user.hasPrivilege?(CLAN_ADMIN)
         unless current_user.clan == @clan
-          flash[:error] = "You can only visit the videos list page for your clan!"
+          flash[:error] = "You can only visit the admin pages for your clan!"
           redirect_to(clan_url(@clan))              
         end
       else
-        flash[:error] = "Only clan admins can visit the videos list page!"
+        flash[:error] = "Only clan admins can visit this page!"
         redirect_to(clan_url(@clan))    
       end      
     else
@@ -81,7 +99,24 @@ class VideosController < ApplicationController
       signed_in_user
     end      
   end
-  
+
+  def edit_rights
+    @clan = Clan.friendly.find(params[:clan_id])
+    if signed_in?
+      if current_user.hasPrivilege?(CLAN_ADMIN)
+        unless current_user.clan == @clan
+          flash[:error] = "You do not have permission to edit video pages from another clan"
+          redirect_to(clan_url(@clan))              
+        end
+      else
+        flash[:error] = "You do not have permission to edit video pages"
+        redirect_to(clan_url(@clan))    
+      end      
+    else
+      signed_in_user
+    end      
+  end
+    
   def proper_access_rights
     @video = Video.friendly.find(params[:id])
     if @video.access_type.name != PUBLIC

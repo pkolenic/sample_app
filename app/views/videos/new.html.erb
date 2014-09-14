@@ -1,2 +1,12 @@
-<h1>Videos#new</h1>
-<p>Find me in app/views/videos/new.html.erb</p>
+<% provide(:title, "New Video Page") %>
+<h1>New Video Page</h1>
+
+<div class="row">
+	<div class="span10">
+		<%= form_for [@clan, @video] do |f| %>
+			<%= render 'fields', f: f %>			
+			<%= link_to "Cancel", main_app.clan_videos_path(@clan), class: "btn btn-large btn-warning" %>
+			<%= f.submit "Create Video Page", class: "btn btn-large btn-primary" %>
+		<% end %>
+	</div>
+</div>

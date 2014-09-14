@@ -1,3 +1,101 @@
 // Place all the styles related to the Videos controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+#custom_playlist {  
+  table {
+    width:760px;
+    border:none;
+    border-collapse: collapse;
+  }
+  .table-headers {
+    width:670px;
+  } 
+  th {
+    padding: 0 2px;
+    text-transform: capitalize;    
+  }
+  td {
+    border: 1px solid black;
+    padding: 0 2px;
+  }
+  
+  .id-column { 
+    width: 100px;  
+    text-align:center;
+  }
+  
+  .title-column {
+    width: 200px;
+  }
+  
+  .filter-column {
+    width: 100px;
+  }
+  
+  .button-column {
+    width: 82px;  
+    padding: 2px;
+    border: none;
+  }
+  
+  .filter-name-column {
+    width: 160px;
+  }
+  
+  .filter-value-column {
+    
+  }    
+  
+  #video-list-scroll {
+    max-height: 250px;
+    overflow: auto;
+    border: 1px solid black;
+    border-left:none;
+  }
+  
+  #add-video-button,
+  #add-filter-button {
+    margin: 5px 0;
+  }
+  
+  #video-form {
+    position: fixed;
+    top: 30%;
+    z-index: 1000;
+  }
+  
+  #filter-form,
+  #video-form {
+    border: 1px solid black;
+    border-radius: 30px;
+    -webkit-border-radius: 30px;
+    -moz-border-radius: 30px;
+    background: white;
+    padding: 20px;
+    width: 300px;
+
+    input {
+      width: 250px;
+    }
+    
+    ul {
+      list-style: none;
+      margin: 0;
+    }
+    
+    #filter-form-values-wrapper {
+      max-height: 250px;
+      overflow: auto;
+    }
+    
+    #filter-form-add-value {
+      margin-bottom: 10px;
+    }
+  }
+}
+
+div span.note {
+  font-size: 12px;
+  font-style: italic;
+}

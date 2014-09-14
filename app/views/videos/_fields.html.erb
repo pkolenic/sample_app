@@ -1,0 +1,148 @@
+<%= render 'shared/error_messages', object: f.object %>
+<%= f.hidden_field :clan_id, value: @clan.id  %>
+
+<%= f.label :title, "Tab Title<span class='note'> *(This will display on the browser Tab) </span>".html_safe %>
+<%= f.text_field :title, placeholder: "Tab Title" %>
+
+<%= f.label :header, "Page Title<span class='note'> *(This will display at the top of the Video Page) </span>".html_safe %>
+<%= f.text_field :header, placeholder: "Page Title" %>
+
+<%= f.label :disqus, "disqusID<span class='note'> *(Sets the ID for the disqus comments.  Duplicate IDs will allow comments to be shared across video pages) </span>".html_safe %>
+<%= f.text_field :disqus, placeholder: "disqusID" %>
+
+<%= f.label :access_type_id, "Page Access Type" %>
+<%= f.select :access_type_id, options_from_collection_for_select(AccessType.all, 'id', 'name') %>
+
+<%= label_tag "video-type", "Page Type" %>
+<% if @video.youtube_channel.blank? && @video.video_list.blank? %>
+	<%= select_tag "video-type", options_for_select([['YouTube Channel', 'youtube_channel'], ['Custom Playlist', 'custom_playlist']], "youtube_channel"), onchange: 'javascript:switchVideoPageType(this.value);'%>
+<% else %>
+	<%= select_tag "video-type", options_for_select([['YouTube Channel', 'youtube_channel'], ['Custom Playlist', 'custom_playlist']], "custom_playlist"), onchange: 'javascript:switchVideoPageType(this.value);'%>
+<% end %>
+
+<div id="youtube_channel" class='videoPageTypes'>
+	<%= f.label :youtube_channel, "YouTube Channel<span class='note'> *(The YouTube Channel to pull content from) </span>".html_safe %>
+	<%= f.text_field :youtube_channel, placeholder: "YouTube Channel" %>
+</div>
+<% if @video.video_list %>
+	<% video_list = JSON.parse(@video.video_list) %>
+<% end %>
+<% if @video.filters %>
+	<% filters = JSON.parse(@video.filters) %>
+<% end %>
+
+<div id='custom_playlist' class='videoPageTypes' style="display:none;">
+	<table class="table-headers" id="video-list-headers">
+		<tr>
+			<th class='id-column' id='video-id-header'>video id</th>
+			<th class='title-column' id='video-title-header'>title</th>
+			<% if filters %>
+				<% i = 1 %>
+				<% filters.each do |filter| %>
+					<th class='filter-column' id='video-filter-<%= i %>-header'><%= filter['name'] %></th>
+					<% i = i + 1 %>
+				<% end %>
+				<% (i..3).each do |j| %>
+					<th class='filter-column' id='video-filter-<% j %>-header'></th>
+				<% end %>
+			<% else %>
+				<th class='filter-column' id='video-filter1-header'></th>
+				<th class='filter-column' id='video-filter2-header'></th>
+				<th class='filter-column' id='video-filter3-header'></th>			
+			<% end %>
+		</tr>
+	</table>
+	<div id="video-list-scroll">
+		<table id="videos-list">
+			<% if video_list %>
+				<% vc = 0 %>
+				<% video_list.each do |video| %>
+					<tr>
+						<td class='id-column'><%= video['id'] %></td>
+						<td class='title-column'><%= video['title'] %></td>
+						<% i = 1 %>
+						<% if filters %>							
+							<% filters.each do |filter| %>
+								 <% filter_name = filter['name'].downcase %>
+								 <td class='filter-column filter-<%= i %>'><%= video[filter_name] %></td>
+								 <% i = i + 1 %> 
+							<% end %>
+						<% end %>	
+						<% (i..3).each do |j| %>						
+							<td class='filter-column filter-<%= j %>'></td>
+						<% end %>		
+						<td class='button-column'>
+							<%= link_to "edit", "#", class:"btn btn-mini btn-info edit-video", id: "edit-#{vc}" %>	
+							<%= link_to "delete", "#", class:"btn btn-mini btn-danger delete-video", id: "delete-#{vc}" %>
+						</td>
+					</tr>	
+					<% vc = vc + 1 %>			
+				<% end %>					
+			<% end %>					
+		</table>
+	</div>
+	<%= f.hidden_field :video_list %>
+	
+	<%= link_to "Add video", '#', class: "btn btn-small btn-primary", id: 'add-video-button' %>
+		
+	<table class="table-headers">
+		<tr>
+			<th class='filter-name-column'>filter name</th>
+			<th class='filter-value-column'>filter value</th>
+		</tr>
+	</table>
+	<table id="filters">
+		<% if filters %>
+			<% i = 0 %>
+			<% filters.each do |filter| %>
+				<tr class="filter-row" id="filter-<%= i %>">
+					<td class='filter-name-column'><%= filter['name'] %></td>
+					<td class='filter-value-column'><%= filter['values'].join(", ") %></td>
+					<td class='button-column'>
+							<%= link_to "edit", "#", class:"btn btn-mini btn-info edit-filter", id: "edit-filter-#{i}" %>	
+							<%= link_to "delete", "#", class:"btn btn-mini btn-danger delete-filter", id: "delete-filter-#{i}" %>
+					</td>
+				</tr>
+				<% i = i + 1 %>
+			<% end %>
+		<% end %>
+	</table>
+	<%= f.hidden_field :filters %>
+	
+	<%= link_to "Add Filter", '#', class: "btn btn-small btn-primary", id: 'add-filter-button' %>
+	
+	<div id="filter-form" style="display:none;">
+		<span class='note' style="display:none;" id='filter-note'> *If you remove or change a value from a filter, then all videos that had that value will be changed to the first value for that filter</span>
+		<%= label_tag 'filter-form-name-value', "Name"%>
+		<%= text_field_tag 'filter-form-name-value' %>
+		<div id='filter-form-values-wrapper'>
+			<ul id="filter-form-values">
+				<li>
+					<%= label_tag 'filter_form-value-1', "Value" %>
+					<%= text_field_tag 'filter_form-value-1', nil, class: 'filter-form-value' %>
+				</li>
+			</ul>
+		</div>
+		<div id ="filter-form-add-value">
+			<%= link_to "add value", "#", class:"btn btn-mini btn-primary", id: "add-filter-form-value" %>
+			<%= link_to "remove value", "#", class:"btn btn-mini btn-danger disabled", id: "remove-filter-form-value" %>
+		</div>
+		<%= link_to "cancel", "#", class:"btn btn-small btn-danger", id: "cancel-filter-form"%>
+		<%= link_to "save", "#", class:"btn btn-small btn-primary", id: "save-filter-form"%>
+	</div>
+	
+	<div id="video-form" style="display:none;">
+		<%= label_tag 'video-form-id', "Video Id"%>
+		<%= text_field_tag 'video-form-id' %>
+		
+		<%= label_tag 'video-form-title', "Video Title"%>
+		<%= text_field_tag 'video-form-title' %>
+		
+		<div id="video-form-filters">
+		
+		</div>
+		
+		<%= link_to "cancel", "#", class:"btn btn-small btn-danger", id: "cancel-video-form"%>
+		<%= link_to "save", "#", class:"btn btn-small btn-primary", id: "save-video-form"%>		
+	</div>
+</div>

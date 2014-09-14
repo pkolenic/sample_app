@@ -14,6 +14,8 @@ describe "Video pages" do
   shared_examples_for "all video pages" do
     it { should have_selector('h1', text: heading) }
     it { should have_title(full_title(page_title)) }
+    
+    # @TODO make sure it has the clan header
   end
   
   shared_examples_for "all pages with video player" do
@@ -173,7 +175,55 @@ describe "Video pages" do
   end
 
   describe "new page" do
+    let(:heading)         { "New Video Page" }
+    let(:page_title)      { "New Video Page" }
     
+    describe "as non clan admin" do
+      before do
+        sign_in clan_user
+        visit new_clan_video_path(clan)
+      end
+      
+      specify { current_url.should eq clan_url(clan) }
+      it { should have_error_message('Only clan admins can visit this page!') }
+    end
+    
+    describe "as clan admin" do
+      before do
+        clan_user.user_privileges.create!(privilege_id: admin_privilege.id)
+        sign_in clan_user        
+      end
+      
+      describe "for another clan" do
+        before { visit new_clan_video_path(clan2) }
+        
+        specify { current_url.should eq clan_url(clan2) }
+        it { should have_error_message('You can only visit the admin pages for your clan!') }
+      end
+      
+      describe "for the clan" do
+        before { visit new_clan_video_path(clan) }
+
+        specify { current_url.should eq new_clan_video_url(clan) }
+        it_should_behave_like "all video pages"         
+        
+        # verify that all the fields are present
+        it { should have_selector("input#video_clan_id", :visible=>false) }
+        it { should have_field("video[title]") }
+        it { should have_field("video[header]") }
+        it { should have_field("video[disqus]") }
+        it { should have_field("video[access_type_id]") }
+        it { should have_field("video-type") }
+        it { should have_field("video[youtube_channel]", :visible=>false) }
+        it { should have_selector("input#video_video_list", :visible=>false) }
+        it { should have_selector("input#video_filters", :visible=>false) }
+        
+        # @TODO check for support tables and links
+        
+        it { should have_selector("input[type=submit][value='Create Video Page']")}
+        it { should have_link('Cancel',     href: clan_videos_path(clan)) }   
+      end
+    end
   end
   
   describe "index page" do
@@ -187,27 +237,24 @@ describe "Video pages" do
       end
       
       specify { current_url.should eq clan_url(clan) }
-      it { should have_error_message('Only clan admins can visit the videos list page!') }
+      it { should have_error_message('Only clan admins can visit this page!') }
     end
     
     describe "as clan admin" do      
+      before do
+        clan_user.user_privileges.create!(privilege_id: admin_privilege.id)
+        sign_in clan_user        
+      end
+      
       describe "for another clan" do
-        before do
-          clan_user.user_privileges.create!(privilege_id: admin_privilege.id)
-          sign_in clan_user
-          visit clan_videos_path(clan2)
-        end 
+        before { visit clan_videos_path(clan2) }
                
         specify { current_url.should eq clan_url(clan2) }
-        it { should have_error_message('You can only visit the videos list page for your clan!') }                
+        it { should have_error_message('You can only visit the admin pages for your clan!') }                
       end
       
       describe "for the clan" do    
-        before do
-          clan_user.user_privileges.create!(privilege_id: admin_privilege.id)
-          sign_in clan_user
-          visit clan_videos_path(clan)
-        end 
+        before { visit clan_videos_path(clan) }
         
         specify { current_url.should eq clan_videos_url(clan) }
         it_should_behave_like "all video pages" 
@@ -277,5 +324,88 @@ describe "Video pages" do
         end        
       end
     end
+  end
+
+  describe "edit page" do
+    let(:heading)         { "Edit Video Page" }
+    let(:page_title)      { "Edit Video Page" }
+    
+    
+    describe "as non clan admin" do
+      before do
+        sign_in clan_user
+        visit edit_clan_video_path(clan, video)
+      end
+      
+      specify { current_url.should eq clan_url(clan) }
+      it { should have_error_message('Only clan admins can visit this page!') }
+    end
+    
+    describe "as clan admin" do
+      before do
+        clan_user.user_privileges.create!(privilege_id: admin_privilege.id)
+        sign_in clan_user        
+      end
+      
+      describe "for another clan" do
+        let!(:video2)          { FactoryGirl.create(:video, clan_id: clan2.id, access_type_id: access_type.id) }
+        
+        before { visit edit_clan_video_path(clan2, video2) }
+        
+        specify { current_url.should eq clan_url(clan2) }
+        it { should have_error_message('You can only visit the admin pages for your clan!') }
+      end
+      
+      describe "for the clan" do
+        before { visit edit_clan_video_path(clan, video) }
+
+        specify { current_url.should eq edit_clan_video_url(clan, video) }
+        it_should_behave_like "all video pages"         
+        
+        # @TODO verify that all the fields are present
+      end
+    end    
+  end
+  
+  describe "submiting a PATCH request to the Video#update action" do
+    describe "as non clan admin" do
+      before { sign_in clan_user, no_capybara: true }
+        
+      describe "should have error flash" do
+        before { patch clan_video_path(clan, video) }
+        
+        specify { expect(response).to redirect_to(clan_url(clan)) }
+        specify { expect(request.flash[:error]).to eq 'You do not have permission to edit video pages' }        
+      end
+    end
+    
+    describe "as clan admin" do
+      before do
+        clan_user.user_privileges.create!(privilege_id: admin_privilege.id)
+        sign_in clan_user, no_capybara: true
+      end
+      
+      describe "for another clan" do
+        let!(:video2)          { FactoryGirl.create(:video, clan_id: clan2.id, access_type_id: access_type.id) }
+  
+        describe "should have error flash" do
+          before { patch clan_video_path(clan2, video2) }
+          
+          specify { expect(response).to redirect_to(clan_url(clan2)) }
+          specify { expect(request.flash[:error]).to eq 'You do not have permission to edit video pages from another clan' }
+        end                
+      end
+      
+      describe "for the clan" do    
+        describe "should have correct flash message" do
+          # @TODO verify that video was edited
+          # @TODO verify success message          
+        end        
+      end
+    end    
+  end
+  
+  describe "creating a new video" do
+    
   end
 end

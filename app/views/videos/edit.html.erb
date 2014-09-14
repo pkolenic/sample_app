@@ -1,0 +1,10 @@
+<% provide(:title, "Edit Video Page") %>
+<h1>Edit Video Page</h1>
+
+<div class="row">
+	<div class="span10">
+    	<%= form_for [@clan, @video] do |f| %>
+    		<%= render 'fields', f: f %>	
+    	<% end %>
+	</div>
+</div>
